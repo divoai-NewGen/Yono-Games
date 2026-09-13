@@ -17,10 +17,15 @@ export async function POST(request: NextRequest) {
     const fileName = `${Date.now()}-${baseName}${ext}`;
 
     // 1. If deployed to Vercel and Vercel Blob is connected
-    if (process.env.BLOB_READ_WRITE_TOKEN) {
+    const blobToken = 
+      process.env.BLOB_READ_WRITE_TOKEN || 
+      process.env.VERCEL_BLOB_READ_WRITE_TOKEN;
+
+    if (blobToken) {
       try {
         const blob = await put(`games/${fileName}`, file, {
           access: 'public',
+          token: blobToken,
         });
         return NextResponse.json({
           success: true,
@@ -30,14 +35,29 @@ export async function POST(request: NextRequest) {
           storage: 'vercel-blob',
         });
       } catch (blobErr) {
-        console.error('Vercel Blob upload failed, falling back to local write:', blobErr);
+        console.error('Vercel Blob upload failed:', blobErr);
       }
     }
 
-    // 2. Local environment fallback: save to public/images/uploads/
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
+    // 2. Vercel Serverless environment fallback:
+    // Filesystem (/var/task) is read-only on Vercel, so use Base64 Data URL
+    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+      const mimeType = file.type || 'image/png';
+      const base64 = buffer.toString('base64');
+      const dataUrl = `data:${mimeType};base64,${base64}`;
+      return NextResponse.json({
+        success: true,
+        url: dataUrl,
+        fileName,
+        size: `${(file.size / (1024 * 1024)).toFixed(2)} MB`,
+        storage: 'data-url',
+      });
+    }
+
+    // 3. Local environment fallback: save to public/images/uploads/
     const uploadDir = path.join(process.cwd(), 'public', 'images', 'uploads');
     if (!fs.existsSync(uploadDir)) {
       await fs.promises.mkdir(uploadDir, { recursive: true });

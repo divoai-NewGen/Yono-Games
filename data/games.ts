@@ -1,0 +1,440 @@
+import { Game } from '@/types/game';
+
+export const GAMES_DATA: Game[] = [
+  {
+    id: 'yono-777',
+    slug: 'yono-777',
+    name: 'Yono 777 - Spin Gold',
+    tagline: 'India’s Flagship Luxury Reel & Jackpot Experience',
+    logo: '/images/featured-game.jpg',
+    thumbnail: '/images/featured-game.jpg',
+    heroImage: '/images/featured-game.jpg',
+    screenshots: [
+      '/images/featured-game.jpg',
+      '/images/hero-composition.jpg',
+      '/images/yono-rummy.jpg'
+    ],
+    category: 'Slots & 777',
+    categories: ['Slots & 777', 'Featured', 'Jackpot'],
+    rating: 4.9,
+    ratingCount: '184.2K reviews',
+    players: '45,000+ Online',
+    downloads: '2.5M+ Downloads',
+    bonus: '₹1,500 Welcome Bonus',
+    shortDescription: 'Spin the golden reels with dynamic progressive jackpots, multi-line bonuses, and instant daily rewards.',
+    description: 'Yono 777 Spin Gold represents the pinnacle of casual digital reel entertainment. Featuring ultra-smooth animations, certified RNG mechanics, and multiple golden jackpot tiers, players can explore diverse themes from ancient fortune reels to sparkling diamond 777 lines.',
+    features: [
+      'Certified Random Number Generator (RNG) fair play standard',
+      'Dual Progressive Mega Jackpot pools updating in real-time',
+      'Instant withdrawal processing with round-the-clock support',
+      'Daily login spin wheels and loyalty tier privileges'
+    ],
+    howToPlay: [
+      'Download and launch the Yono 777 application on your mobile device',
+      'Choose your preferred reel room based on coin stakes',
+      'Select your bet multiplier and hit Spin to activate winning paylines',
+      'Trigger scatter symbols to unlock free golden bonus rounds'
+    ],
+    downloadUrl: 'https://moreyonogames.com/download/yono-777.apk',
+    version: 'v4.8.2',
+    size: '42.5 MB',
+    featured: true,
+    newRelease: false,
+    popular: true,
+    seoTitle: 'Yono 777 Spin Gold - Official Game Download & Features',
+    seoDescription: 'Download Yono 777 Spin Gold. Enjoy progressive jackpots, ₹1500 welcome bonus, and high-speed gameplay on India’s favourite platform.'
+  },
+  {
+    id: 'yono-rummy',
+    slug: 'yono-rummy',
+    name: 'Yono Rummy Classic',
+    tagline: 'The Gold Standard of 13-Card Indian Rummy',
+    logo: '/images/yono-rummy.jpg',
+    thumbnail: '/images/yono-rummy.jpg',
+    heroImage: '/images/yono-rummy.jpg',
+    screenshots: [
+      '/images/yono-rummy.jpg',
+      '/images/hero-composition.jpg',
+      '/images/teen-patti.jpg'
+    ],
+    category: 'Card & Rummy',
+    categories: ['Card & Rummy', 'Popular', 'Multiplayer'],
+    rating: 4.8,
+    ratingCount: '230K reviews',
+    players: '65,000+ Online',
+    downloads: '5.0M+ Downloads',
+    bonus: '₹500 Instant Cash',
+    shortDescription: 'Compete with skilled rummy enthusiasts in Points, Pool, and Deals tournaments with seamless table transitions.',
+    description: 'Experience authentic 13-card Indian Rummy reimagined for modern smartphones. Yono Rummy Classic delivers ultra-responsive card sorting, intelligent grouping, zero-lag multiplayer lobbies, and SSL-encrypted transactions.',
+    features: [
+      'Official 13-card Points, 101 Pool, and 201 Pool modes',
+      'Smart one-touch card sorting with pure sequence indicators',
+      'Anti-fraud and smart collusion detection algorithms',
+      'Daily free-roll leaderboard tournaments with guaranteed prizes'
+    ],
+    howToPlay: [
+      'Arrange the 13 cards into valid sets and sequences',
+      'Form at least two sequences, one of which must be a pure sequence without jokers',
+      'Discard unnecessary cards into the open deck and draw from open or closed pile',
+      'Declare first with zero points to win the pool hand'
+    ],
+    downloadUrl: 'https://teenpatticlub.io?from_gameid=15280469&channelCode=200000',
+    version: 'v5.2.1',
+    size: '38.2 MB',
+    featured: false,
+    newRelease: false,
+    popular: true,
+    seoTitle: 'Yono Rummy - Play 13-Card Indian Rummy Online',
+    seoDescription: 'Play Yono Rummy on India’s favourite platform. Fast withdrawals, secure matchmaking, and fair play certification.'
+  },
+  {
+    id: 'yono-aviator',
+    slug: 'yono-aviator',
+    name: 'Aviator Yono Multiplier',
+    tagline: 'High-Altitude Crash Game with Instant Cashouts',
+    logo: '/images/yono-aviator.jpg',
+    thumbnail: '/images/yono-aviator.jpg',
+    heroImage: '/images/yono-aviator.jpg',
+    screenshots: [
+      '/images/yono-aviator.jpg',
+      '/images/hero-composition.jpg',
+      '/images/featured-game.jpg'
+    ],
+    category: 'Arcade & Crash',
+    categories: ['Arcade & Crash', 'New', 'Trending'],
+    rating: 4.9,
+    ratingCount: '92.4K reviews',
+    players: '38,000+ Online',
+    downloads: '1.8M+ Downloads',
+    bonus: '₹1,000 Free Fly Bonus',
+    shortDescription: 'Watch the supersonic red plane climb up to 100x multipliers. Cash out before the lucky craft flies away.',
+    description: 'Aviator Yono is the newest addition to the Yono Games family, delivering exhilarating real-time social multiplayer crash gameplay. Track live community bets, view verified flight history, and master dual-bet strategies with automated cashout controls.',
+    features: [
+      'Provably Fair cryptographic algorithm verification',
+      'Dual concurrent bet placement with automated target cashouts',
+      'Live community feed displaying real-time multiplier cashes',
+      'Ultra-lightweight graphics engine engineered for all networks'
+    ],
+    howToPlay: [
+      'Place single or dual bets before the flight departure countdown finishes',
+      'Watch the lucky plane ascend as the payout multiplier accelerates',
+      'Tap Cash Out at the ideal moment before the plane flies away',
+      'Your winnings equal your bet multiplied by the exit multiplier'
+    ],
+    downloadUrl: 'https://moreyonogames.com/download/yono-aviator.apk',
+    version: 'v2.1.0',
+    size: '29.8 MB',
+    featured: false,
+    newRelease: true,
+    popular: true,
+    seoTitle: 'Aviator Yono - Supersonic Multiplier Crash Game',
+    seoDescription: 'Play Aviator Yono with instant cashouts, provably fair mechanics, and real-time multiplier charts.'
+  },
+  {
+    id: 'dragon-vs-tiger',
+    slug: 'dragon-vs-tiger',
+    name: 'Dragon vs Tiger Yono',
+    tagline: '15-Second Rapid Card Clash with Live Tables',
+    logo: '/images/dragon-tiger.jpg',
+    thumbnail: '/images/dragon-tiger.jpg',
+    heroImage: '/images/dragon-tiger.jpg',
+    screenshots: [
+      '/images/dragon-tiger.jpg',
+      '/images/teen-patti.jpg',
+      '/images/yono-rummy.jpg'
+    ],
+    category: 'Roulette & Table',
+    categories: ['Roulette & Table', 'Popular', 'Fast Action'],
+    rating: 4.7,
+    ratingCount: '156K reviews',
+    players: '52,000+ Online',
+    downloads: '3.2M+ Downloads',
+    bonus: '₹800 First Play Perk',
+    shortDescription: 'Predict whether Dragon or Tiger will draw the higher single card in high-speed 15-second rounds.',
+    description: 'A classic favorite among Indian card enthusiasts, Dragon vs Tiger brings fast-paced, straightforward excitement. Two single cards are dealt face-up: one for Dragon and one for Tiger. Highest card wins (King high, Ace low), with lucrative payouts for Tie predictions.',
+    features: [
+      'Ultra-fast 15-second round cycles with zero waiting time',
+      'Detailed historical streak charts (Bead Plate & Big Road)',
+      'Tie and Suited Tie side prediction opportunities with up to 50:1 payout',
+      'Smooth HD table streaming with crystal-clear audio'
+    ],
+    howToPlay: [
+      'Choose your prediction: Dragon, Tiger, or Tie',
+      'Place your chips on the chosen side before the timer expires',
+      'A single card is dealt to each side by the automated dealer',
+      'The side with the higher card value wins immediately'
+    ],
+    downloadUrl: 'https://moreyonogames.com/download/dragon-vs-tiger.apk',
+    version: 'v3.6.4',
+    size: '34.1 MB',
+    featured: false,
+    newRelease: false,
+    popular: true,
+    seoTitle: 'Dragon vs Tiger Yono - Fast Card Action & Results',
+    seoDescription: 'Download Dragon vs Tiger Yono. Instant results, transparent roadmaps, and smooth card action.'
+  },
+  {
+    id: 'teen-patti-yono',
+    slug: 'teen-patti-yono',
+    name: 'Teen Patti Yono Royal',
+    tagline: 'Royal Indian 3-Card Poker with Gold Tables',
+    logo: '/images/teen-patti.jpg',
+    thumbnail: '/images/teen-patti.jpg',
+    heroImage: '/images/teen-patti.jpg',
+    screenshots: [
+      '/images/teen-patti.jpg',
+      '/images/yono-rummy.jpg',
+      '/images/dragon-tiger.jpg'
+    ],
+    category: 'Card & Rummy',
+    categories: ['Card & Rummy', 'Royal', 'Popular'],
+    rating: 4.8,
+    ratingCount: '310K reviews',
+    players: '70,000+ Online',
+    downloads: '6.2M+ Downloads',
+    bonus: '₹1,200 Welcome Chip Pack',
+    shortDescription: 'Play the iconic 3-card game with classic Blind, Chaal, Pot Blind, Muflis, and AK47 variations.',
+    description: 'Immerse yourself in royal Indian hospitality with Teen Patti Yono Royal. Compete on gold-trimmed emerald tables against real players across the country. Enjoy rich social gifts, private friendly tables, and high-roller tournament rooms.',
+    features: [
+      'Complete rules support: Trail/Trio, Pure Sequence, Sequence, Color, Pair, and High Card',
+      'Popular game variations including Muflis, Joker, AK47, and Revolving Joker',
+      'Private table rooms for entertaining friends and family',
+      'Interactive emoji reactions and live animated gifts'
+    ],
+    howToPlay: [
+      'Enter a table and receive 3 facedown cards',
+      'Choose to play Blind (without seeing cards) or Seen (Chaal)',
+      'Bet chips to match or raise previous players in clockwise turns',
+      'Request a sideshow or reach final showdown to claim the pot'
+    ],
+    downloadUrl: 'https://moreyonogames.com/download/teen-patti-yono.apk',
+    version: 'v6.0.1',
+    size: '41.0 MB',
+    featured: false,
+    newRelease: false,
+    popular: true,
+    seoTitle: 'Teen Patti Yono Royal - Download Official App',
+    seoDescription: 'Play royal 3-card poker on Teen Patti Yono. Enjoy Muflis, AK47, and private tables with real players.'
+  },
+  {
+    id: 'yono-arcade',
+    slug: 'yono-arcade',
+    name: 'Yono Arcade Hub',
+    tagline: '30+ Casual Mini-Games in One Single App',
+    logo: '/images/hero-composition.jpg',
+    thumbnail: '/images/hero-composition.jpg',
+    heroImage: '/images/hero-composition.jpg',
+    screenshots: [
+      '/images/hero-composition.jpg',
+      '/images/featured-game.jpg',
+      '/images/yono-aviator.jpg'
+    ],
+    category: 'Arcade & Crash',
+    categories: ['Arcade & Crash', 'New', 'Casual'],
+    rating: 4.7,
+    ratingCount: '78K reviews',
+    players: '26,000+ Online',
+    downloads: '1.2M+ Downloads',
+    bonus: '₹600 Arcade Pass',
+    shortDescription: 'An all-in-one arcade powerhouse featuring fishing games, mines, wheel spins, and retro tap challenges.',
+    description: 'Save storage space on your device while unlocking a universe of entertainment. Yono Arcade combines over 30 fast-paced mini-games under a unified wallet balance, enabling you to switch effortlessly between fishing, shooting, and puzzle competitions.',
+    features: [
+      'Single unified wallet balance across all 30+ arcade titles',
+      'Instant game loading without downloading extra data packs',
+      'Hourly quest leaderboards with coin drops and booster multipliers',
+      'Designed specifically for butter-smooth 60fps performance'
+    ],
+    howToPlay: [
+      'Browse through the visual arcade carousel of titles',
+      'Select any mini-game to launch instantly inside the player',
+      'Complete designated stage objectives to earn score bonuses',
+      'Transfer or redeem your winnings seamlessly anytime'
+    ],
+    downloadUrl: 'https://moreyonogames.com/download/yono-arcade.apk',
+    version: 'v3.1.2',
+    size: '48.9 MB',
+    featured: false,
+    newRelease: true,
+    popular: false,
+    seoTitle: 'Yono Arcade - 30+ Mini Games in One App',
+    seoDescription: 'Download Yono Arcade for instant access to 30+ casual mini games with unified wallet and hourly rewards.'
+  },
+  {
+    id: 'andar-bahar-pro',
+    slug: 'andar-bahar-pro',
+    name: 'Andar Bahar Pro',
+    tagline: 'Authentic 50/50 Traditional Indian Table Game',
+    logo: '/images/dragon-tiger.jpg',
+    thumbnail: '/images/dragon-tiger.jpg',
+    heroImage: '/images/dragon-tiger.jpg',
+    screenshots: [
+      '/images/dragon-tiger.jpg',
+      '/images/yono-rummy.jpg',
+      '/images/featured-game.jpg'
+    ],
+    category: 'Roulette & Table',
+    categories: ['Roulette & Table', 'Classic'],
+    rating: 4.6,
+    ratingCount: '112K reviews',
+    players: '31,000+ Online',
+    downloads: '2.1M+ Downloads',
+    bonus: '₹750 Bonus Credits',
+    shortDescription: 'Predict whether the matching matching joker card will land on Andar (Inside) or Bahar (Outside).',
+    description: 'Relive the beloved timeless game of pure instinct. A central trump card is revealed, and cards are dealt alternately to the Andar and Bahar spots. Bet on the spot that receives a card of matching rank first.',
+    features: [
+      'Zero-delay automated dealer dealing system',
+      'Side bets for total card counts dealt (1-5, 6-10, 11-15, etc.)',
+      'Comprehensive history grid displaying past winning streaks',
+      'Low data usage mode for smooth play on 3G and 4G'
+    ],
+    howToPlay: [
+      'Observe the center Joker card dealt face up',
+      'Place your wager on Andar or Bahar before the betting clock stops',
+      'Watch the cards alternate until a card of equal face value appears',
+      'If your chosen side receives the matching rank, win immediate payout'
+    ],
+    downloadUrl: 'https://moreyonogames.com/download/andar-bahar-pro.apk',
+    version: 'v4.1.0',
+    size: '31.5 MB',
+    featured: false,
+    newRelease: false,
+    popular: false,
+    seoTitle: 'Andar Bahar Pro - Traditional Indian Table Game',
+    seoDescription: 'Play Andar Bahar Pro online with live statistics, instant matching, and secure gameplay.'
+  },
+  {
+    id: 'mines-adventure',
+    slug: 'mines-adventure',
+    name: 'Mines Adventure Yono',
+    tagline: 'High-Stakes 5x5 Grid Strategy & Cashout',
+    logo: '/images/featured-game.jpg',
+    thumbnail: '/images/featured-game.jpg',
+    heroImage: '/images/featured-game.jpg',
+    screenshots: [
+      '/images/featured-game.jpg',
+      '/images/yono-aviator.jpg',
+      '/images/hero-composition.jpg'
+    ],
+    category: 'Arcade & Crash',
+    categories: ['Arcade & Crash', 'New', 'Strategy'],
+    rating: 4.8,
+    ratingCount: '64K reviews',
+    players: '22,000+ Online',
+    downloads: '950K+ Downloads',
+    bonus: '₹500 Risk-Free Starter',
+    shortDescription: 'Uncover sparkling emerald gems on a 5x5 grid while dodging hidden mines to multiply your coins.',
+    description: 'Customize your risk and thrill level by choosing anywhere from 1 to 24 mines on the 25-tile grid. Each successful diamond uncovered significantly boosts your multiplier. Cash out at any tile, or press on for life-changing multipliers.',
+    features: [
+      'Customizable mine density settings from 1 to 24 mines',
+      'Cryptographically verified Provably Fair tile seeding',
+      'One-tap cashout anytime after revealing at least one diamond',
+      'Automatic strategic play settings and win/loss limits'
+    ],
+    howToPlay: [
+      'Set your stake and choose how many mines to place on the board',
+      'Tap any tile to uncover what lies underneath',
+      'Revealing an emerald diamond increases your exit multiplier',
+      'Tap Cash Out before you uncover a mine to bank your profits'
+    ],
+    downloadUrl: 'https://moreyonogames.com/download/mines-adventure.apk',
+    version: 'v1.9.5',
+    size: '26.4 MB',
+    featured: false,
+    newRelease: true,
+    popular: false,
+    seoTitle: 'Mines Adventure Yono - Strategic Grid Multiplier Game',
+    seoDescription: 'Play Mines Adventure Yono. Dodge mines, uncover diamonds, and cash out multiplying profits.'
+  },
+  {
+    id: 'car-roulette',
+    slug: 'car-roulette',
+    name: 'Car Roulette Yono',
+    tagline: 'Supercar Prediction Wheel with 40x Multipliers',
+    logo: '/images/hero-composition.jpg',
+    thumbnail: '/images/hero-composition.jpg',
+    heroImage: '/images/hero-composition.jpg',
+    screenshots: [
+      '/images/hero-composition.jpg',
+      '/images/featured-game.jpg',
+      '/images/yono-rummy.jpg'
+    ],
+    category: 'Roulette & Table',
+    categories: ['Roulette & Table', 'Popular'],
+    rating: 4.6,
+    ratingCount: '89K reviews',
+    players: '28,000+ Online',
+    downloads: '1.6M+ Downloads',
+    bonus: '₹850 Nitro Boost',
+    shortDescription: 'Bet on luxury automakers including Ferrari, Porsche, BMW, and Mercedes on a spinning neon racetrack.',
+    description: 'A thrilling variation of multi-sector roulette where high-end sports cars replace traditional numbers. Predict the winning automotive brand to trigger payouts from 5x base multipliers up to 40x on ultra-luxury supercar icons.',
+    features: [
+      '8 automotive betting sectors spanning luxury and supercar tiers',
+      'Rapid 20-second spin cycle with cinematic sound design',
+      'Repeater bet and double-up shortcut buttons for quick wagering',
+      'Transparent historical wheel sector telemetry'
+    ],
+    howToPlay: [
+      'Place chips on your predicted luxury car manufacturer logo',
+      'The pointer travels around the wheel until it rests on a winning car',
+      'If your chosen brand matches, collect up to 40x your chip stake'
+    ],
+    downloadUrl: 'https://moreyonogames.com/download/car-roulette.apk',
+    version: 'v3.4.0',
+    size: '39.0 MB',
+    featured: false,
+    newRelease: false,
+    popular: false,
+    seoTitle: 'Car Roulette Yono - Luxury Auto Prediction Game',
+    seoDescription: 'Play Car Roulette Yono with 40x supercar payouts, rapid rounds, and verified fair outcomes.'
+  },
+  {
+    id: 'ludo-yono',
+    slug: 'ludo-yono',
+    name: 'Ludo Yono Champion',
+    tagline: 'India’s Classic Board Game with Real Cash Contests',
+    logo: '/images/yono-rummy.jpg',
+    thumbnail: '/images/yono-rummy.jpg',
+    heroImage: '/images/yono-rummy.jpg',
+    screenshots: [
+      '/images/yono-rummy.jpg',
+      '/images/hero-composition.jpg',
+      '/images/teen-patti.jpg'
+    ],
+    category: 'Board Games',
+    categories: ['Board Games', 'Multiplayer'],
+    rating: 4.8,
+    ratingCount: '198K reviews',
+    players: '55,000+ Online',
+    downloads: '4.8M+ Downloads',
+    bonus: '₹400 Board Pass',
+    shortDescription: 'Battle in 2-player and 4-player quick Ludo matches with verified dice rolls and speed timers.',
+    description: 'Roll the dice and race your tokens home in Ludo Yono Champion. Designed for swift matches with turn timers, secure anti-cheat mechanisms, and live multiplayer voice emojis, this is family entertainment meets tournament-grade competition.',
+    features: [
+      'Quick Ludo mode: 10-minute rapid timer format',
+      'Classic 2-player head-to-head and 4-player royal battle royale',
+      'Cryptographically verified fair dice roll generator',
+      'Private match codes to challenge friends across India'
+    ],
+    howToPlay: [
+      'Roll the dice on your turn; roll a 6 to open a token from base',
+      'Navigate the board along the colored pathway towards home',
+      'Capture opponent tokens to earn an extra roll and bonus points',
+      'Get all four tokens into the center home triangle first to win'
+    ],
+    downloadUrl: 'https://moreyonogames.com/download/ludo-yono.apk',
+    version: 'v4.7.1',
+    size: '35.8 MB',
+    featured: false,
+    newRelease: false,
+    popular: true,
+    seoTitle: 'Ludo Yono Champion - Play Real Multiplayer Ludo',
+    seoDescription: 'Download Ludo Yono Champion for quick 10-minute matches, fair dice rolls, and real competition.'
+  }
+];
+
+export const SITE_STATS = [
+  { value: '90+', label: 'Games', sublabel: 'Curated collection', iconName: 'Gamepad2' as const },
+  { value: '25K+', label: 'Active Players', sublabel: 'Online right now', iconName: 'Users' as const },
+  { value: '125+', label: 'Tournaments', sublabel: 'Weekly prize pools', iconName: 'Trophy' as const },
+  { value: '24/7', label: 'Support', sublabel: 'Dedicated assistance', iconName: 'Headphones' as const },
+];

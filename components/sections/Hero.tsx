@@ -50,14 +50,14 @@ export default function Hero() {
   return (
     <section 
       ref={containerRef}
-      className="relative overflow-hidden pt-6 pb-12 sm:pt-10 sm:pb-16 bg-white"
+      className="relative overflow-hidden pt-4 pb-4 sm:pt-10 sm:pb-16 bg-white"
     >
       {/* Subtle ambient light-green radial glow bleeding directly into white */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-radial-ambient pointer-events-none -z-10 blur-3xl opacity-60" />
       <div className="absolute top-1/4 left-[-150px] w-[450px] h-[450px] bg-[#EEF8F2]/60 rounded-full pointer-events-none -z-10 blur-3xl" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center min-h-[65vh] lg:min-h-[72vh]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center min-h-0 lg:min-h-[72vh]">
           
           {/* Left Column on Desktop / Second on Mobile: Headline, Badge, Copy, CTAs */}
           <div className="order-2 lg:order-1 lg:col-span-6 space-y-6 sm:space-y-8 z-10 text-center lg:text-left">
@@ -100,7 +100,7 @@ export default function Hero() {
 
               <Link
                 href="/games?filter=new"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white hover:bg-[#EEF8F2] text-[#087F5B] font-bold text-base border-2 border-[#087F5B]/30 hover:border-[#087F5B] shadow-xs hover:shadow-sm transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                className="hidden sm:inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white hover:bg-[#EEF8F2] text-[#087F5B] font-bold text-base border-2 border-[#087F5B]/30 hover:border-[#087F5B] shadow-xs hover:shadow-sm transition-all transform hover:-translate-y-0.5 active:translate-y-0"
               >
                 <Sparkles className="w-4 h-4 text-[#D6A83E]" />
                 <span>New Releases</span>

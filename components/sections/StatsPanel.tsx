@@ -21,7 +21,7 @@ export default function StatsPanel() {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-10 relative z-20">
+    <div className="hidden md:block w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-10 relative z-20">
       <div className="bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#E4ECE7] shadow-[0_10px_35px_-4px_rgba(8,127,91,0.08),0_2px_10px_-1px_rgba(23,35,49,0.04)]">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 divide-y-0 md:divide-x divide-[#E4ECE7]">
           {SITE_STATS.map((stat) => (

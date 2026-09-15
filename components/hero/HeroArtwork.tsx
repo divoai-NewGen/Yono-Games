@@ -126,7 +126,7 @@ export default function HeroArtwork() {
           {/* High-Impact Vibrant 3D Composition with true transparent background (No Card / No Box) */}
           <div className="relative w-full h-full max-w-[580px] lg:max-w-[640px] max-h-[460px] flex items-center justify-center">
             <Image
-              src="/images/hero-full-ribbon-3d.png"
+              src="/images/hero-casino-coins-3d.png"
               alt="Yono Games Vibrant 3D Gaming Showcase - Play Win Enjoy"
               fill
               priority

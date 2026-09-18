@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/private/',
     },
-    sitemap: 'https://moreyonogames.com/sitemap.xml',
+    sitemap: 'https://realyonogame.com/sitemap.xml',
   };
 }

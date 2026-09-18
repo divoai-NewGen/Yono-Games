@@ -28,25 +28,25 @@ export default function ContactUsPage() {
     {
       title: 'General Support',
       desc: 'Assistance with account access, navigation, and general questions.',
-      email: 'support@moreyonogames.com',
+      email: 'support@realyonogame.com',
       icon: Headphones,
     },
     {
       title: 'Game Queries',
       desc: 'Rules questions, tournament schedules, and game performance.',
-      email: 'games@moreyonogames.com',
+      email: 'games@realyonogame.com',
       icon: HelpCircle,
     },
     {
       title: 'Partnerships',
       desc: 'Affiliate opportunities, marketing collaborations, and media.',
-      email: 'partners@moreyonogames.com',
+      email: 'partners@realyonogame.com',
       icon: Handshake,
     },
     {
       title: 'Report an Issue',
       desc: 'Technical bugs, APK installation errors, or broken links.',
-      email: 'tech@moreyonogames.com',
+      email: 'tech@realyonogame.com',
       icon: Bug,
     },
   ];

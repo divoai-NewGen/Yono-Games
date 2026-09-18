@@ -485,11 +485,11 @@ export default function AdminDashboardPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-[#D5E2D9]">
-              <Image src="/images/logo.png" alt="Yono Games" fill className="object-contain" />
+              <Image src="/images/logo.png" alt="Real Yono Games" fill className="object-contain" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-lg text-[#172331]">Yono Games</span>
+                <span className="font-bold text-lg text-[#172331]">Real Yono Games</span>
                 <span className="text-[11px] font-semibold bg-[#087F5B]/10 text-[#087F5B] px-2 py-0.5 rounded-full">
                   Admin Panel
                 </span>
@@ -867,7 +867,7 @@ export default function AdminDashboardPage() {
                     </label>
                     <input
                       type="url"
-                      placeholder="https://moreyonogames.com/download/game.apk"
+                      placeholder="https://realyonogame.com/download/game.apk"
                       value={formData.downloadUrl || ''}
                       onChange={e => setFormData({ ...formData, downloadUrl: e.target.value })}
                       required
@@ -1090,7 +1090,7 @@ export default function AdminDashboardPage() {
                     <div className="p-4 bg-[#F8FBFA] rounded-xl border border-[#E4ECE7] font-sans space-y-1">
                       <div className="flex items-center gap-1.5 text-xs text-[#202124]">
                         <div className="w-4 h-4 rounded-full bg-[#087F5B] text-[9px] text-white flex items-center justify-center font-bold">Y</div>
-                        <span className="font-medium">moreyonogames.com</span>
+                        <span className="font-medium">realyonogame.com</span>
                         <span className="text-[#5f6368]">› games › {formData.slug || 'game-slug'}</span>
                       </div>
                       <h4 className="text-base text-[#1a0dab] hover:underline font-medium cursor-pointer leading-snug">

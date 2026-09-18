@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getGames } from '@/services/gameService';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://moreyonogames.com';
+  const baseUrl = 'https://realyonogame.com';
   const games = await getGames();
 
   const staticRoutes: MetadataRoute.Sitemap = [

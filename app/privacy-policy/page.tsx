@@ -117,8 +117,8 @@ export default function PrivacyPolicyPage() {
             </h2>
             <p>
               If you have any questions, inquiries, or data requests regarding this Privacy Policy, please contact our compliance desk at{' '}
-              <a href="mailto:privacy@moreyonogames.com" className="text-[#087F5B] font-semibold underline">
-                privacy@moreyonogames.com
+              <a href="mailto:privacy@realyonogame.com" className="text-[#087F5B] font-semibold underline">
+                privacy@realyonogame.com
               </a>.
             </p>
           </section>

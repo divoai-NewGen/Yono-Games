@@ -27,14 +27,14 @@ export default function Footer() {
               <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-sm flex-shrink-0 border border-[#E4ECE7]/60">
                 <Image
                   src="/images/logo.png"
-                  alt="Yono Games Logo"
+                  alt="Real Yono Games Logo"
                   fill
                   className="object-cover"
                   sizes="40px"
                 />
               </div>
               <div className="flex items-baseline text-2xl font-black tracking-tight leading-none">
-                <span className="text-[#172331]">Yono</span>
+                <span className="text-[#172331]">Real Yono</span>
                 <span className="text-[#087F5B] ml-1.5">Games</span>
               </div>
             </Link>
@@ -126,7 +126,7 @@ export default function Footer() {
 
         {/* Bottom copyright */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#5D6B78] pt-4">
-          <p>© {currentYear} More Yono Games. All rights reserved.</p>
+          <p>© {currentYear} Real Yono Games. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy/" className="hover:text-[#087F5B] transition-colors">
               Privacy Policy

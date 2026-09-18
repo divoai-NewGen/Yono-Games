@@ -14,7 +14,7 @@ export default function DownloadModal({
   isOpen, 
   onClose, 
   gameName = 'All Yono Games Official App',
-  apkUrl = 'https://moreyonogames.com/download/yono-games-official.apk'
+  apkUrl = 'https://realyonogame.com/download/yono-games-official.apk'
 }: DownloadModalProps) {
   if (!isOpen) return null;
 

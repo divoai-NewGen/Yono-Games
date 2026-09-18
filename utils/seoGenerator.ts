@@ -161,7 +161,7 @@ Whether you are a casual enthusiast or a competitive player, ${name} offers seam
     operatingSystem: 'Android 6.0+',
     applicationCategory: 'GameApplication',
     applicationSubCategory: category,
-    downloadUrl: downloadUrl || `https://moreyonogames.com/download/${slug}.apk`,
+    downloadUrl: downloadUrl || `https://realyonogame.com/download/${slug}.apk`,
     softwareVersion: version,
     fileSize: size,
     offers: {
@@ -180,7 +180,7 @@ Whether you are a casual enthusiast or a competitive player, ${name} offers seam
     author: {
       '@type': 'Organization',
       name: 'Yono Games',
-      url: 'https://moreyonogames.com',
+      url: 'https://realyonogame.com',
     },
     description: seoDescription,
   };

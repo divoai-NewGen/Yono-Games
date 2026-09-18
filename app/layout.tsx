@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://moreyonogames.com'),
+  metadataBase: new URL('https://realyonogame.com'),
   title: {
     default: 'All Yono Games - India’s Favourite Gaming Platform',
     template: '%s | Yono Games',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     'Discover exciting games, explore new releases, and find your next favourite. Play 13-card Rummy, Yono 777 Spin Gold, Aviator Multiplier, Teen Patti, and more with verified fair play.',
   keywords: [
     'Yono Games',
-    'More Yono Games',
+    'Real Yono Game',
     'All Yono Games',
     'Yono Rummy',
     'Yono 777',
@@ -35,11 +35,11 @@ export const metadata: Metadata = {
     'Teen Patti Yono',
     'Download Yono APK',
   ],
-  authors: [{ name: 'More Yono Games' }],
+  authors: [{ name: 'Yono Games' }],
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://moreyonogames.com',
+    url: 'https://realyonogame.com',
     siteName: 'Yono Games',
     title: 'All Yono Games - Your Next Game Is Waiting',
     description:

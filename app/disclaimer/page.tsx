@@ -129,8 +129,8 @@ export default function DisclaimerPage() {
             </h2>
             <p>
               For legal correspondence or clarification regarding these disclaimers, write to us at{' '}
-              <a href="mailto:legal@moreyonogames.com" className="text-[#087F5B] font-semibold underline">
-                legal@moreyonogames.com
+              <a href="mailto:legal@realyonogame.com" className="text-[#087F5B] font-semibold underline">
+                legal@realyonogame.com
               </a>.
             </p>
           </section>

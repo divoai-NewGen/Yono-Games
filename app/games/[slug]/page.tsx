@@ -90,7 +90,7 @@ export default async function GameDetailPage({ params }: GamePageProps) {
     author: {
       '@type': 'Organization',
       name: 'Yono Games',
-      url: 'https://moreyonogames.com',
+      url: 'https://realyonogame.com',
     },
     description: game.seoDescription || game.shortDescription,
   };

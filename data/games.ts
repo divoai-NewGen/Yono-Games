@@ -35,7 +35,7 @@ export const GAMES_DATA: Game[] = [
       'Select your bet multiplier and hit Spin to activate winning paylines',
       'Trigger scatter symbols to unlock free golden bonus rounds'
     ],
-    downloadUrl: 'https://moreyonogames.com/download/yono-777.apk',
+    downloadUrl: 'https://realyonogame.com/download/yono-777.apk',
     version: 'v4.8.2',
     size: '42.5 MB',
     featured: true,
@@ -121,7 +121,7 @@ export const GAMES_DATA: Game[] = [
       'Tap Cash Out at the ideal moment before the plane flies away',
       'Your winnings equal your bet multiplied by the exit multiplier'
     ],
-    downloadUrl: 'https://moreyonogames.com/download/yono-aviator.apk',
+    downloadUrl: 'https://realyonogame.com/download/yono-aviator.apk',
     version: 'v2.1.0',
     size: '29.8 MB',
     featured: false,
@@ -164,7 +164,7 @@ export const GAMES_DATA: Game[] = [
       'A single card is dealt to each side by the automated dealer',
       'The side with the higher card value wins immediately'
     ],
-    downloadUrl: 'https://moreyonogames.com/download/dragon-vs-tiger.apk',
+    downloadUrl: 'https://realyonogame.com/download/dragon-vs-tiger.apk',
     version: 'v3.6.4',
     size: '34.1 MB',
     featured: false,
@@ -207,7 +207,7 @@ export const GAMES_DATA: Game[] = [
       'Bet chips to match or raise previous players in clockwise turns',
       'Request a sideshow or reach final showdown to claim the pot'
     ],
-    downloadUrl: 'https://moreyonogames.com/download/teen-patti-yono.apk',
+    downloadUrl: 'https://realyonogame.com/download/teen-patti-yono.apk',
     version: 'v6.0.1',
     size: '41.0 MB',
     featured: false,
@@ -250,7 +250,7 @@ export const GAMES_DATA: Game[] = [
       'Complete designated stage objectives to earn score bonuses',
       'Transfer or redeem your winnings seamlessly anytime'
     ],
-    downloadUrl: 'https://moreyonogames.com/download/yono-arcade.apk',
+    downloadUrl: 'https://realyonogame.com/download/yono-arcade.apk',
     version: 'v3.1.2',
     size: '48.9 MB',
     featured: false,
@@ -293,7 +293,7 @@ export const GAMES_DATA: Game[] = [
       'Watch the cards alternate until a card of equal face value appears',
       'If your chosen side receives the matching rank, win immediate payout'
     ],
-    downloadUrl: 'https://moreyonogames.com/download/andar-bahar-pro.apk',
+    downloadUrl: 'https://realyonogame.com/download/andar-bahar-pro.apk',
     version: 'v4.1.0',
     size: '31.5 MB',
     featured: false,
@@ -336,7 +336,7 @@ export const GAMES_DATA: Game[] = [
       'Revealing an emerald diamond increases your exit multiplier',
       'Tap Cash Out before you uncover a mine to bank your profits'
     ],
-    downloadUrl: 'https://moreyonogames.com/download/mines-adventure.apk',
+    downloadUrl: 'https://realyonogame.com/download/mines-adventure.apk',
     version: 'v1.9.5',
     size: '26.4 MB',
     featured: false,
@@ -378,7 +378,7 @@ export const GAMES_DATA: Game[] = [
       'The pointer travels around the wheel until it rests on a winning car',
       'If your chosen brand matches, collect up to 40x your chip stake'
     ],
-    downloadUrl: 'https://moreyonogames.com/download/car-roulette.apk',
+    downloadUrl: 'https://realyonogame.com/download/car-roulette.apk',
     version: 'v3.4.0',
     size: '39.0 MB',
     featured: false,
@@ -421,7 +421,7 @@ export const GAMES_DATA: Game[] = [
       'Capture opponent tokens to earn an extra roll and bonus points',
       'Get all four tokens into the center home triangle first to win'
     ],
-    downloadUrl: 'https://moreyonogames.com/download/ludo-yono.apk',
+    downloadUrl: 'https://realyonogame.com/download/ludo-yono.apk',
     version: 'v4.7.1',
     size: '35.8 MB',
     featured: false,

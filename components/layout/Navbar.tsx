@@ -74,7 +74,7 @@ export default function Navbar() {
             <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-sm group-hover:shadow-[0_0_15px_rgba(8,127,91,0.35)] transition-all flex-shrink-0 border border-[#E4ECE7]/60">
               <Image
                 src="/images/logo.png"
-                alt="Yono Games Logo"
+                alt="Real Yono Games Logo"
                 fill
                 priority
                 className="object-cover group-hover:scale-105 transition-transform"
@@ -83,7 +83,7 @@ export default function Navbar() {
             </div>
 
             <div className="flex items-baseline text-2xl font-black tracking-tight leading-none">
-              <span className="text-[#172331]">Yono</span>
+              <span className="text-[#172331]">Real Yono</span>
               <span className="text-[#087F5B] ml-1.5">Games</span>
             </div>
           </Link>

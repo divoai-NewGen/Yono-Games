@@ -19,6 +19,7 @@ const CATEGORIES: GameCategory[] = [
   'Arcade & Crash',
   'Roulette & Table',
   'Board Games',
+  'Other Best Games',
 ];
 
 const SORT_OPTIONS = [

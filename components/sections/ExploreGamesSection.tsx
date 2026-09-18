@@ -16,6 +16,7 @@ const CATEGORIES: GameCategory[] = [
   'Arcade & Crash',
   'Roulette & Table',
   'Board Games',
+  'Other Best Games',
 ];
 
 export default function ExploreGamesSection({ initialGames }: ExploreGamesSectionProps) {

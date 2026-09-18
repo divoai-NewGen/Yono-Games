@@ -32,7 +32,8 @@ const CATEGORIES: GameCategory[] = [
   'Slots & 777',
   'Arcade & Crash',
   'Roulette & Table',
-  'Board Games'
+  'Board Games',
+  'Other Best Games',
 ];
 
 export default function AdminDashboardPage() {

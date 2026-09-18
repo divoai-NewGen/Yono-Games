@@ -131,6 +131,21 @@ export function generateAutoSeo(params: {
       'Navigate the track while capturing opponents for bonus moves',
       'Reach the home triangle first with all tokens to claim the prize'
     ];
+  } else if (category.includes('Other') || category.includes('Best')) {
+    tagline = 'Top-Rated Trending Games with Exclusive Rewards';
+    shortDescription = `Experience ${name} — one of India's top trending gaming releases with instant withdrawals, high win rates, and daily bonuses.`;
+    features = [
+      'Trending gameplay mechanics with certified high win rates',
+      'Certified Random Number Generator (RNG) fair play standard',
+      'Instant 60-second UPI and IMPS direct cashouts',
+      'Daily login rewards and VIP loyalty cashback perks'
+    ];
+    howToPlay = [
+      `Download and launch the official ${name} APK on your smartphone`,
+      'Register with your mobile number to claim your welcome bonus',
+      'Choose your preferred table or game mode to start playing',
+      'Withdraw your game winnings directly to your UPI ID or Bank account'
+    ];
   }
 
   // 5. Rich Long Description

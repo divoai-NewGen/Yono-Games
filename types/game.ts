@@ -34,7 +34,8 @@ export type GameCategory =
   | 'Slots & 777'
   | 'Arcade & Crash'
   | 'Roulette & Table'
-  | 'Board Games';
+  | 'Board Games'
+  | 'Other Best Games';
 
 export interface SiteStat {
   value: string;

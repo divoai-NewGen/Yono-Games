@@ -9,14 +9,10 @@ interface ExploreGamesSectionProps {
   initialGames: Game[];
 }
 
-const CATEGORIES: GameCategory[] = [
-  'All',
-  'Card & Rummy',
-  'Slots & 777',
-  'Arcade & Crash',
-  'Roulette & Table',
-  'Board Games',
-  'Other Best Games',
+const CATEGORIES: { label: string; value: GameCategory }[] = [
+  { label: 'All Games', value: 'All' },
+  { label: 'Yono Games', value: 'Yono Games' },
+  { label: 'Other Best Games', value: 'Other Best Games' },
 ];
 
 export default function ExploreGamesSection({ initialGames }: ExploreGamesSectionProps) {
@@ -26,8 +22,9 @@ export default function ExploreGamesSection({ initialGames }: ExploreGamesSectio
   const filteredGames = initialGames.filter((game) => {
     const matchesCategory =
       activeCategory === 'All' ||
+      activeCategory === 'All Games' ||
       game.category === activeCategory ||
-      game.categories.includes(activeCategory);
+      game.categories?.includes(activeCategory);
 
     const matchesSearch =
       !searchTerm.trim() ||
@@ -58,18 +55,18 @@ export default function ExploreGamesSection({ initialGames }: ExploreGamesSectio
           {/* Category Filter Chips */}
           <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
             {CATEGORIES.map((cat) => {
-              const active = activeCategory === cat;
+              const active = activeCategory === cat.value;
               return (
                 <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
+                  key={cat.value}
+                  onClick={() => setActiveCategory(cat.value)}
                   className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
                     active
                       ? 'bg-[#087F5B] text-white shadow-xs'
                       : 'bg-[#F7FBF8] text-[#5D6B78] hover:text-[#172331] hover:bg-[#EEF8F2] border border-[#E4ECE7]'
                   }`}
                 >
-                  {cat}
+                  {cat.label}
                 </button>
               );
             })}

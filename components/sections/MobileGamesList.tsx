@@ -11,14 +11,10 @@ interface MobileGamesListProps {
   games: Game[];
 }
 
-const CATEGORIES: GameCategory[] = [
-  'All',
-  'Card & Rummy',
-  'Slots & 777',
-  'Arcade & Crash',
-  'Roulette & Table',
-  'Board Games',
-  'Other Best Games',
+const CATEGORIES: { label: string; value: GameCategory }[] = [
+  { label: 'All', value: 'All' },
+  { label: 'Yono Games', value: 'Yono Games' },
+  { label: 'Other Best Games', value: 'Other Best Games' },
 ];
 
 export default function MobileGamesList({ games }: MobileGamesListProps) {
@@ -28,6 +24,7 @@ export default function MobileGamesList({ games }: MobileGamesListProps) {
   const filteredGames = games.filter((game) => {
     return (
       activeCategory === 'All' ||
+      activeCategory === 'All Games' ||
       game.category === activeCategory ||
       game.categories?.includes(activeCategory)
     );
@@ -65,18 +62,18 @@ export default function MobileGamesList({ games }: MobileGamesListProps) {
         {/* Category Scrollable Filter Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
           {CATEGORIES.map((cat) => {
-            const active = activeCategory === cat;
+            const active = activeCategory === cat.value;
             return (
               <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
+                key={cat.value}
+                onClick={() => setActiveCategory(cat.value)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 ${
                   active
                     ? 'bg-[#087F5B] text-white shadow-xs border border-[#087F5B]'
-                    : 'bg-[#EEF8F2] text-[#07553F] hover:bg-[#E1F3E9] border border-[#087F5B]/25'
+                    : 'bg-white text-[#5D6B78] hover:text-[#172331] border border-[#E4ECE7]'
                 }`}
               >
-                {cat}
+                {cat.label}
               </button>
             );
           })}

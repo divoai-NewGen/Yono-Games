@@ -28,11 +28,7 @@ import { Game, GameCategory } from '@/types/game';
 import { generateAutoSeo, generateSlug } from '@/utils/seoGenerator';
 
 const CATEGORIES: GameCategory[] = [
-  'Card & Rummy',
-  'Slots & 777',
-  'Arcade & Crash',
-  'Roulette & Table',
-  'Board Games',
+  'Yono Games',
   'Other Best Games',
 ];
 
@@ -63,7 +59,7 @@ export default function AdminDashboardPage() {
   const [formData, setFormData] = useState<Partial<Game>>({
     name: '',
     slug: '',
-    category: 'Slots & 777',
+    category: 'Yono Games',
     tagline: '',
     logo: '/images/hero-full-ribbon-3d.png',
     thumbnail: '/images/hero-full-ribbon-3d.png',
@@ -188,7 +184,7 @@ export default function AdminDashboardPage() {
     setFormData({
       name: '',
       slug: '',
-      category: 'Slots & 777',
+      category: 'Yono Games',
       tagline: '',
       logo: '/images/hero-full-ribbon-3d.png',
       thumbnail: '/images/hero-full-ribbon-3d.png',
@@ -241,7 +237,7 @@ export default function AdminDashboardPage() {
 
     const autoData = generateAutoSeo({
       name: formData.name,
-      category: formData.category || 'Slots & 777',
+      category: formData.category || 'Yono Games',
       bonus: formData.bonus,
       version: formData.version,
       size: formData.size,
@@ -850,7 +846,7 @@ export default function AdminDashboardPage() {
                         Category <span className="text-red-500">*</span>
                       </label>
                       <select
-                        value={formData.category || 'Slots & 777'}
+                        value={formData.category || 'Yono Games'}
                         onChange={e => setFormData({ ...formData, category: e.target.value, categories: [e.target.value] })}
                         className="w-full px-3.5 py-2.5 rounded-xl border border-[#D5E2D9] text-sm focus:outline-none focus:ring-2 focus:ring-[#087F5B] bg-white"
                       >

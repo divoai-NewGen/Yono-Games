@@ -12,14 +12,10 @@ interface GamesDirectoryProps {
   initialCategory?: string;
 }
 
-const CATEGORIES: GameCategory[] = [
-  'All',
-  'Card & Rummy',
-  'Slots & 777',
-  'Arcade & Crash',
-  'Roulette & Table',
-  'Board Games',
-  'Other Best Games',
+const CATEGORIES: { label: string; value: GameCategory }[] = [
+  { label: 'All Games', value: 'All' },
+  { label: 'Yono Games', value: 'Yono Games' },
+  { label: 'Other Best Games', value: 'Other Best Games' },
 ];
 
 const SORT_OPTIONS = [
@@ -59,8 +55,9 @@ export default function GamesDirectory({ initialGames, initialCategory = 'All' }
       .filter((game) => {
         const matchesCategory =
           selectedCategory === 'All' ||
+          selectedCategory === 'All Games' ||
           game.category === selectedCategory ||
-          game.categories.includes(selectedCategory);
+          game.categories?.includes(selectedCategory);
 
         const matchesSearch =
           !searchQuery.trim() ||
@@ -145,18 +142,18 @@ export default function GamesDirectory({ initialGames, initialCategory = 'All' }
         {/* Category Filter Pills: Brand Theme Green (Not plain white!) */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
           {CATEGORIES.map((cat) => {
-            const active = selectedCategory === cat;
+            const active = selectedCategory === cat.value;
             return (
               <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
+                key={cat.value}
+                onClick={() => setSelectedCategory(cat.value)}
                 className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 ${
                   active
                     ? 'bg-[#087F5B] text-white shadow-xs border border-[#087F5B]'
                     : 'bg-[#EEF8F2] text-[#07553F] hover:bg-[#E1F3E9] border border-[#087F5B]/25'
                 }`}
               >
-                {cat}
+                {cat.label}
               </button>
             );
           })}

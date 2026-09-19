@@ -30,11 +30,8 @@ export interface Game {
 
 export type GameCategory = 
   | 'All'
-  | 'Card & Rummy'
-  | 'Slots & 777'
-  | 'Arcade & Crash'
-  | 'Roulette & Table'
-  | 'Board Games'
+  | 'All Games'
+  | 'Yono Games'
   | 'Other Best Games';
 
 export interface SiteStat {

@@ -2,21 +2,15 @@ import { MetadataRoute } from 'next';
 import { getGames } from '@/services/gameService';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://realyonogame.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://realyonogame.com';
   const games = await getGames();
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: baseUrl,
+      url: `${baseUrl}/`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/home/`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.9,
     },
     {
       url: `${baseUrl}/games/`,

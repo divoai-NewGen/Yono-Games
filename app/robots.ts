@@ -5,8 +5,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: '/private/',
+      disallow: ['/admin/', '/api/', '/private/'],
     },
     sitemap: 'https://realyonogame.com/sitemap.xml',
   };
 }
+ 

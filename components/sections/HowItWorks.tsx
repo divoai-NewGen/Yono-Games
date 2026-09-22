@@ -6,25 +6,25 @@ export default function HowItWorks() {
     {
       number: '01',
       title: 'Discover',
-      description: 'Explore our catalog of 90+ verified mobile games spanning Rummy, 777 Slots, Crash, and Board titles.',
+      description: 'Explore our curated catalog of mobile games spanning multiple categories and gameplay styles.',
       icon: Compass,
     },
     {
       number: '02',
-      title: 'Choose',
-      description: 'Review gameplay guides, verified player ratings, welcome bonuses, and storage requirements.',
+      title: 'Review',
+      description: 'Check gameplay overviews, user ratings, key features, and application specifications.',
       icon: CheckSquare,
     },
     {
       number: '03',
-      title: 'Download',
-      description: 'Get the official Android APK directly with zero redirects, high download speeds, and complete antivirus safety.',
+      title: 'Explore',
+      description: 'Follow direct links to learn more about available applications and platform features.',
       icon: DownloadCloud,
     },
     {
       number: '04',
-      title: 'Play',
-      description: 'Install in seconds, claim your welcome gift package, and compete against active players across India.',
+      title: 'Enjoy',
+      description: 'Launch your chosen game, enjoy casual entertainment, and experience great gameplay.',
       icon: PlayCircle,
     },
   ];
@@ -42,7 +42,7 @@ export default function HowItWorks() {
             How It Works
           </h2>
           <p className="text-sm sm:text-base text-[#5D6B78] mt-2">
-            Get from discovery to playing your favorite games in under two minutes.
+            Get from discovery to exploring your favourite games in simple steps.
           </p>
         </div>
 

@@ -60,9 +60,19 @@ export const metadata: Metadata = {
       'Discover 90+ games, explore new releases, and claim exclusive welcome bonuses.',
     images: ['/images/hero-composition.jpg'],
   },
+  alternates: {
+    canonical: 'https://realyonogame.com',
+  },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   icons: {
     icon: [
@@ -76,6 +86,30 @@ export const metadata: Metadata = {
   },
 };
 
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://realyonogame.com/#website',
+      url: 'https://realyonogame.com',
+      name: 'Real Yono Games',
+      description: 'Official directory for Yono Games, APK downloads, new releases, and gaming information platform.',
+      publisher: {
+        '@id': 'https://realyonogame.com/#organization',
+      },
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://realyonogame.com/#organization',
+      name: 'Real Yono Games Platform',
+      url: 'https://realyonogame.com',
+      logo: 'https://realyonogame.com/images/logo.png',
+      sameAs: [],
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -83,6 +117,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${plusJakartaSans.variable} h-full antialiased`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans bg-white text-[#172331]">
         <Navbar />
         <main className="flex-1">{children}</main>

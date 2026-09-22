@@ -65,19 +65,36 @@ export default function ContactUsPage() {
       return;
     }
 
-    setStatus('loading');
-    setErrorMessage('');
+    try {
+      setStatus('loading');
+      setErrorMessage('');
 
-    // Service abstraction simulation
-    setTimeout(() => {
-      setStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        category: 'General Support',
-        message: '',
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-    }, 1000);
+
+      const data = await res.json();
+
+      if (data.success) {
+        setStatus('success');
+        setFormData({
+          name: '',
+          email: '',
+          category: 'General Support',
+          message: '',
+        });
+      } else {
+        setStatus('error');
+        setErrorMessage(data.error || 'Failed to send message. Please try again.');
+      }
+    } catch (err) {
+      setStatus('error');
+      setErrorMessage('Network connection error. Please check your connection and try again.');
+    }
   };
 
   return (

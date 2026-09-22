@@ -101,16 +101,25 @@ export default function DisclaimerPage() {
 
           <section className="space-y-3">
             <h2 className="text-xl sm:text-2xl font-bold text-[#172331] flex items-center gap-2">
-              <span className="text-[#087F5B]">4.</span> Intellectual Property & Trademarks
+              <span className="text-[#087F5B]">4.</span> Intellectual Property & Copyright Notice
             </h2>
             <p>
-              All trademarks, game logos, character artwork, and brand identifiers displayed on this platform belong to their respective proprietary creators and copyright holders. Their display does not imply sole ownership by More Yono Games unless expressly stated.
+              All trademarks, game logos, character artwork, and brand identifiers displayed on this platform belong to their respective proprietary creators and copyright holders. Their display does not imply ownership or endorsement by Real Yono Games unless expressly stated.
             </p>
           </section>
 
           <section className="space-y-3">
             <h2 className="text-xl sm:text-2xl font-bold text-[#172331] flex items-center gap-2">
-              <span className="text-[#087F5B]">5.</span> Responsible Play Guidelines
+              <span className="text-[#087F5B]">5.</span> Independent Platform & Developer Safety Disclaimer
+            </h2>
+            <p>
+              This website is an independent information and promotional platform. We do not own, operate, or manage any third-party games, APKs, or payment services. Users access external websites and applications at their own discretion. The platform developers and operators hold no liability or responsibility for any third-party content, financial losses, legal/illegal operations, or copyright matters of external services.
+            </p>
+          </section>
+
+          <section className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#172331] flex items-center gap-2">
+              <span className="text-[#087F5B]">6.</span> Responsible Play Guidelines
             </h2>
             <p>
               We strongly advocate for healthy, balanced entertainment habits:
@@ -125,7 +134,7 @@ export default function DisclaimerPage() {
 
           <section className="space-y-3">
             <h2 className="text-xl sm:text-2xl font-bold text-[#172331] flex items-center gap-2">
-              <span className="text-[#087F5B]">6.</span> Questions & Legal Inquiries
+              <span className="text-[#087F5B]">7.</span> Questions & Legal Inquiries
             </h2>
             <p>
               For legal correspondence or clarification regarding these disclaimers, write to us at{' '}

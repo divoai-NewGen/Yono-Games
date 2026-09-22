@@ -85,26 +85,30 @@ export default function Hero() {
               Discover exciting games, explore new releases, and find your next favourite — all in one place.
             </p>
 
-            {/* Hero CTA Buttons */}
+            {/* Hero CTA Buttons: Two side-by-side buttons on mobile and desktop */}
             <div 
               ref={ctaRef}
-              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2"
+              className="flex flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-4 w-full pt-2"
             >
               <Link
                 href="/games/"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-bold text-base shadow-[0_8px_25px_-4px_rgba(8,127,91,0.35)] hover:shadow-[0_12px_32px_-4px_rgba(8,127,91,0.45)] transition-all transform hover:-translate-y-1 active:translate-y-0"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-7 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-bold text-xs sm:text-base shadow-[0_6px_20px_-3px_rgba(8,127,91,0.35)] hover:shadow-[0_10px_28px_-3px_rgba(8,127,91,0.45)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap"
               >
                 <span>Explore Games</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
               </Link>
 
-              <Link
-                href="/games?filter=new"
-                className="hidden sm:inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white hover:bg-[#EEF8F2] text-[#087F5B] font-bold text-base border-2 border-[#087F5B]/30 hover:border-[#087F5B] shadow-xs hover:shadow-sm transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              <a
+                href="https://t.me/PredictionAndGiveaways"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-7 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl bg-white hover:bg-[#EEF8F2] text-[#087F5B] hover:text-[#066145] font-bold text-xs sm:text-base border-2 border-[#087F5B]/30 hover:border-[#087F5B] shadow-xs hover:shadow-sm transition-all transform hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap"
               >
-                <Sparkles className="w-4 h-4 text-[#D6A83E]" />
-                <span>New Releases</span>
-              </Link>
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#24A1DE] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                </svg>
+                <span>Join Telegram</span>
+              </a>
             </div>
 
             {/* Micro verification trust text */}

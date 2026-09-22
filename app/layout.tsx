@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: '%s | Yono Games',
   },
   description:
-    'Discover exciting games, explore new releases, and find your next favourite. Play 13-card Rummy, Yono 777 Spin Gold, Aviator Multiplier, Teen Patti, and more with verified fair play.',
+    'Real Yono Games is an online gaming platform directory featuring mobile arcade games, card titles, and predictive gaming applications. Explore verified game releases, latest updates, and download resources.',
   keywords: [
     'Yono Games',
     'Real Yono Game',
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: 'https://realyonogame.com',
     siteName: 'Yono Games',
-    title: 'All Yono Games - Your Next Game Is Waiting',
+    title: 'All Yono Games - India’s Favourite Gaming Platform',
     description:
-      'India’s favourite gaming platform. Discover 90+ games with progressive jackpots, verified RNG, and 24/7 support.',
+      'Real Yono Games is an online gaming platform directory featuring mobile arcade games, card titles, and predictive gaming applications.',
     images: [
       {
         url: '/images/hero-composition.jpg',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'All Yono Games - India’s Favourite Gaming Platform',
     description:
-      'Discover 90+ games, explore new releases, and claim exclusive welcome bonuses.',
+      'Real Yono Games is an online gaming platform directory featuring mobile arcade games, card titles, and predictive gaming applications.',
     images: ['/images/hero-composition.jpg'],
   },
   alternates: {
@@ -94,7 +94,7 @@ const structuredData = {
       '@id': 'https://realyonogame.com/#website',
       url: 'https://realyonogame.com',
       name: 'Real Yono Games',
-      description: 'Official directory for Yono Games, APK downloads, new releases, and gaming information platform.',
+      description: 'Online gaming platform directory featuring mobile arcade games, card titles, and predictive gaming applications with verified guides and updates.',
       publisher: {
         '@id': 'https://realyonogame.com/#organization',
       },
@@ -102,10 +102,16 @@ const structuredData = {
     {
       '@type': 'Organization',
       '@id': 'https://realyonogame.com/#organization',
-      name: 'Real Yono Games Platform',
+      name: 'Real Yono Games',
       url: 'https://realyonogame.com',
       logo: 'https://realyonogame.com/images/logo.png',
-      sameAs: [],
+    },
+    {
+      '@type': 'DataCatalog',
+      '@id': 'https://realyonogame.com/#catalog',
+      name: 'Yono Games Directory',
+      description: 'Curated index and discovery portal for mobile gaming apps, card games, and online arcade titles.',
+      url: 'https://realyonogame.com/games',
     },
   ],
 };

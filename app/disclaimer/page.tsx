@@ -5,14 +5,14 @@ import { Scale, Mail, Globe, MapPin } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Disclaimer | Real Yono Games',
   description:
-    'Read the official Disclaimer for Real Yono Games. Essential information regarding third-party content, external links, intellectual property, and financial risks.',
+    'Legal terms, platform guidelines, and informational notices for Real Yono Games platform visitors.',
 };
 
 export default function DisclaimerPage() {
   const lastUpdated = 'September 22, 2026';
 
   return (
-    <div className="py-12 sm:py-16 bg-white min-h-screen">
+    <div data-nosnippet className="py-12 sm:py-16 bg-white min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Header */}

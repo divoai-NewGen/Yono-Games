@@ -113,20 +113,20 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Responsible Gaming Notice Card */}
-        <div className="my-8 p-4 sm:p-5 rounded-2xl bg-white border border-[#E4ECE7] shadow-xs flex items-start gap-3.5">
+        {/* Responsible Gaming Notice Card - data-nosnippet prevents search bots from using this disclaimer text in search snippets/AI overviews */}
+        <div data-nosnippet className="my-8 p-4 sm:p-5 rounded-2xl bg-white border border-[#E4ECE7] shadow-xs flex items-start gap-3.5">
           <AlertCircle className="w-5 h-5 text-[#D6A83E] flex-shrink-0 mt-0.5" />
           <div className="space-y-3 flex-1">
             <div className="space-y-1">
-              <h5 className="text-xs font-bold text-[#172331]">Responsible Gaming & Disclaimer Notice</h5>
+              <h5 className="text-xs font-bold text-[#172331]">Responsible Gaming Notice</h5>
               <p className="text-[11px] sm:text-xs text-[#5D6B78] leading-relaxed">
                 Games hosted or referenced on this portal may involve an element of financial risk and may be addictive. Please play responsibly and at your own risk. This platform is strictly intended for users aged 18 and above. Participation is void where prohibited by applicable state laws (including Assam, Odisha, Nagaland, Telangana, and Andhra Pradesh where skill/chance gaming rules apply).
               </p>
             </div>
             <div className="pt-2.5 border-t border-[#EEF3F0] space-y-1">
-              <h5 className="text-xs font-bold text-[#172331]">Independent Promotional Platform & Developer Disclaimer</h5>
+              <h5 className="text-xs font-bold text-[#172331]">Platform Information & Disclaimer</h5>
               <p className="text-[11px] sm:text-xs text-[#5D6B78] leading-relaxed">
-                This website is an independent information and promotional platform. We do not own, operate, or manage any third-party games, APKs, or payment services. Users access external websites and applications at their own discretion. The platform developers and operators hold no liability or responsibility for any third-party content, financial transactions, legal/illegal operations, or copyright matters of external services.
+                Real Yono Games is an online gaming community directory and informational portal. All trademarks, game titles, and logos belong to their respective publishers and owners. Users are encouraged to verify game rules and play responsibly within their personal limits.
               </p>
             </div>
           </div>

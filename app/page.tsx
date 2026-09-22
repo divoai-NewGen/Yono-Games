@@ -6,7 +6,6 @@ import ExploreGamesSection from '@/components/sections/ExploreGamesSection';
 import MobileGamesList from '@/components/sections/MobileGamesList';
 import WhyYonoGames from '@/components/sections/WhyYonoGames';
 import HowItWorks from '@/components/sections/HowItWorks';
-import AboutSection from '@/components/sections/AboutSection';
 import { getGames, getFeaturedGames, getNewGames } from '@/services/gameService';
 
 export default async function HomePage() {
@@ -34,7 +33,6 @@ export default async function HomePage() {
         <ExploreGamesSection initialGames={allGames} />
       </div>
 
-      <AboutSection />
       <WhyYonoGames />
       <HowItWorks />
     </div>

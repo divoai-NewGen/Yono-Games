@@ -56,10 +56,10 @@ export default function DownloadModal({
               <p className="text-xs font-bold text-[#172331] mt-0.5">38.4 MB</p>
             </div>
             <div>
-              <p className="text-[10px] uppercase font-semibold text-[#5D6B78]">Security</p>
+              <p className="text-[10px] uppercase font-semibold text-[#5D6B78]">Safety Check</p>
               <p className="text-xs font-bold text-[#087F5B] mt-0.5 flex items-center justify-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                Verified Link
+                100% Safe
               </p>
             </div>
           </div>
@@ -68,15 +68,15 @@ export default function DownloadModal({
           <div className="space-y-2 text-xs text-[#172331]">
             <div className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-[#087F5B] flex-shrink-0" />
-              <span>Direct application access with latest version compatibility</span>
+              <span>Instant direct download with zero advertisement blockers</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-[#087F5B] flex-shrink-0" />
-              <span>Instant access to application features and updates</span>
+              <span>₹1,500 new player welcome bonus credited immediately</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-[#087F5B] flex-shrink-0" />
-              <span>Dedicated player assistance and navigation guides</span>
+              <span>Automated fast withdrawals and 24/7 customer support</span>
             </div>
           </div>
 

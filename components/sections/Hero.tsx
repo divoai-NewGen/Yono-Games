@@ -111,12 +111,12 @@ export default function Hero() {
             <div className="flex items-center justify-center lg:justify-start gap-3 pt-2 text-xs font-medium text-[#5D6B78]">
               <div className="flex items-center gap-1.5 text-[#087F5B]">
                 <ShieldCheck className="w-4 h-4" />
-                <span>Gaming Discovery</span>
+                <span>Official Direct APK</span>
               </div>
               <span>•</span>
-              <span>Curated Titles</span>
+              <span>Fast Withdrawals</span>
               <span>•</span>
-              <span>Daily Updates</span>
+              <span>100% Verified RNG</span>
             </div>
 
           </div>

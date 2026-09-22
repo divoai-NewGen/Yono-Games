@@ -6,25 +6,25 @@ export default function WhyYonoGames() {
     {
       step: '01',
       title: 'Wide Game Collection',
-      description: 'Explore a rich variety of mobile gaming titles spanning casual arcade, classic board challenges, and interactive multiplayer adventures.',
+      description: 'Over 90+ verified titles spanning classic 13-card rummy, thrilling 777 reels, multiplayer crash curves, and royal board games.',
       icon: Layers,
     },
     {
       step: '02',
-      title: 'Simple & Organized Discovery',
-      description: 'Easily browse game categories, discover new releases, and find useful information before choosing to continue.',
+      title: 'Instant & Direct Access',
+      description: 'Zero third-party redirects or obstructive ads. Enjoy direct high-speed APK installation packages optimized for every Android device.',
       icon: Zap,
     },
     {
       step: '03',
       title: 'Fresh Weekly Updates',
-      description: 'Continuously curated catalog featuring newly released titles, seasonal content, and innovative gameplay mechanics.',
+      description: 'Continuously curated catalog with seasonal updates, tournament prize pools, and innovative new gameplay mechanics.',
       icon: Sparkles,
     },
     {
       step: '04',
-      title: '24/7 Player Assistance',
-      description: 'Dedicated support team ready to assist with portal navigation, general inquiries, and game discovery questions.',
+      title: '24/7 Dedicated Support',
+      description: 'Round-the-clock player assistance ready to assist with game queries, installation guides, and transaction inquiries.',
       icon: Headset,
     },
   ];
@@ -42,7 +42,7 @@ export default function WhyYonoGames() {
             Why Players Choose Yono Games
           </h2>
           <p className="text-sm sm:text-base text-[#5D6B78] mt-2">
-            Engineered for a smooth, reliable, and enjoyable casual gaming discovery experience.
+            Engineered for reliability, fair play, and an enjoyable casual gaming experience.
           </p>
         </div>
 
@@ -75,7 +75,7 @@ export default function WhyYonoGames() {
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-[#E4ECE7]/60 flex items-center text-[11px] font-bold text-[#087F5B]">
-                  <span>Curated Discovery</span>
+                  <span>Verified Standard</span>
                 </div>
               </div>
             );

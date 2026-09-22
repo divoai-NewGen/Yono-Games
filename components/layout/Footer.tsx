@@ -126,7 +126,7 @@ export default function Footer() {
             <div className="pt-2.5 border-t border-[#EEF3F0] space-y-1">
               <h5 className="text-xs font-bold text-[#172331]">Independent Promotional Platform & Developer Disclaimer</h5>
               <p className="text-[11px] sm:text-xs text-[#5D6B78] leading-relaxed">
-                This website is an independent information and promotional platform. We do not own, operate, or manage any third-party games, APKs, or payment services. Users access external websites and applications at their own discretion and play at their own risk. The platform developers and operators hold no liability or responsibility for any third-party content, financial transactions, legal/illegal operations, or copyright matters of external services.
+                This website is an independent information and promotional platform. We do not own, operate, or manage any third-party games, APKs, or payment services. Users access external websites and applications at their own discretion. The platform developers and operators hold no liability or responsibility for any third-party content, financial transactions, legal/illegal operations, or copyright matters of external services.
               </p>
             </div>
           </div>

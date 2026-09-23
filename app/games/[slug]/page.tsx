@@ -54,6 +54,8 @@ export async function generateMetadata({ params }: GamePageProps): Promise<Metad
   };
 }
 
+const TELEGRAM_URL = 'https://t.me/PredictionAndGiveaways';
+
 export default async function GameDetailPage({ params }: GamePageProps) {
   const { slug } = await params;
   const game = await getGameBySlug(slug);
@@ -102,7 +104,7 @@ export default async function GameDetailPage({ params }: GamePageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJsonLd) }}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         {/* Navigation Breadcrumb */}
         <div>
@@ -115,13 +117,28 @@ export default async function GameDetailPage({ params }: GamePageProps) {
           </Link>
         </div>
 
-        {/* Hero Showcase Container */}
-        <div className="relative rounded-[32px] border border-[#E4ECE7] bg-radial-featured p-6 sm:p-10 lg:p-12 shadow-luxury overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        {/* Hero Showcase Container: Image First, Download & Telegram Buttons, then Details */}
+        <div className="relative rounded-[32px] border border-[#E4ECE7] bg-radial-featured p-5 sm:p-8 lg:p-10 shadow-luxury overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             
-            {/* Left Column: Game specs, Badges, CTAs */}
-            <div className="lg:col-span-7 space-y-6">
+            {/* 1. Game Artwork / Image at top */}
+            <div className="lg:col-span-6 relative flex items-center justify-center">
+              <div className="relative w-full aspect-[16/10] sm:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border-2 border-white bg-white">
+                <Image
+                  src={game.heroImage || game.thumbnail || game.logo || '/images/hero-full-ribbon-3d.png'}
+                  alt={game.name}
+                  fill
+                  priority
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            </div>
+
+            {/* 2. Actions & Specs: Download APK, Join Telegram, Badges, Name, Specs */}
+            <div className="lg:col-span-6 space-y-5">
               
+              {/* Badges */}
               <div className="flex flex-wrap items-center gap-2">
                 <span className="px-3 py-1 rounded-full bg-white border border-[#E4ECE7] text-xs font-bold text-[#07553F]">
                   {game.category}
@@ -139,16 +156,54 @@ export default async function GameDetailPage({ params }: GamePageProps) {
                 )}
               </div>
 
+              {/* Title & Tagline */}
               <div>
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#172331] tracking-tight">
+                <h1 className="text-3xl sm:text-4xl font-black text-[#172331] tracking-tight">
                   {game.name}
                 </h1>
-                <p className="text-base sm:text-lg text-[#087F5B] font-semibold mt-2">
+                <p className="text-base sm:text-lg text-[#087F5B] font-semibold mt-1.5">
                   {game.tagline}
                 </p>
               </div>
 
-              <p className="text-sm sm:text-base text-[#5D6B78] leading-relaxed max-w-2xl">
+              {/* Primary Action Buttons: 1. Download APK, 2. Join Telegram */}
+              <div className="space-y-3 pt-1">
+                {/* Download Button */}
+                <a
+                  href={game.downloadUrl}
+                  download
+                  className="w-full inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-extrabold text-base sm:text-lg shadow-[0_6px_20px_-3px_rgba(8,127,91,0.35)] hover:shadow-[0_10px_28px_-3px_rgba(8,127,91,0.45)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center"
+                >
+                  <Download className="w-5 h-5 flex-shrink-0" />
+                  <span>Download APK ({game.size})</span>
+                </a>
+
+                {/* Join Telegram Button */}
+                <a
+                  href={TELEGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-2xl bg-white hover:bg-[#EEF8F2] text-[#087F5B] hover:text-[#066145] font-bold text-sm sm:text-base border-2 border-[#087F5B]/30 hover:border-[#087F5B] shadow-xs hover:shadow-sm transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center"
+                >
+                  <svg className="w-5 h-5 text-[#24A1DE] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                  </svg>
+                  <span>Join Our Telegram Channel</span>
+                </a>
+
+                {/* Trust Verification */}
+                <div className="flex items-center justify-center gap-3 pt-1 text-xs font-medium text-[#5D6B78]">
+                  <div className="flex items-center gap-1.5 text-[#087F5B]">
+                    <ShieldCheck className="w-4 h-4 flex-shrink-0" />
+                    <span>100% Virus-Free & Verified</span>
+                  </div>
+                  <span>•</span>
+                  <span>Direct Official APK</span>
+                </div>
+              </div>
+
+              {/* Short Description */}
+              <p className="text-sm sm:text-base text-[#5D6B78] leading-relaxed">
                 {game.shortDescription}
               </p>
 
@@ -172,37 +227,6 @@ export default async function GameDetailPage({ params }: GamePageProps) {
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
-                <a
-                  href={game.downloadUrl}
-                  download
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-bold text-base shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
-                >
-                  <Download className="w-5 h-5" />
-                  <span>Download APK ({game.size})</span>
-                </a>
-
-                <div className="flex items-center gap-2 text-xs text-[#5D6B78]">
-                  <ShieldCheck className="w-4 h-4 text-[#087F5B]" />
-                  <span>100% Virus-Free & Verified</span>
-                </div>
-              </div>
-
-            </div>
-
-            {/* Right Column: Hero Mockup */}
-            <div className="lg:col-span-5 relative flex items-center justify-center">
-              <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-white/80 bg-white">
-                <Image
-                  src={game.heroImage}
-                  alt={game.name}
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
             </div>
 
           </div>
@@ -284,7 +308,7 @@ export default async function GameDetailPage({ params }: GamePageProps) {
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-6">
             
-            {/* Quick Download Card */}
+            {/* Quick Download & Community Card */}
             <div className="p-6 rounded-3xl bg-[#F7FBF8] border border-[#E4ECE7] space-y-4 shadow-xs">
               <h4 className="text-base font-bold text-[#172331]">
                 Download Information
@@ -311,14 +335,28 @@ export default async function GameDetailPage({ params }: GamePageProps) {
                 </li>
               </ul>
 
-              <a
-                href={game.downloadUrl}
-                download
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#087F5B] hover:bg-[#07553F] text-white text-xs font-bold shadow-xs transition-all"
-              >
-                <Download className="w-4 h-4" />
-                <span>Download {game.name}</span>
-              </a>
+              <div className="space-y-2.5 pt-1">
+                <a
+                  href={game.downloadUrl}
+                  download
+                  className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-[#087F5B] hover:bg-[#07553F] text-white text-xs font-bold shadow-xs transition-all text-center"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download {game.name}</span>
+                </a>
+
+                <a
+                  href={TELEGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-[#EEF8F2] text-[#087F5B] text-xs font-bold border border-[#087F5B]/30 hover:border-[#087F5B] shadow-xs transition-all text-center"
+                >
+                  <svg className="w-4 h-4 text-[#24A1DE]" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                  </svg>
+                  <span>Join Telegram Channel</span>
+                </a>
+              </div>
             </div>
 
             {/* Responsible Gaming Box */}

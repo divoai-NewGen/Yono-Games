@@ -60,20 +60,14 @@ export default function CompactGameCard({ game, onDownloadClick }: CompactGameCa
         </div>
       </div>
 
-      {/* Right: Theme-Matched Download Button */}
-      <a
-        href={game.downloadUrl || `/games/${game.slug}`}
-        onClick={(e) => {
-          if (onDownloadClick) {
-            onDownloadClick(e, game);
-          }
-        }}
-        download={game.downloadUrl ? true : undefined}
+      {/* Right: Theme-Matched Download Button leading to Details Page */}
+      <Link
+        href={`/games/${game.slug}`}
         className="flex-shrink-0 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#087F5B] hover:bg-[#07553F] active:scale-95 text-white text-xs font-bold shadow-[0_3px_10px_-2px_rgba(8,127,91,0.4)] transition-all"
       >
         <Download className="w-3.5 h-3.5 stroke-[2.5]" />
         <span>Download</span>
-      </a>
+      </Link>
     </div>
   );
 }

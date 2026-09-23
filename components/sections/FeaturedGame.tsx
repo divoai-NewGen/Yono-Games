@@ -77,14 +77,13 @@ export default function FeaturedGame({ game }: FeaturedGameProps) {
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
-                <a
-                  href={game.downloadUrl}
-                  download
+                <Link
+                  href={`/games/${game.slug}`}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
                 >
                   <Download className="w-4 h-4" />
-                  <span>Download Free APK ({game.size})</span>
-                </a>
+                  <span>Download APK ({game.size})</span>
+                </Link>
 
                 <Link
                   href={`/games/${game.slug}`}

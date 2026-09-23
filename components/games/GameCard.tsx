@@ -93,13 +93,14 @@ export default function GameCard({ game, priority = false }: GameCardProps) {
               Details
             </Link>
             
-            <Link
-              href={`/games/${game.slug}`}
+            <a
+              href={game.downloadUrl}
+              download
               className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#087F5B] hover:bg-[#07553F] text-white text-xs font-semibold shadow-xs hover:shadow-sm transition-all"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>Download</span>
-            </Link>
+              <span>Get APK</span>
+            </a>
           </div>
         </div>
 

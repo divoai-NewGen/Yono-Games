@@ -58,7 +58,7 @@ export default function NewReleasesCarousel({ games }: NewReleasesCarouselProps)
               <ChevronRight className="w-5 h-5" />
             </button>
             <Link
-              href="/games?filter=new"
+              href="/games/"
               className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-[#087F5B] hover:text-[#07553F] ml-2"
             >
               View All <ArrowRight className="w-3.5 h-3.5" />

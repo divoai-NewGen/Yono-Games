@@ -7,7 +7,15 @@ import { Sparkles } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Games Catalog - Play & Download All Yono Games',
   description:
-    'Browse the complete collection of 90+ verified games on More Yono Games. Download official APKs for Yono 777, Yono Rummy, Aviator, Dragon vs Tiger, Teen Patti, and more.',
+    'Browse the complete collection of 90+ verified games on Real Yono Games. Download official APKs for Yono 777, Yono Rummy, Aviator, Dragon vs Tiger, Teen Patti, and more.',
+  alternates: {
+    canonical: 'https://realyonogame.com/games/',
+  },
+  openGraph: {
+    title: 'Games Catalog - Play & Download All Yono Games',
+    description: 'Browse the complete collection of verified games on Real Yono Games.',
+    url: 'https://realyonogame.com/games/',
+  },
 };
 
 export default async function GamesPage() {

@@ -13,6 +13,21 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/games',
+        has: [
+          {
+            type: 'query',
+            key: 'filter',
+          },
+        ],
+        destination: '/games/',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

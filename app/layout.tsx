@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
+
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
@@ -18,54 +19,91 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://realyonogame.com'),
+
+  // =========================
+  // BASIC SEO
+  // =========================
   title: {
-    default: 'All Yono Games - India’s Favourite Gaming Platform',
-    template: '%s | Yono Games',
+    default: 'Real Yono Games | Yono Games & Gaming Directory',
+    template: '%s | Real Yono Games',
   },
+
   description:
-    'Real Yono Games is an online gaming platform directory featuring mobile arcade games, card titles, and predictive gaming applications. Explore verified game releases, latest updates, and download resources.',
+    'Real Yono Games is a gaming directory featuring Yono games, arcade games, card games, and popular mobile gaming titles. Explore game information, features, updates, and related resources in one place.',
+
   keywords: [
     'Yono Games',
-    'Real Yono Game',
-    'All Yono Games',
+    'Real Yono Games',
+    'Yono Games Directory',
     'Yono Rummy',
     'Yono 777',
     'Yono Slots',
-    'Aviator Yono',
     'Teen Patti Yono',
-    'Download Yono APK',
   ],
-  authors: [{ name: 'Yono Games' }],
+
+  authors: [
+    {
+      name: 'Real Yono Games',
+    },
+  ],
+
+  creator: 'Real Yono Games',
+  publisher: 'Real Yono Games',
+
+  // =========================
+  // OPEN GRAPH
+  // =========================
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://realyonogame.com',
-    siteName: 'Yono Games',
-    title: 'All Yono Games - India’s Favourite Gaming Platform',
+
+    url: 'https://realyonogame.com/',
+
+    siteName: 'Real Yono Games',
+
+    title: 'Real Yono Games | Yono Games & Gaming Directory',
+
     description:
-      'Real Yono Games is an online gaming platform directory featuring mobile arcade games, card titles, and predictive gaming applications.',
+      'Explore Yono games, arcade games, card games, and popular mobile gaming titles with game information, features, and updates.',
+
     images: [
       {
         url: '/images/hero-composition.jpg',
         width: 1200,
         height: 630,
-        alt: 'Yono Games Gaming Platform Showcase',
+        alt: 'Real Yono Games - Yono Games Directory',
       },
     ],
   },
+
+  // =========================
+  // TWITTER / X
+  // =========================
   twitter: {
     card: 'summary_large_image',
-    title: 'All Yono Games - India’s Favourite Gaming Platform',
+
+    title: 'Real Yono Games | Yono Games & Gaming Directory',
+
     description:
-      'Real Yono Games is an online gaming platform directory featuring mobile arcade games, card titles, and predictive gaming applications.',
+      'Explore Yono games, arcade games, card games, and popular mobile gaming titles with game information, features, and updates.',
+
     images: ['/images/hero-composition.jpg'],
   },
+
+  // =========================
+  // CANONICAL
+  // =========================
   alternates: {
-    canonical: 'https://realyonogame.com',
+    canonical: 'https://realyonogame.com/',
   },
+
+  // =========================
+  // ROBOTS
+  // =========================
   robots: {
     index: true,
     follow: true,
+
     googleBot: {
       index: true,
       follow: true,
@@ -74,64 +112,113 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+
+  // =========================
+  // FAVICONS
+  // =========================
   icons: {
     icon: [
-      { url: '/images/logo.png', type: 'image/png' },
-      { url: '/favicon.ico', sizes: 'any' },
+      {
+        url: '/images/logo.png',
+        type: 'image/png',
+      },
+      {
+        url: '/favicon.ico',
+        sizes: 'any',
+      },
     ],
+
     shortcut: '/images/logo.png',
+
     apple: [
-      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+      {
+        url: '/apple-icon.png',
+        sizes: '180x180',
+        type: 'image/png',
+      },
     ],
   },
 };
 
+// =====================================================
+// STRUCTURED DATA
+// =====================================================
+
 const structuredData = {
   '@context': 'https://schema.org',
+
   '@graph': [
+    // =========================
+    // WEBSITE
+    // =========================
     {
       '@type': 'WebSite',
+
       '@id': 'https://realyonogame.com/#website',
-      url: 'https://realyonogame.com',
+
+      url: 'https://realyonogame.com/',
+
       name: 'Real Yono Games',
-      description: 'Online gaming platform directory featuring mobile arcade games, card titles, and predictive gaming applications with verified guides and updates.',
+
+      description:
+        'Gaming directory featuring Yono games, arcade games, card games, and popular mobile gaming titles.',
+
       publisher: {
         '@id': 'https://realyonogame.com/#organization',
       },
     },
+
+    // =========================
+    // ORGANIZATION
+    // =========================
     {
       '@type': 'Organization',
+
       '@id': 'https://realyonogame.com/#organization',
+
       name: 'Real Yono Games',
-      url: 'https://realyonogame.com',
-      logo: 'https://realyonogame.com/images/logo.png',
-    },
-    {
-      '@type': 'DataCatalog',
-      '@id': 'https://realyonogame.com/#catalog',
-      name: 'Yono Games Directory',
-      description: 'Curated index and discovery portal for mobile gaming apps, card games, and online arcade titles.',
-      url: 'https://realyonogame.com/games',
+
+      alternateName: 'Yono Games',
+
+      url: 'https://realyonogame.com/',
+
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://realyonogame.com/images/logo.png',
+      },
     },
   ],
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${plusJakartaSans.variable} h-full antialiased`}
+    >
       <head>
+        {/* =========================
+            STRUCTURED DATA
+        ========================== */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
         />
       </head>
+
       <body className="min-h-full flex flex-col font-sans bg-white text-[#172331]">
         <Navbar />
-        <main className="flex-1">{children}</main>
+
+        <main className="flex-1">
+          {children}
+        </main>
+
         <Footer />
       </body>
     </html>

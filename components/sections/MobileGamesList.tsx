@@ -100,7 +100,7 @@ export default function MobileGamesList({ games }: MobileGamesListProps) {
         {/* View All Games CTA */}
         <div className="pt-2 text-center">
           <Link
-            href="/games"
+            href="/games/"
             className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-2xl bg-white hover:bg-[#EEF8F2] border border-[#E4ECE7] text-[#087F5B] font-bold text-xs shadow-2xs hover:shadow-xs transition-all active:scale-95"
           >
             <span>Explore All Games Directory</span>

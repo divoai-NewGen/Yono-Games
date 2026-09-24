@@ -1,46 +1,5 @@
 [
   {
-    "id": "demo",
-    "slug": "demo",
-    "name": "Shove28",
-    "tagline": "Top-Rated Trending Games with Exclusive Rewards",
-    "logo": "/images/hero-full-ribbon-3d.png",
-    "thumbnail": "/images/hero-full-ribbon-3d.png",
-    "heroImage": "/images/hero-full-ribbon-3d.png",
-    "screenshots": [
-      "/images/hero-full-ribbon-3d.png"
-    ],
-    "category": "Other Best Games",
-    "categories": [
-      "Other Best Games"
-    ],
-    "rating": 4.8,
-    "ratingCount": "24.5K reviews",
-    "players": "35,000+ Online",
-    "downloads": "1.5M+ Downloads",
-    "bonus": "₹1,500 Welcome Bonus",
-    "shortDescription": "Experience demo — one of India's top trending gaming releases with instant withdrawals, high win rates, and daily bonuses.",
-    "description": "demo is one of India's premier digital gaming titles, engineered specifically for high-performance mobile devices. Featuring state-of-the-art graphics, certified Random Number Generator (RNG) algorithms, and bank-grade security protocols, the application delivers an authentic tournament experience right at your fingertips.\n\nWhether you are a casual enthusiast or a competitive player, demo offers seamless matchmaking, real-time multiplayer rooms, and round-the-clock customer assistance. Download the latest official APK today to enjoy ₹1,500 Welcome Bonus, ultra-fast UPI withdrawals, and guaranteed fair play.",
-    "features": [
-      "Certified Random Number Generator (RNG) fair play standard",
-      "Instant withdrawal processing with round-the-clock support",
-      "Daily login rewards and exclusive VIP loyalty perks"
-    ],
-    "howToPlay": [
-      "Download and launch the application on your mobile device",
-      "Choose your preferred table room based on stakes",
-      "Withdraw your earnings directly to your UPI ID"
-    ],
-    "downloadUrl": "https://www.shove28.cc/share/AFKKzxy",
-    "version": "v5.1.0",
-    "size": "42.5 MB",
-    "featured": true,
-    "newRelease": true,
-    "popular": true,
-    "seoTitle": "demo APK Download (Official 2026) - Free Bonus | Yono Games",
-    "seoDescription": "Download demo official APK (v5.1.0, 42.5 MB). Enjoy ₹1,500 Welcome Bonus, instant UPI withdrawals, and certified fair play on Yono Games."
-  },
-  {
     "id": "yono-super-ludo",
     "slug": "yono-super-ludo",
     "name": "Yono Super Ludo",

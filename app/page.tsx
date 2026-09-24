@@ -1,5 +1,4 @@
 import Hero from '@/components/sections/Hero';
-import FeaturedGame from '@/components/sections/FeaturedGame';
 import NewReleasesCarousel from '@/components/sections/NewReleasesCarousel';
 import ExploreGamesSection from '@/components/sections/ExploreGamesSection';
 import MobileGamesList from '@/components/sections/MobileGamesList';
@@ -8,18 +7,14 @@ import HowItWorks from '@/components/sections/HowItWorks';
 
 import {
   getGames,
-  getFeaturedGames,
   getNewGames,
 } from '@/services/gameService';
 
 export default async function HomePage() {
-  const [allGames, featuredList, newGames] = await Promise.all([
+  const [allGames, newGames] = await Promise.all([
     getGames(),
-    getFeaturedGames(),
     getNewGames(),
   ]);
-
-  const featuredGame = featuredList[0] || allGames[0];
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -36,13 +31,9 @@ export default async function HomePage() {
 
       {/* 
         Desktop:
-        Featured game, new releases and complete game catalogue.
+        New releases and complete game catalogue.
       */}
       <div className="hidden md:block">
-        {featuredGame && (
-          <FeaturedGame game={featuredGame} />
-        )}
-
         {newGames?.length > 0 && (
           <NewReleasesCarousel games={newGames} />
         )}

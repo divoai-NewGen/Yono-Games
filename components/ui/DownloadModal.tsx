@@ -7,16 +7,18 @@ interface DownloadModalProps {
   isOpen: boolean;
   onClose: () => void;
   gameName?: string;
-  apkUrl?: string;
+  apkUrl?: string | null;
 }
 
 export default function DownloadModal({ 
   isOpen, 
   onClose, 
   gameName = 'All Yono Games Official App',
-  apkUrl = 'https://realyonogame.com/download/yono-games-official.apk'
+  apkUrl = ''
 }: DownloadModalProps) {
   if (!isOpen) return null;
+
+  const hasApkUrl = Boolean(apkUrl && (apkUrl.startsWith('http://') || apkUrl.startsWith('https://')) && !apkUrl.includes('realyonogame.com/download/'));
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
@@ -82,14 +84,24 @@ export default function DownloadModal({
 
           {/* CTA Buttons */}
           <div className="space-y-2 pt-2">
-            <a
-              href={apkUrl}
-              download
-              className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
-            >
-              <Download className="w-4 h-4" />
-              Download APK Now (Free)
-            </a>
+            {hasApkUrl && apkUrl ? (
+              <a
+                href={apkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              >
+                <Download className="w-4 h-4" />
+                Download APK Now (Free)
+              </a>
+            ) : (
+              <button
+                onClick={onClose}
+                className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all"
+              >
+                Continue on Web
+              </button>
+            )}
 
             <button
               onClick={onClose}

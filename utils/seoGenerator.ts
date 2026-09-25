@@ -30,10 +30,10 @@ export function generateAutoSeo(params: {
   bonus?: string;
   version?: string;
   size?: string;
-  downloadUrl?: string;
+  downloadUrl?: string | null;
   existingDescription?: string;
 }): GeneratedSeoData {
-  const { name, category, bonus = '₹1,000 Welcome Bonus', version = 'v5.1.0', size = '38.5 MB', downloadUrl = '' } = params;
+  const { name, category, bonus = '₹1,000 Welcome Bonus', version = 'v5.1.0', size = '38.5 MB', downloadUrl = null } = params;
   const currentYear = new Date().getFullYear();
   const slug = generateSlug(name);
 
@@ -154,22 +154,27 @@ export function generateAutoSeo(params: {
 Whether you are a casual enthusiast or a competitive player, ${name} offers seamless matchmaking, real-time multiplayer rooms, and round-the-clock customer assistance. Download the latest official APK today to enjoy ${bonus}, ultra-fast UPI withdrawals, and guaranteed fair play.`;
 
   // 6. Google JSON-LD Rich Snippet Schema for SoftwareApplication / MobileApplication
-  const schemaJsonLd = {
+  const schemaJsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: name,
     operatingSystem: 'Android 6.0+',
     applicationCategory: 'GameApplication',
     applicationSubCategory: category,
-    downloadUrl: downloadUrl || `https://realyonogame.com/download/${slug}.apk`,
+    ...(downloadUrl ? { downloadUrl } : {}),
     softwareVersion: version,
     fileSize: size,
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'INR',
-      availability: 'https://schema.org/InStock',
-    },
+    ...(downloadUrl
+      ? {
+          offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'INR',
+            availability: 'https://schema.org/InStock',
+            url: downloadUrl,
+          },
+        }
+      : {}),
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.8',

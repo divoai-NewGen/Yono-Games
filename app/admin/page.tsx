@@ -426,9 +426,20 @@ export default function AdminDashboardPage() {
       showToast('error', 'Game Name is required.');
       return;
     }
-    if (!formData.downloadUrl?.trim()) {
-      showToast('error', 'Download APK URL is required.');
-      return;
+    let downloadUrl: string | null = null;
+    if (formData.downloadUrl && formData.downloadUrl.trim()) {
+      const trimmed = formData.downloadUrl.trim();
+      try {
+        const parsed = new URL(trimmed);
+        if (!['http:', 'https:'].includes(parsed.protocol)) {
+          showToast('error', 'Please enter a valid HTTP or HTTPS download URL.');
+          return;
+        }
+        downloadUrl = trimmed;
+      } catch {
+        showToast('error', 'Please enter a valid absolute download URL (e.g. https://...).');
+        return;
+      }
     }
 
     // Auto-fill SEO if empty
@@ -438,6 +449,7 @@ export default function AdminDashboardPage() {
 
     const payload = {
       ...formData,
+      downloadUrl,
       slug,
       seoTitle,
       seoDescription,
@@ -1430,14 +1442,13 @@ export default function AdminDashboardPage() {
 
                   <div>
                     <label className="block text-xs font-semibold text-[#5D6B78] mb-1">
-                      View External Application <span className="text-red-500">*</span>
+                      External Download URL <span className="text-xs font-normal text-[#8A97A3]">(Optional)</span>
                     </label>
                     <input
                       type="url"
-                      placeholder="https://realyonogame.com/download/game.apk"
+                      placeholder="Enter the real external APK/download URL"
                       value={formData.downloadUrl || ''}
                       onChange={e => setFormData({ ...formData, downloadUrl: e.target.value })}
-                      required
                       className="w-full px-3.5 py-2.5 rounded-xl border border-[#D5E2D9] text-sm focus:outline-none focus:ring-2 focus:ring-[#087F5B]"
                     />
                   </div>

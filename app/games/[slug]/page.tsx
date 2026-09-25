@@ -28,6 +28,7 @@ interface GamePageProps {
 }
 
 export const dynamicParams = true;
+export const revalidate = 60;
 
 const TELEGRAM_URL = 'https://t.me/PredictionAndGiveaways';
 
@@ -165,7 +166,7 @@ export default async function GameDetailPage({
       game.seoDescription ||
       game.shortDescription,
 
-    downloadUrl: game.downloadUrl,
+    ...(game.downloadUrl ? { downloadUrl: game.downloadUrl } : {}),
 
     softwareVersion: game.version,
 
@@ -360,21 +361,28 @@ export default async function GameDetailPage({
               <div className="space-y-3 pt-1">
 
                 {/* Download */}
-                <a
-                  href={game.downloadUrl}
-                  download
-                  aria-label={`Download ${game.name} APK`}
-                  className="w-full inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-extrabold text-base sm:text-lg shadow-[0_6px_20px_-3px_rgba(8,127,91,0.35)] hover:shadow-[0_10px_28px_-3px_rgba(8,127,91,0.45)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center"
-                >
-                  <Download
-                    aria-hidden="true"
-                    className="w-5 h-5 flex-shrink-0"
-                  />
+                {game.downloadUrl ? (
+                  <a
+                    href={game.downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Download ${game.name} APK`}
+                    className="w-full inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-extrabold text-base sm:text-lg shadow-[0_6px_20px_-3px_rgba(8,127,91,0.35)] hover:shadow-[0_10px_28px_-3px_rgba(8,127,91,0.45)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center"
+                  >
+                    <Download
+                      aria-hidden="true"
+                      className="w-5 h-5 flex-shrink-0"
+                    />
 
-                  <span>
-                    Download APK ({game.size})
-                  </span>
-                </a>
+                    <span>
+                      Download APK ({game.size})
+                    </span>
+                  </a>
+                ) : (
+                  <div className="w-full py-3.5 px-4 rounded-2xl bg-[#EEF8F2] border border-[#087F5B]/20 text-center text-xs sm:text-sm font-bold text-[#087F5B]">
+                    <span>Official Verified Web Edition</span>
+                  </div>
+                )}
 
                 {/* Telegram */}
                 <a
@@ -584,7 +592,7 @@ export default async function GameDetailPage({
             <div className="p-6 rounded-3xl bg-[#F7FBF8] border border-[#E4ECE7] space-y-4 shadow-xs">
 
               <h2 className="text-base font-bold text-[#172331]">
-                Download Information
+                {game.downloadUrl ? 'Download Information' : 'Application Overview'}
               </h2>
 
               <ul className="space-y-2.5 text-xs text-[#5D6B78]">
@@ -593,15 +601,15 @@ export default async function GameDetailPage({
                   <span>System Support:</span>
 
                   <strong className="text-[#172331] text-right">
-                    Android 6.0 & above
+                    Android & Web (All Devices)
                   </strong>
                 </li>
 
                 <li className="flex justify-between pb-2 border-b border-[#E4ECE7] gap-4">
-                  <span>Package File:</span>
+                  <span>App Version:</span>
 
-                  <strong className="text-[#172331] text-right break-all">
-                    {game.slug}.apk
+                  <strong className="text-[#172331] text-right">
+                    {game.version}
                   </strong>
                 </li>
 
@@ -614,7 +622,7 @@ export default async function GameDetailPage({
                 </li>
 
                 <li className="flex justify-between pb-2 border-b border-[#E4ECE7] gap-4">
-                  <span>Download Type:</span>
+                  <span>Access Type:</span>
 
                   <strong className="text-[#087F5B] flex items-center gap-1">
                     <ShieldCheck
@@ -622,7 +630,7 @@ export default async function GameDetailPage({
                       className="w-3.5 h-3.5"
                     />
 
-                    APK
+                    {game.downloadUrl ? 'Verified APK' : 'Instant Play'}
                   </strong>
                 </li>
 
@@ -630,21 +638,24 @@ export default async function GameDetailPage({
 
               <div className="space-y-2.5 pt-1">
 
-                <a
-                  href={game.downloadUrl}
-                  download
-                  aria-label={`Download ${game.name}`}
-                  className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-[#087F5B] hover:bg-[#07553F] text-white text-xs font-bold shadow-xs transition-all text-center"
-                >
-                  <Download
-                    aria-hidden="true"
-                    className="w-4 h-4"
-                  />
+                {game.downloadUrl && (
+                  <a
+                    href={game.downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Download ${game.name}`}
+                    className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-[#087F5B] hover:bg-[#07553F] text-white text-xs font-bold shadow-xs transition-all text-center"
+                  >
+                    <Download
+                      aria-hidden="true"
+                      className="w-4 h-4"
+                    />
 
-                  <span>
-                    Download {game.name}
-                  </span>
-                </a>
+                    <span>
+                      Download {game.name}
+                    </span>
+                  </a>
+                )}
 
                 <a
                   href={TELEGRAM_URL}

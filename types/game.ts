@@ -25,7 +25,7 @@ export interface Game {
   features: string[];
   howToPlay: string[];
 
-  downloadUrl: string;
+  downloadUrl?: string | null;
   version: string;
   size: string;
 

@@ -77,18 +77,25 @@ export default function FeaturedGame({ game }: FeaturedGameProps) {
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
-                <a
-                  href={game.downloadUrl}
-                  download
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>Download Free APK ({game.size})</span>
-                </a>
+                {game.downloadUrl && (
+                  <a
+                    href={game.downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Download Free APK ({game.size})</span>
+                  </a>
+                )}
 
                 <Link
                   href={`/games/${game.slug}`}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white hover:bg-[#EEF8F2] text-[#07553F] font-bold text-sm border border-[#E4ECE7] hover:border-[#087F5B]/30 transition-all"
+                  className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl ${
+                    game.downloadUrl
+                      ? 'bg-white hover:bg-[#EEF8F2] text-[#07553F] border border-[#E4ECE7] hover:border-[#087F5B]/30'
+                      : 'bg-[#087F5B] hover:bg-[#07553F] text-white'
+                  } font-bold text-sm transition-all`}
                 >
                   <span>Game Guide & Specs</span>
                   <ArrowRight className="w-4 h-4" />

@@ -43,13 +43,12 @@ async function readGamesFromDisk(): Promise<Game[]> {
     try {
       const cloudGames = await redis.get<Game[]>(REDIS_KEY);
 
-      if (Array.isArray(cloudGames) && cloudGames.length > 0) {
+      if (Array.isArray(cloudGames)) {
         return cloudGames;
       }
 
-      // Seed Redis when no game data exists yet.
+      // Seed Redis only when key doesn't exist at all (null).
       await redis.set(REDIS_KEY, GAMES_DATA);
-
       return [...GAMES_DATA];
     } catch (error) {
       console.error(
@@ -69,7 +68,7 @@ async function readGamesFromDisk(): Promise<Game[]> {
 
       const parsed: unknown = JSON.parse(fileData);
 
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed)) {
         return parsed as Game[];
       }
     }
@@ -80,7 +79,7 @@ async function readGamesFromDisk(): Promise<Game[]> {
     );
   }
 
-  // 3. Static fallback
+  // 3. Static fallback (only when no file/data exists)
   return [...GAMES_DATA];
 }
 
@@ -131,8 +130,13 @@ export async function getGameBySlug(
   }
 
   const games = await readGamesFromDisk();
+  const normalizedSlug = decodeURIComponent(slug).toLowerCase().trim();
 
-  return games.find((game) => game.slug === slug);
+  return games.find(
+    (game) =>
+      game.slug?.toLowerCase().trim() === normalizedSlug ||
+      game.id?.toLowerCase().trim() === normalizedSlug
+  );
 }
 
 /**
@@ -146,8 +150,13 @@ export async function getGameById(
   }
 
   const games = await readGamesFromDisk();
+  const normalizedId = decodeURIComponent(id).toLowerCase().trim();
 
-  return games.find((game) => game.id === id);
+  return games.find(
+    (game) =>
+      game.id?.toLowerCase().trim() === normalizedId ||
+      game.slug?.toLowerCase().trim() === normalizedId
+  );
 }
 
 /**

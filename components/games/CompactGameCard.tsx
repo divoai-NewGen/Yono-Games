@@ -60,30 +60,14 @@ export default function CompactGameCard({ game, onDownloadClick }: CompactGameCa
         </div>
       </div>
 
-      {/* Right: Action Button */}
-      {game.downloadUrl ? (
-        <a
-          href={game.downloadUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(e) => {
-            if (onDownloadClick) {
-              onDownloadClick(e, game);
-            }
-          }}
-          className="flex-shrink-0 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#087F5B] hover:bg-[#07553F] active:scale-95 text-white text-xs font-bold shadow-[0_3px_10px_-2px_rgba(8,127,91,0.4)] transition-all"
-        >
-          <Download className="w-3.5 h-3.5 stroke-[2.5]" />
-          <span>Download</span>
-        </a>
-      ) : (
-        <Link
-          href={`/games/${game.slug}`}
-          className="flex-shrink-0 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#EEF8F2] hover:bg-[#E1F3E9] text-[#087F5B] text-xs font-bold border border-[#087F5B]/30 transition-all"
-        >
-          <span>Play Now</span>
-        </Link>
-      )}
+      {/* Right: Theme-Matched Download Button opens game details page */}
+      <Link
+        href={`/games/${game.slug}`}
+        className="flex-shrink-0 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[#087F5B] hover:bg-[#07553F] active:scale-95 text-white text-xs font-bold shadow-[0_3px_10px_-2px_rgba(8,127,91,0.4)] transition-all"
+      >
+        <Download className="w-3.5 h-3.5 stroke-[2.5]" />
+        <span>Download</span>
+      </Link>
     </div>
   );
 }

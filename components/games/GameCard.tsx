@@ -116,28 +116,21 @@ export default function GameCard({
           <div className="grid grid-cols-2 gap-2">
             <Link
               href={gameUrl}
-              className={`flex items-center justify-center py-2.5 px-3 rounded-xl bg-[#F7FBF8] hover:bg-[#EEF8F2] text-[#07553F] text-xs font-semibold border border-[#E4ECE7] hover:border-[#087F5B]/30 transition-all text-center ${
-                !game.downloadUrl ? 'col-span-2' : ''
-              }`}
+              className="flex items-center justify-center py-2.5 px-3 rounded-xl bg-[#F7FBF8] hover:bg-[#EEF8F2] text-[#07553F] text-xs font-semibold border border-[#E4ECE7] hover:border-[#087F5B]/30 transition-all text-center"
             >
               View Details
             </Link>
 
-            {game.downloadUrl && (
-              <a
-                href={game.downloadUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Download ${game.name} APK`}
-                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#087F5B] hover:bg-[#07553F] text-white text-xs font-semibold shadow-xs hover:shadow-sm transition-all"
-              >
-                <Download
-                  aria-hidden="true"
-                  className="w-3.5 h-3.5"
-                />
-                <span>Get APK</span>
-              </a>
-            )}
+            <Link
+              href={gameUrl}
+              className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#087F5B] hover:bg-[#07553F] text-white text-xs font-semibold shadow-xs hover:shadow-sm transition-all"
+            >
+              <Download
+                aria-hidden="true"
+                className="w-3.5 h-3.5"
+              />
+              <span>Get APK</span>
+            </Link>
           </div>
         </div>
       </div>

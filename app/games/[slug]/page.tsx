@@ -277,13 +277,13 @@ export default async function GameDetailPage({
         {/* Hero Section */}
         <section
           aria-labelledby="game-title"
-          className="relative rounded-[32px] border border-[#E4ECE7] bg-radial-featured p-5 sm:p-8 lg:p-10 shadow-luxury overflow-hidden"
+          className="relative rounded-[24px] sm:rounded-[32px] border border-[#E4ECE7] bg-radial-featured p-4 sm:p-8 lg:p-10 shadow-luxury overflow-hidden"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
 
             {/* Game Artwork */}
             <div className="lg:col-span-6 relative flex items-center justify-center">
-              <div className="relative w-full aspect-[16/10] sm:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border-2 border-white bg-white">
+              <div className="relative w-full max-w-[190px] sm:max-w-[280px] lg:max-w-none aspect-[16/10] sm:aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg sm:shadow-2xl border-2 border-white bg-white">
 
                 <Image
                   src={
@@ -296,14 +296,14 @@ export default async function GameDetailPage({
                   fill
                   priority
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 200px, 50vw"
                 />
 
               </div>
             </div>
 
             {/* Game Details & Actions */}
-            <div className="lg:col-span-6 space-y-5">
+            <div className="lg:col-span-6 space-y-4 sm:space-y-5">
 
               {/* Badges */}
               <div className="flex flex-wrap items-center gap-2">

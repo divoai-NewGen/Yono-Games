@@ -1,11 +1,14 @@
 import { v2 as cloudinary } from 'cloudinary';
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'efvabqpd',
-  api_key: process.env.CLOUDINARY_API_KEY || '937373892574827',
-  api_secret: process.env.CLOUDINARY_API_SECRET || '4d111Z7Ifi3bfDq669x0O2GCV_w',
-  secure: true,
-});
+export function getCloudinaryClient() {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'efvabqpd',
+    api_key: process.env.CLOUDINARY_API_KEY || '937373892574827',
+    api_secret: process.env.CLOUDINARY_API_SECRET || '4d111Z7Ifi3bfDq669x0O2GCV_w',
+    secure: true,
+  });
+  return cloudinary;
+}
 
 export default cloudinary;
 
@@ -16,6 +19,7 @@ export async function uploadToCloudinary(
   fileBufferOrBase64: Buffer | string,
   options: { folder?: string; public_id?: string } = {}
 ): Promise<{ url: string; secure_url: string; public_id: string; format: string }> {
+  const client = getCloudinaryClient();
   return new Promise((resolve, reject) => {
     const uploadOptions = {
       folder: options.folder || 'yono-games',

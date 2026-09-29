@@ -375,8 +375,15 @@ export default function AdminDashboardPage() {
         body: data,
       });
 
-      const result = await res.json();
-      if (result.success && result.url) {
+      const text = await res.text();
+      let result: any;
+      try {
+        result = JSON.parse(text);
+      } catch {
+        throw new Error(`Upload server error (${res.status}): ${text.substring(0, 100) || 'Empty response'}`);
+      }
+
+      if (res.ok && result.success && result.url) {
         setFormData(prev => ({
           ...prev,
           logo: result.url,
@@ -409,10 +416,17 @@ export default function AdminDashboardPage() {
         }),
       });
 
-      const result = await res.json();
-      if (result.success) {
+      const text = await res.text();
+      let result: any = {};
+      try {
+        result = JSON.parse(text);
+      } catch {}
+
+      if (res.ok && result.success) {
         setGames(prev => prev.map(g => g.id === game.id ? { ...g, [field]: updatedValue } : g));
         showToast('success', `${game.name}: ${field === 'featured' ? 'Featured' : 'New Release'} updated!`);
+      } else {
+        showToast('error', result.error || 'Failed to update toggle.');
       }
     } catch (err) {
       showToast('error', 'Failed to update toggle.');
@@ -464,8 +478,15 @@ export default function AdminDashboardPage() {
         body: JSON.stringify(payload),
       });
 
-      const result = await res.json();
-      if (result.success) {
+      const text = await res.text();
+      let result: any;
+      try {
+        result = JSON.parse(text);
+      } catch {
+        throw new Error(`Server returned status ${res.status}: ${text.substring(0, 100) || 'Empty response'}`);
+      }
+
+      if (res.ok && result.success) {
         showToast('success', editingGame ? 'Game updated successfully!' : '🎉 New game published live!');
         setIsModalOpen(false);
         fetchGames();

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { unstable_cache } from 'next/cache';
 import { Redis } from '@upstash/redis';
 import { Game, GameCategory } from '@/types/game';
 import { GAMES_DATA } from '@/data/games';
@@ -32,10 +33,9 @@ function getRedisClient(): Redis | null {
 }
 
 /**
- * Read games from Redis first, then local JSON,
- * and finally fall back to the static game data.
+ * Read games directly from Redis / local JSON without cache layer.
  */
-async function readGamesFromDisk(): Promise<Game[]> {
+async function readGamesFromDiskInternal(): Promise<Game[]> {
   const redis = getRedisClient();
 
   // 1. Cloud storage
@@ -84,6 +84,27 @@ async function readGamesFromDisk(): Promise<Game[]> {
 }
 
 /**
+ * Cached getter with 60-second ISR tag caching
+ * This allows Next.js / Vercel Edge CDN to serve static pages without burning Serverless Origin bandwidth.
+ */
+const getCachedGames = unstable_cache(
+  async () => readGamesFromDiskInternal(),
+  ['all-games-data'],
+  { tags: ['games'], revalidate: 60 }
+);
+
+/**
+ * Return all games (cached with Data Cache & Edge CDN).
+ */
+export async function getGames(): Promise<Game[]> {
+  try {
+    return await getCachedGames();
+  } catch {
+    return readGamesFromDiskInternal();
+  }
+}
+
+/**
  * Write games to Redis when available,
  * otherwise write to the local JSON file.
  */
@@ -113,13 +134,6 @@ async function writeGamesToDisk(games: Game[]): Promise<void> {
 }
 
 /**
- * Return all games.
- */
-export async function getGames(): Promise<Game[]> {
-  return readGamesFromDisk();
-}
-
-/**
  * Return a game by its SEO-friendly slug.
  */
 export async function getGameBySlug(
@@ -129,7 +143,7 @@ export async function getGameBySlug(
     return undefined;
   }
 
-  const games = await readGamesFromDisk();
+  const games = await getGames();
   const normalizedSlug = decodeURIComponent(slug).toLowerCase().trim();
 
   return games.find(
@@ -149,7 +163,7 @@ export async function getGameById(
     return undefined;
   }
 
-  const games = await readGamesFromDisk();
+  const games = await getGames();
   const normalizedId = decodeURIComponent(id).toLowerCase().trim();
 
   return games.find(
@@ -163,7 +177,7 @@ export async function getGameById(
  * Return featured games.
  */
 export async function getFeaturedGames(): Promise<Game[]> {
-  const games = await readGamesFromDisk();
+  const games = await getGames();
 
   return games.filter((game) => game.featured);
 }
@@ -172,7 +186,7 @@ export async function getFeaturedGames(): Promise<Game[]> {
  * Return newly released games.
  */
 export async function getNewGames(): Promise<Game[]> {
-  const games = await readGamesFromDisk();
+  const games = await getGames();
 
   return games.filter((game) => game.newRelease);
 }
@@ -181,7 +195,7 @@ export async function getNewGames(): Promise<Game[]> {
  * Return popular games.
  */
 export async function getPopularGames(): Promise<Game[]> {
-  const games = await readGamesFromDisk();
+  const games = await getGames();
 
   return games.filter((game) => game.popular);
 }
@@ -192,7 +206,7 @@ export async function getPopularGames(): Promise<Game[]> {
 export async function getGamesByCategory(
   category: GameCategory | string
 ): Promise<Game[]> {
-  const games = await readGamesFromDisk();
+  const games = await getGames();
 
   if (!category || category === 'All') {
     return games;
@@ -212,7 +226,7 @@ export async function getRelatedGames(
   currentSlug: string,
   limit = 3
 ): Promise<Game[]> {
-  const games = await readGamesFromDisk();
+  const games = await getGames();
 
   if (limit <= 0) {
     return [];
@@ -270,7 +284,7 @@ export async function getRelatedGames(
 export async function searchGames(
   query: string
 ): Promise<Game[]> {
-  const games = await readGamesFromDisk();
+  const games = await getGames();
   const q = query.trim().toLowerCase();
 
   if (!q) {
@@ -299,7 +313,7 @@ export async function searchGames(
 export async function createGame(
   newGame: Game
 ): Promise<Game> {
-  const games = await readGamesFromDisk();
+  const games = await readGamesFromDiskInternal();
 
   const existingIndex = games.findIndex(
     (game) =>
@@ -327,7 +341,7 @@ export async function updateGame(
   id: string,
   gameUpdates: Partial<Game>
 ): Promise<Game | null> {
-  const games = await readGamesFromDisk();
+  const games = await readGamesFromDiskInternal();
 
   const index = games.findIndex(
     (game) => game.id === id
@@ -358,7 +372,7 @@ export async function updateGame(
 export async function deleteGame(
   id: string
 ): Promise<boolean> {
-  const games = await readGamesFromDisk();
+  const games = await readGamesFromDiskInternal();
 
   const filteredGames = games.filter(
     (game) => game.id !== id

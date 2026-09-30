@@ -4,14 +4,15 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Search, Mail, Menu, X, ShieldCheck } from 'lucide-react';
+import { Search, Mail, Home, Gamepad2, Phone, AlertTriangle, ShieldCheck } from 'lucide-react';
 import SearchModal from '@/components/ui/SearchModal';
 import DownloadModal from '@/components/ui/DownloadModal';
+
+const TELEGRAM_URL = 'https://t.me/PredictionAndGiveaways';
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
 
@@ -39,12 +40,55 @@ export default function Navbar() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Nav links (Contact Us is prominently highlighted as the right CTA button)
+  // Nav links
   const navLinks = [
     { name: 'Home', href: '/home/' },
     { name: 'Games', href: '/games/' },
     { name: 'Privacy Policy', href: '/privacy-policy/' },
     { name: 'Disclaimer', href: '/disclaimer/' },
+  ];
+
+  // Mobile horizontal bar links with matching icons
+  const mobileNavItems = [
+    {
+      name: 'Home',
+      href: '/home/',
+      icon: <Home className="w-3.5 h-3.5" />,
+      isExternal: false,
+    },
+    {
+      name: 'Games',
+      href: '/games/',
+      icon: <Gamepad2 className="w-3.5 h-3.5" />,
+      isExternal: false,
+    },
+    {
+      name: 'Contact',
+      href: '/contact-us/',
+      icon: <Phone className="w-3.5 h-3.5" />,
+      isExternal: false,
+    },
+    {
+      name: 'Disclaimer',
+      href: '/disclaimer/',
+      icon: <AlertTriangle className="w-3.5 h-3.5" />,
+      isExternal: false,
+    },
+    {
+      name: 'Telegram',
+      href: TELEGRAM_URL,
+      icon: (
+        <svg
+          className="w-3.5 h-3.5 text-[#24A1DE]"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
+        </svg>
+      ),
+      isExternal: true,
+    },
   ];
 
   const isActive = (href: string) => {
@@ -63,15 +107,16 @@ export default function Navbar() {
       <header
         className={`sticky top-0 z-40 w-full transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-[0_4px_20px_-2px_rgba(8,127,91,0.08)] border-b border-[#E4ECE7] py-3'
-            : 'bg-white/80 backdrop-blur-sm border-b border-[#E4ECE7]/60 py-4'
+            ? 'bg-white/95 backdrop-blur-md shadow-[0_4px_20px_-2px_rgba(8,127,91,0.08)] border-b border-[#E4ECE7]'
+            : 'bg-white/90 backdrop-blur-sm border-b border-[#E4ECE7]/70'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+        {/* Top Navbar Row */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-3">
           
           {/* Brand Logo */}
-          <Link href="/home/" className="flex items-center gap-3 group flex-shrink-0">
-            <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-sm group-hover:shadow-[0_0_15px_rgba(8,127,91,0.35)] transition-all flex-shrink-0 border border-[#E4ECE7]/60">
+          <Link href="/home/" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
+            <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden shadow-xs group-hover:shadow-[0_0_15px_rgba(8,127,91,0.35)] transition-all flex-shrink-0 border border-[#E4ECE7]/60">
               <Image
                 src="/images/logo.png"
                 alt="Real Yono Games Logo"
@@ -82,9 +127,9 @@ export default function Navbar() {
               />
             </div>
 
-            <div className="flex items-baseline text-2xl font-black tracking-tight leading-none">
+            <div className="flex items-baseline text-xl sm:text-2xl font-black tracking-tight leading-none">
               <span className="text-[#172331]">Real Yono</span>
-              <span className="text-[#087F5B] ml-1.5">Games</span>
+              <span className="text-[#087F5B] ml-1 sm:ml-1.5">Games</span>
             </div>
           </Link>
 
@@ -109,89 +154,74 @@ export default function Navbar() {
           </nav>
 
           {/* Utility Controls (Search Pill + Contact Us CTA) */}
-          <div className="hidden sm:flex items-center gap-3">
-            {/* Search Pill */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Search Button / Pill */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-[#F7FBF8] hover:bg-[#EEF8F2] border border-[#E4ECE7] text-[#5D6B78] hover:text-[#172331] text-xs font-medium transition-all shadow-2xs group"
+              className="flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full bg-[#F7FBF8] hover:bg-[#EEF8F2] border border-[#E4ECE7] text-[#5D6B78] hover:text-[#172331] text-xs font-medium transition-all shadow-2xs group"
               aria-label="Search games"
             >
               <Search className="w-3.5 h-3.5 text-[#087F5B] group-hover:scale-110 transition-transform" />
-              <span>Search games...</span>
+              <span className="hidden xs:inline sm:inline">Search games...</span>
               <kbd className="hidden lg:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-white border border-[#E4ECE7] rounded text-gray-400">
                 ⌘K
               </kbd>
             </button>
 
-            {/* Contact Us CTA Button */}
+            {/* Desktop Contact Us CTA Button */}
             <Link
               href="/contact-us/"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white text-xs font-bold tracking-wide shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="hidden md:flex items-center gap-2 px-5 py-2 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white text-xs font-bold tracking-wide shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
               <Mail className="w-3.5 h-3.5" />
               <span>Contact Us</span>
             </Link>
           </div>
-
-          {/* Mobile hamburger menu & mobile search trigger */}
-          <div className="flex sm:hidden items-center gap-2">
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className="p-2 rounded-xl bg-[#F7FBF8] border border-[#E4ECE7] text-[#5D6B78]"
-              aria-label="Search games"
-            >
-              <Search className="w-4 h-4 text-[#087F5B]" />
-            </button>
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl bg-[#F7FBF8] border border-[#E4ECE7] text-[#172331]"
-              aria-label="Toggle navigation menu"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
         </div>
 
-        {/* Mobile Animated Drawer */}
-        {mobileMenuOpen && (
-          <div className="sm:hidden border-t border-[#E4ECE7] bg-white px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-200">
-            <div className="space-y-1">
-              {navLinks.map((link) => {
-                const active = isActive(link.href);
+        {/* Mobile Horizontal Icon Navigation Sub-Bar */}
+        <div className="md:hidden border-t border-[#E4ECE7]/80 bg-[#FAFCFA]/95 px-2 py-2">
+          <nav
+            aria-label="Mobile Navigation"
+            className="flex items-center justify-around gap-1 text-[11px] font-semibold text-[#344054]"
+          >
+            {mobileNavItems.map((item) => {
+              const active = !item.isExternal && isActive(item.href);
+
+              if (item.isExternal) {
                 return (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
-                      active
-                        ? 'bg-[#EEF8F2] text-[#07553F] font-bold'
-                        : 'text-[#5D6B78] hover:bg-[#F7FBF8]'
-                    }`}
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg transition-all text-[#344054] hover:text-[#24A1DE] active:scale-95"
                   >
-                    {link.name}
-                  </Link>
+                    {item.icon}
+                    <span>{item.name}</span>
+                  </a>
                 );
-              })}
-            </div>
+              }
 
-            <div className="pt-2 border-t border-[#E4ECE7] space-y-2">
-              <Link
-                href="/contact-us/"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#087F5B] text-white text-sm font-bold shadow-md"
-              >
-                <Mail className="w-4 h-4" />
-                <span>Contact Us</span>
-              </Link>
-
-              <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#5D6B78] pt-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#087F5B]" />
-                <span>Official Yono Games Application</span>
-              </div>
-            </div>
-          </div>
-        )}
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`flex items-center gap-1 px-2 py-1 rounded-lg transition-all ${
+                    active
+                      ? 'text-[#087F5B] font-black bg-[#EEF8F2] shadow-2xs'
+                      : 'text-[#344054] hover:text-[#087F5B] active:scale-95'
+                  }`}
+                >
+                  <span className={active ? 'text-[#087F5B]' : 'text-[#5D6B78]'}>
+                    {item.icon}
+                  </span>
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
       </header>
 
       {/* Modals */}
@@ -200,3 +230,4 @@ export default function Navbar() {
     </>
   );
 }
+

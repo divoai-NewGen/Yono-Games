@@ -107,8 +107,8 @@ export default function Navbar() {
       <header
         className={`sticky top-0 z-40 w-full transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-[0_4px_20px_-2px_rgba(8,127,91,0.08)] border-b border-[#E4ECE7]'
-            : 'bg-white/90 backdrop-blur-sm border-b border-[#E4ECE7]/70'
+            ? 'bg-[#07553F] md:bg-white/95 md:backdrop-blur-md shadow-[0_4px_20px_-2px_rgba(8,127,91,0.15)] md:shadow-[0_4px_20px_-2px_rgba(8,127,91,0.08)] border-b border-[#064E3B] md:border-[#E4ECE7]'
+            : 'bg-[#07553F] md:bg-white/90 md:backdrop-blur-sm border-b border-[#064E3B] md:border-[#E4ECE7]/70'
         }`}
       >
         {/* Top Navbar Row */}
@@ -116,7 +116,7 @@ export default function Navbar() {
           
           {/* Brand Logo */}
           <Link href="/home/" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
-            <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden shadow-xs group-hover:shadow-[0_0_15px_rgba(8,127,91,0.35)] transition-all flex-shrink-0 border border-[#E4ECE7]/60">
+            <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden shadow-sm group-hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] transition-all flex-shrink-0 border-2 border-white/40 md:border-[#E4ECE7]/60 bg-white">
               <Image
                 src="/images/logo.png"
                 alt="Real Yono Games Logo"
@@ -128,8 +128,8 @@ export default function Navbar() {
             </div>
 
             <div className="flex items-baseline text-xl sm:text-2xl font-black tracking-tight leading-none">
-              <span className="text-[#172331]">Real Yono</span>
-              <span className="text-[#087F5B] ml-1 sm:ml-1.5">Games</span>
+              <span className="text-white md:text-[#172331] drop-shadow-xs md:drop-shadow-none">Real Yono</span>
+              <span className="text-[#FFD166] md:text-[#087F5B] ml-1 sm:ml-1.5 font-black">Games</span>
             </div>
           </Link>
 
@@ -158,10 +158,10 @@ export default function Navbar() {
             {/* Search Button / Pill */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full bg-[#F7FBF8] hover:bg-[#EEF8F2] border border-[#E4ECE7] text-[#5D6B78] hover:text-[#172331] text-xs font-medium transition-all shadow-2xs group"
+              className="flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full bg-white/20 hover:bg-white/30 md:bg-[#F7FBF8] md:hover:bg-[#EEF8F2] border border-white/30 md:border-[#E4ECE7] text-white md:text-[#5D6B78] hover:text-white md:hover:text-[#172331] text-xs font-medium transition-all shadow-xs group backdrop-blur-xs md:backdrop-blur-none"
               aria-label="Search games"
             >
-              <Search className="w-3.5 h-3.5 text-[#087F5B] group-hover:scale-110 transition-transform" />
+              <Search className="w-3.5 h-3.5 text-white md:text-[#087F5B] group-hover:scale-110 transition-transform" />
               <span className="hidden xs:inline sm:inline">Search games...</span>
               <kbd className="hidden lg:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-white border border-[#E4ECE7] rounded text-gray-400">
                 ⌘K
@@ -180,7 +180,8 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Horizontal Icon Navigation Sub-Bar */}
-        <div className="md:hidden border-t border-[#E4ECE7]/80 bg-[#FAFCFA]/95 px-2 py-2">
+        <div className="md:hidden border-t border-[#E4ECE7] bg-white px-2 py-2 shadow-xs">
+
           <nav
             aria-label="Mobile Navigation"
             className="flex items-center justify-around gap-1 text-[11px] font-semibold text-[#344054]"

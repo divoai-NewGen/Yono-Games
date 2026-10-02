@@ -46,7 +46,7 @@ export default function ArtworkPhone() {
             <div className="flex items-center gap-2">
               <div className="relative w-6 h-6 rounded-lg overflow-hidden border border-[#D6A83E]/40 flex-shrink-0">
                 <Image
-                  src="/images/logo.png"
+                  src="/logonew.png"
                   alt="Yono App Icon"
                   fill
                   className="object-cover"

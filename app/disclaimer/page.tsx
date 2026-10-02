@@ -1,20 +1,30 @@
 import React from 'react';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Scale, Mail, Globe, MapPin } from 'lucide-react';
+import Breadcrumbs from '@/components/seo/Breadcrumbs';
+import JsonLd from '@/components/seo/JsonLd';
+import { createMetadata } from '@/utils/seo';
+import { STATIC_PAGE_SEO } from '@/utils/seoData';
+import { getStaticPageBreadcrumb } from '@/utils/breadcrumbs';
+import { getWebPageSchema } from '@/utils/structuredData';
 
-export const metadata: Metadata = {
-  title: 'Disclaimer | Real Yono Games',
-  description:
-    'Legal terms, platform guidelines, and informational notices for Real Yono Games platform visitors.',
-};
+export const metadata: Metadata = createMetadata(STATIC_PAGE_SEO.disclaimer);
 
 export default function DisclaimerPage() {
   const lastUpdated = 'September 22, 2026';
+  const breadcrumbItems = getStaticPageBreadcrumb('Disclaimer', 'disclaimer');
+  const webPageSchema = getWebPageSchema({
+    name: 'Disclaimer & Legal Notices | Real Yono Games',
+    description: 'Platform disclaimer, legal terms, and responsible gaming notices for Real Yono Games.',
+    path: 'disclaimer',
+    breadcrumbItems,
+  });
 
   return (
     <div data-nosnippet className="py-12 sm:py-16 bg-white min-h-screen">
+      <JsonLd id="disclaimer-schema" data={webPageSchema} />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        
+        <Breadcrumbs items={breadcrumbItems} />
         {/* Header */}
         <div className="border-b border-[#E4ECE7] pb-8 space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EEF8F2] border border-[#087F5B]/20 text-[#087F5B] text-xs font-bold uppercase tracking-wider">

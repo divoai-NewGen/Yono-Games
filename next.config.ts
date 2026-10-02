@@ -1,10 +1,14 @@
-import type { NextConfig } from "next";
+﻿import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 31536000,
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
       {
         protocol: 'https',
         hostname: '**.public.blob.vercel-storage.com',
@@ -40,14 +44,8 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: '/games',
-        has: [
-          {
-            key: 'filter',
-            type: 'query',
-          },
-        ],
-        destination: '/games/',
+        source: '/home',
+        destination: '/',
         permanent: true,
       },
     ];

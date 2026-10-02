@@ -106,7 +106,7 @@ export default function Hero() {
               className="flex flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-4 w-full pt-2"
             >
               <Link
-                href="/games/"
+                href="/games"
                 className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-7 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white font-bold text-xs sm:text-base shadow-[0_6px_20px_-3px_rgba(8,127,91,0.35)] hover:shadow-[0_10px_28px_-3px_rgba(8,127,91,0.45)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap"
               >
                 <span>Explore Games</span>

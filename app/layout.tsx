@@ -1,9 +1,13 @@
-import type { Metadata, Viewport } from 'next';
+﻿import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import JsonLd from '@/components/seo/JsonLd';
+import { createMetadata } from '@/utils/seo';
+import { STATIC_PAGE_SEO } from '@/utils/seoData';
+import { getOrganizationSchema, getWebSiteSchema } from '@/utils/structuredData';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -17,109 +21,20 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+const baseMetadata = createMetadata(STATIC_PAGE_SEO.home);
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://realyonogame.com'),
-
-  // =========================
-  // BASIC SEO
-  // =========================
-  title: {
-    default: 'Real Yono Games | Yono Games & Gaming Directory',
-    template: '%s | Real Yono Games',
-  },
-
-  description:
-    'Real Yono Games is a gaming directory featuring Yono games, arcade games, card games, and popular mobile gaming titles. Explore game information, features, updates, and related resources in one place.',
-
-  keywords: [
-    'Yono Games',
-    'Real Yono Games',
-    'Yono Games Directory',
-    'Yono Rummy',
-    'Yono 777',
-    'Yono Slots',
-    'Teen Patti Yono',
-  ],
-
-  authors: [
-    {
-      name: 'Real Yono Games',
-    },
-  ],
-
-  creator: 'Real Yono Games',
-  publisher: 'Real Yono Games',
-
-  // =========================
-  // OPEN GRAPH
-  // =========================
-  openGraph: {
-    type: 'website',
-    locale: 'en_IN',
-
-    url: 'https://realyonogame.com/',
-
-    siteName: 'Real Yono Games',
-
-    title: 'Real Yono Games | Yono Games & Gaming Directory',
-
-    description:
-      'Explore Yono games, arcade games, card games, and popular mobile gaming titles with game information, features, and updates.',
-
-    images: [
-      {
-        url: '/images/hero-composition.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Real Yono Games - Yono Games Directory',
-      },
-    ],
-  },
-
-  // =========================
-  // TWITTER / X
-  // =========================
-  twitter: {
-    card: 'summary_large_image',
-
-    title: 'Real Yono Games | Yono Games & Gaming Directory',
-
-    description:
-      'Explore Yono games, arcade games, card games, and popular mobile gaming titles with game information, features, and updates.',
-
-    images: ['/images/hero-composition.jpg'],
-  },
-
-  // =========================
-  // CANONICAL
-  // =========================
-  alternates: {
-    canonical: 'https://realyonogame.com/',
-  },
-
-  // =========================
-  // ROBOTS
-  // =========================
-  robots: {
-    index: true,
-    follow: true,
-
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-
-  // =========================
-  // FAVICONS
-  // =========================
+  ...baseMetadata,
   icons: {
     icon: [
       {
+        url: '/icon.png',
+        sizes: '512x512',
+        type: 'image/png',
+      },
+      {
         url: '/images/logo.png',
+        sizes: '192x192',
         type: 'image/png',
       },
       {
@@ -127,9 +42,7 @@ export const metadata: Metadata = {
         sizes: 'any',
       },
     ],
-
-    shortcut: '/images/logo.png',
-
+    shortcut: '/icon.png',
     apple: [
       {
         url: '/apple-icon.png',
@@ -140,85 +53,26 @@ export const metadata: Metadata = {
   },
 };
 
-// =====================================================
-// STRUCTURED DATA
-// =====================================================
-
-const structuredData = {
-  '@context': 'https://schema.org',
-
-  '@graph': [
-    // =========================
-    // WEBSITE
-    // =========================
-    {
-      '@type': 'WebSite',
-
-      '@id': 'https://realyonogame.com/#website',
-
-      url: 'https://realyonogame.com/',
-
-      name: 'Real Yono Games',
-
-      description:
-        'Gaming directory featuring Yono games, arcade games, card games, and popular mobile gaming titles.',
-
-      publisher: {
-        '@id': 'https://realyonogame.com/#organization',
-      },
-    },
-
-    // =========================
-    // ORGANIZATION
-    // =========================
-    {
-      '@type': 'Organization',
-
-      '@id': 'https://realyonogame.com/#organization',
-
-      name: 'Real Yono Games',
-
-      alternateName: 'Yono Games',
-
-      url: 'https://realyonogame.com/',
-
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://realyonogame.com/images/logo.png',
-      },
-    },
-  ],
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationSchema = getOrganizationSchema();
+  const websiteSchema = getWebSiteSchema();
+
   return (
     <html
       lang="en"
       className={`${plusJakartaSans.variable} h-full antialiased`}
     >
       <head>
-        {/* =========================
-            STRUCTURED DATA
-        ========================== */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData),
-          }}
-        />
+        <JsonLd id="org-schema" data={organizationSchema} />
+        <JsonLd id="website-schema" data={websiteSchema} />
       </head>
-
       <body className="min-h-full flex flex-col font-sans bg-white text-[#172331]">
         <Navbar />
-
-        <main className="flex-1">
-          {children}
-        </main>
-
+        <main className="flex-1">{children}</main>
         <Footer />
       </body>
     </html>

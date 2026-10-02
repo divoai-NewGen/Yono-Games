@@ -42,35 +42,35 @@ export default function Navbar() {
 
   // Nav links
   const navLinks = [
-    { name: 'Home', href: '/home/' },
-    { name: 'Games', href: '/games/' },
-    { name: 'Privacy Policy', href: '/privacy-policy/' },
-    { name: 'Disclaimer', href: '/disclaimer/' },
+    { name: 'Home', href: '/' },
+    { name: 'Games', href: '/games' },
+    { name: 'Privacy Policy', href: '/privacy-policy' },
+    { name: 'Disclaimer', href: '/disclaimer' },
   ];
 
   // Mobile horizontal bar links with matching icons
   const mobileNavItems = [
     {
       name: 'Home',
-      href: '/home/',
+      href: '/',
       icon: <Home className="w-3.5 h-3.5" />,
       isExternal: false,
     },
     {
       name: 'Games',
-      href: '/games/',
+      href: '/games',
       icon: <Gamepad2 className="w-3.5 h-3.5" />,
       isExternal: false,
     },
     {
       name: 'Contact',
-      href: '/contact-us/',
+      href: '/contact-us',
       icon: <Phone className="w-3.5 h-3.5" />,
       isExternal: false,
     },
     {
       name: 'Disclaimer',
-      href: '/disclaimer/',
+      href: '/disclaimer',
       icon: <AlertTriangle className="w-3.5 h-3.5" />,
       isExternal: false,
     },
@@ -92,7 +92,7 @@ export default function Navbar() {
   ];
 
   const isActive = (href: string) => {
-    if (href === '/home/') {
+    if (href === '/' || href === '/home/') {
       return pathname === '/' || pathname === '/home' || pathname === '/home/';
     }
     return pathname.startsWith(href) || pathname === href.replace(/\/$/, '');
@@ -115,10 +115,10 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-3">
           
           {/* Brand Logo */}
-          <Link href="/home/" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group flex-shrink-0">
             <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden shadow-sm group-hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] transition-all flex-shrink-0 border-2 border-white/40 md:border-[#E4ECE7]/60 bg-white">
               <Image
-                src="/images/logo.png"
+                src="/logonew.png"
                 alt="Real Yono Games Logo"
                 fill
                 priority
@@ -170,7 +170,7 @@ export default function Navbar() {
 
             {/* Desktop Contact Us CTA Button */}
             <Link
-              href="/contact-us/"
+              href="/contact-us"
               className="hidden md:flex items-center gap-2 px-5 py-2 rounded-2xl bg-[#087F5B] hover:bg-[#07553F] text-white text-xs font-bold tracking-wide shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
               <Mail className="w-3.5 h-3.5" />

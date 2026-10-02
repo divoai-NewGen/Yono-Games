@@ -1,14 +1,19 @@
+﻿import type { Metadata } from 'next';
 import Hero from '@/components/sections/Hero';
 import NewReleasesCarousel from '@/components/sections/NewReleasesCarousel';
 import ExploreGamesSection from '@/components/sections/ExploreGamesSection';
 import MobileGamesList from '@/components/sections/MobileGamesList';
 import WhyYonoGames from '@/components/sections/WhyYonoGames';
 import HowItWorks from '@/components/sections/HowItWorks';
+import { createMetadata } from '@/utils/seo';
+import { STATIC_PAGE_SEO } from '@/utils/seoData';
 
 import {
   getGames,
   getNewGames,
 } from '@/services/gameService';
+
+export const metadata: Metadata = createMetadata(STATIC_PAGE_SEO.home);
 
 export default async function HomePage() {
   const [allGames, newGames] = await Promise.all([

@@ -23,10 +23,10 @@ export default function Footer() {
           
           {/* Brand Column */}
           <div className="md:col-span-6 space-y-4">
-            <Link href="/home/" className="inline-flex items-center gap-3">
+            <Link href="/" className="inline-flex items-center gap-3">
               <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-sm flex-shrink-0 border border-[#E4ECE7]/60">
                 <Image
-                  src="/images/logo.png"
+                  src="/logonew.png"
                   alt="Real Yono Games Logo"
                   fill
                   className="object-cover"
@@ -67,27 +67,27 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-sm font-medium">
               <li>
-                <Link href="/home/" className="text-[#5D6B78] hover:text-[#087F5B] transition-colors">
+                <Link href="/" className="text-[#5D6B78] hover:text-[#087F5B] transition-colors">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/games/" className="text-[#5D6B78] hover:text-[#087F5B] transition-colors">
+                <Link href="/games" className="text-[#5D6B78] hover:text-[#087F5B] transition-colors">
                   Explore Games
                 </Link>
               </li>
               <li>
-                <Link href="/contact-us/" className="text-[#5D6B78] hover:text-[#087F5B] transition-colors">
+                <Link href="/contact-us" className="text-[#5D6B78] hover:text-[#087F5B] transition-colors">
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link href="/privacy-policy/" className="text-[#5D6B78] hover:text-[#087F5B] transition-colors">
+                <Link href="/privacy-policy" className="text-[#5D6B78] hover:text-[#087F5B] transition-colors">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/disclaimer/" className="text-[#5D6B78] hover:text-[#087F5B] transition-colors">
+                <Link href="/disclaimer" className="text-[#5D6B78] hover:text-[#087F5B] transition-colors">
                   Disclaimer
                 </Link>
               </li>
@@ -104,7 +104,7 @@ export default function Footer() {
             </p>
             <div className="pt-2">
               <Link 
-                href="/contact-us/" 
+                href="/contact-us" 
                 className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-white border border-[#087F5B]/30 hover:bg-[#EEF8F2] text-xs font-semibold text-[#087F5B] transition-all"
               >
                 Reach Support 24/7 →
@@ -136,15 +136,15 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#5D6B78] pt-4">
           <p>© {currentYear} Real Yono Games. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy-policy/" className="hover:text-[#087F5B] transition-colors">
+            <Link href="/privacy-policy" className="hover:text-[#087F5B] transition-colors">
               Privacy Policy
             </Link>
             <span className="text-gray-300">•</span>
-            <Link href="/disclaimer/" className="hover:text-[#087F5B] transition-colors">
+            <Link href="/disclaimer" className="hover:text-[#087F5B] transition-colors">
               Disclaimer
             </Link>
             <span className="text-gray-300">•</span>
-            <Link href="/contact-us/" className="hover:text-[#087F5B] transition-colors">
+            <Link href="/contact-us" className="hover:text-[#087F5B] transition-colors">
               Support
             </Link>
           </div>

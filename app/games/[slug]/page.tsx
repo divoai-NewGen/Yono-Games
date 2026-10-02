@@ -20,6 +20,12 @@ import {
 } from '@/services/gameService';
 
 import GameCard from '@/components/games/GameCard';
+import Breadcrumbs from '@/components/seo/Breadcrumbs';
+import JsonLd from '@/components/seo/JsonLd';
+import { createMetadata } from '@/utils/seo';
+import { STATIC_PAGE_SEO, getGameSeoData } from '@/utils/seoData';
+import { getGameDetailBreadcrumb } from '@/utils/breadcrumbs';
+import { getSoftwareApplicationSchema } from '@/utils/structuredData';
 
 interface GamePageProps {
   params: Promise<{
@@ -47,232 +53,46 @@ export async function generateMetadata({
   const game = await getGameBySlug(slug);
 
   if (!game) {
-    return {
-      title: 'Game Not Found | Real Yono Games',
-      robots: {
-        index: false,
-        follow: false,
-      },
-    };
+    return createMetadata(STATIC_PAGE_SEO.notFound);
   }
 
-  const title =
-    game.seoTitle ||
-    `${game.name} | Real Yono Games`;
-
-  const description =
-    game.seoDescription ||
-    game.shortDescription ||
-    `Explore ${game.name}, including game information, features, updates, and available resources.`;
-
-  const canonicalUrl =
-    `https://realyonogame.com/games/${game.slug}`;
-
-  return {
-    title,
-    description,
-
-    alternates: {
-      canonical: canonicalUrl,
-    },
-
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-        'max-video-preview': -1,
-      },
-    },
-
-    openGraph: {
-      type: 'website',
-      locale: 'en_IN',
-      url: canonicalUrl,
-      siteName: 'Real Yono Games',
-      title,
-      description,
-      images: [
-        {
-          url:
-            game.heroImage ||
-            game.thumbnail ||
-            game.logo ||
-            '/images/hero-full-ribbon-3d.png',
-          alt: `${game.name} game`,
-        },
-      ],
-    },
-
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: [
-        game.heroImage ||
-        game.thumbnail ||
-        game.logo ||
-        '/images/hero-full-ribbon-3d.png',
-      ],
-    },
-  };
+  return createMetadata(getGameSeoData(game));
 }
 
 export default async function GameDetailPage({
   params,
 }: GamePageProps) {
   const { slug } = await params;
-
   const game = await getGameBySlug(slug);
 
   if (!game) {
     notFound();
   }
 
-  const relatedGames = await getRelatedGames(
-    game.slug,
-    3
-  );
-
-  const canonicalUrl =
-    `https://realyonogame.com/games/${game.slug}`;
-
-  /*
-   * Structured data
-   *
-   * Only use rating information when the game actually
-   * provides it. This avoids inventing rating counts.
-   */
-  const schemaJsonLd: Record<string, unknown> = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-
-    '@id': `${canonicalUrl}#software`,
-
-    name: game.name,
-
-    url: canonicalUrl,
-
-    operatingSystem: 'Android',
-
-    applicationCategory: 'GameApplication',
-
-    applicationSubCategory: game.category,
-
-    description:
-      game.seoDescription ||
-      game.shortDescription,
-
-    ...(game.downloadUrl ? { downloadUrl: game.downloadUrl } : {}),
-
-    softwareVersion: game.version,
-
-    fileSize: game.size,
-
-    author: {
-      '@type': 'Organization',
-      name: 'Real Yono Games',
-      url: 'https://realyonogame.com/',
-    },
-  };
-
-  /*
-   * Only add an Offer when a real free download
-   * is actually represented by the data.
-   */
-  if (game.downloadUrl) {
-    schemaJsonLd.offers = {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'INR',
-      availability:
-        'https://schema.org/InStock',
-      url: game.downloadUrl,
-    };
-  }
-
-  /*
-   * Only expose aggregateRating when real rating data
-   * exists. Do not use a fabricated fallback.
-   */
-  if (
-    game.rating &&
-    game.ratingCount
-  ) {
-    schemaJsonLd.aggregateRating = {
-      '@type': 'AggregateRating',
-      ratingValue: String(game.rating),
-      bestRating: '5',
-      worstRating: '1',
-      ratingCount: String(game.ratingCount),
-    };
-  }
-
-  /*
-   * Breadcrumb structured data
-   */
-  const breadcrumbJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://realyonogame.com/',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Games',
-        item: 'https://realyonogame.com/games/',
-      },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: game.name,
-        item: canonicalUrl,
-      },
-    ],
-  };
+  const relatedGames = await getRelatedGames(game.slug, 3);
+  const breadcrumbItems = getGameDetailBreadcrumb(game);
+  const softwareSchema = getSoftwareApplicationSchema(game, `games/${game.slug}`);
 
   return (
     <main className="py-8 sm:py-12 bg-white min-h-screen">
+      <JsonLd id="game-software-schema" data={softwareSchema} />
 
-      {/* Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(schemaJsonLd),
-        }}
-      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
+        {/* Breadcrumb Navigation & Back Link */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <Breadcrumbs items={breadcrumbItems} />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbJsonLd),
-        }}
-      />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-
-        {/* Breadcrumb / Back Navigation */}
-        <nav aria-label="Breadcrumb">
           <Link
-            href="/games/"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#5D6B78] hover:text-[#087F5B] transition-colors group"
+            href="/games"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#5D6B78] hover:text-[#087F5B] transition-colors group self-start sm:self-auto"
           >
             <ArrowLeft
               aria-hidden="true"
               className="w-4 h-4 group-hover:-translate-x-1 transition-transform"
             />
-
             <span>Back to Games Catalog</span>
           </Link>
-        </nav>
+        </div>
 
         {/* Hero Section */}
         <section
@@ -282,28 +102,28 @@ export default async function GameDetailPage({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
 
             {/* Game Artwork */}
-            <div className="lg:col-span-6 relative flex items-center justify-center">
-              <div className="relative w-full max-w-[190px] sm:max-w-[280px] lg:max-w-none aspect-[16/10] sm:aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg sm:shadow-2xl border-2 border-white bg-white">
+            <div className="lg:col-span-4 relative flex items-center justify-center">
+              <div className="relative w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-48 lg:h-48 aspect-square rounded-2xl sm:rounded-3xl overflow-hidden shadow-md sm:shadow-xl border-2 border-white bg-white flex-shrink-0">
 
                 <Image
                   src={
-                    game.heroImage ||
-                    game.thumbnail ||
                     game.logo ||
+                    game.thumbnail ||
+                    game.heroImage ||
                     '/images/hero-full-ribbon-3d.png'
                   }
                   alt={`${game.name} game`}
                   fill
                   priority
                   className="object-cover"
-                  sizes="(max-width: 768px) 200px, 50vw"
+                  sizes="(max-width: 640px) 112px, (max-width: 1024px) 160px, 192px"
                 />
 
               </div>
             </div>
 
             {/* Game Details & Actions */}
-            <div className="lg:col-span-6 space-y-4 sm:space-y-5">
+            <div className="lg:col-span-8 space-y-4 sm:space-y-5">
 
               {/* Badges */}
               <div className="flex flex-wrap items-center gap-2">

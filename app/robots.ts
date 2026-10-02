@@ -1,4 +1,5 @@
-import { MetadataRoute } from 'next';
+﻿import { MetadataRoute } from 'next';
+import { SITE_URL } from '@/utils/seo';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,31 +7,17 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin/', '/api/', '/private/'],
-      },
-      {
-        userAgent: [
-          'Googlebot',
-          'Google-Extended',
-          'GPTBot',
-          'ChatGPT-User',
-          'ClaudeBot',
-          'Claude-Web',
-          'PerplexityBot',
-          'Bytespider',
-          'bingbot',
-          'Applebot',
+        disallow: [
+          '/admin',
+          '/admin/*',
+          '/api',
+          '/api/*',
+          '/*?*search=*',
+          '/*?*filter=*',
         ],
-        allow: '/',
-        disallow: ['/admin/', '/api/', '/private/'],
       },
     ],
-    sitemap: [
-      'https://realyonogame.com/sitemap.xml',
-      'https://www.realyonogame.com/sitemap.xml',
-    ],
-    host: 'https://realyonogame.com',
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }
-
- 

@@ -614,7 +614,7 @@ export default function AdminDashboardPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-[#D5E2D9]">
-              <Image src="/images/logo.png" alt="Real Yono Games" fill className="object-contain" />
+              <Image src="/logonew.png" alt="Real Yono Games" fill className="object-contain" />
             </div>
             <div>
               <div className="flex items-center gap-2">

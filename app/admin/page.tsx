@@ -462,7 +462,7 @@ export default function AdminDashboardPage() {
 
       if (res.ok && result.success) {
         setGames(prev => prev.map(g => g.id === game.id ? { ...g, [field]: updatedValue } : g));
-        const label = field === 'pinned' ? (updatedValue ? 'Pinned to Top ??' : 'Unpinned from Top') : field === 'featured' ? 'Featured' : 'New Release';
+        const label = field === 'pinned' ? (updatedValue ? 'Pinned to Top 📌' : 'Unpinned from Top') : field === 'featured' ? 'Featured' : 'New Release';
           showToast('success', `${game.name}: ${label} updated!`);
       } else {
         showToast('error', result.error || 'Failed to update toggle.');
@@ -859,6 +859,7 @@ export default function AdminDashboardPage() {
                         <th className="py-3.5 px-6">Game Info</th>
                         <th className="py-3.5 px-4">Category</th>
                         <th className="py-3.5 px-4">Version & Size</th>
+                        <th className="py-3.5 px-4 text-center">Pin to Top</th>
                         <th className="py-3.5 px-4 text-center">Featured</th>
                         <th className="py-3.5 px-4 text-center">New Release</th>
                         <th className="py-3.5 px-6 text-right">Actions</th>
@@ -882,7 +883,7 @@ export default function AdminDashboardPage() {
                                   <h3 className="font-bold text-sm text-[#172331] truncate">{game.name}</h3>
                                   {game.pinned && (
                                     <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-800 text-[10px] font-black uppercase tracking-wider shrink-0">
-                                      ?? TOP
+                                      📌 TOP
                                     </span>
                                   )}
                                 </div>
@@ -903,7 +904,23 @@ export default function AdminDashboardPage() {
                             <div>{game.size || '38 MB'}</div>
                           </td>
 
-                          <td className="py-4 px-4 text-center">
+                                                    <td className="py-4 px-4 text-center">
+                            <button
+                              type="button"
+                              onClick={() => handleQuickToggle(game, 'pinned')}
+                              title={game.pinned ? 'Click to unpin from top' : 'Click to pin game to top of all lists'}
+                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm ${
+                                game.pinned
+                                  ? 'bg-amber-500 text-white shadow-amber-500/25 hover:bg-amber-600 ring-2 ring-amber-300'
+                                  : 'bg-[#F1F6F3] text-[#5D6B78] hover:bg-amber-50 hover:text-amber-700 border border-[#E4ECE7]'
+                              }`}
+                            >
+                              <Pin className={`w-3.5 h-3.5 ${game.pinned ? 'fill-current' : ''}`} />
+                              <span>{game.pinned ? 'Pinned 📌' : 'Pin Top'}</span>
+                            </button>
+                          </td>
+
+<td className="py-4 px-4 text-center">
                             <button
                               onClick={() => handleQuickToggle(game, 'featured')}
                               className={`w-9 h-5 rounded-full transition-colors relative inline-block ${
@@ -935,7 +952,15 @@ export default function AdminDashboardPage() {
 
                           <td className="py-4 px-6 text-right">
                             <div className="inline-flex items-center gap-2">
-                              <Link
+                                                            <button
+                                type="button"
+                                onClick={() => handleMoveToTop(game)}
+                                className="p-2 text-amber-600 hover:text-amber-700 rounded-lg hover:bg-amber-50 transition-colors"
+                                title="Move directly to absolute #1 Top position"
+                              >
+                                <ArrowUpToLine className="w-4 h-4" />
+                              </button>
+<Link
                                 href={`/games/${game.slug}`}
                                 target="_blank"
                                 className="p-2 text-[#5D6B78] hover:text-[#087F5B] rounded-lg hover:bg-[#F1F6F3] transition-colors"
@@ -1605,7 +1630,20 @@ export default function AdminDashboardPage() {
                   </div>
 
                   {/* Toggles */}
-                  <div className="flex items-center gap-6 pt-2">
+                  <div className="flex flex-wrap items-center gap-4 pt-2">
+                    <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-[#172331] bg-amber-50 hover:bg-amber-100 px-3 py-2 rounded-xl border border-amber-200 transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={formData.pinned || false}
+                        onChange={e => setFormData({ ...formData, pinned: e.target.checked })}
+                        className="rounded text-amber-600 focus:ring-amber-500 w-4 h-4 cursor-pointer"
+                      />
+                      <span className="flex items-center gap-1.5 text-amber-900 font-bold">
+                        <Pin className="w-3.5 h-3.5 fill-current text-amber-600" /> Pin to Top (List mein sabse upar)
+                      </span>
+                    </label>
+
+
                     <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-[#172331]">
                       <input
                         type="checkbox"

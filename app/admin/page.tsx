@@ -29,7 +29,9 @@ import {
   Clock,
   CheckCircle2,
   Reply,
-  Filter
+  Filter,
+  Pin,
+  ArrowUpToLine
 } from 'lucide-react';
 import { Game, GameCategory } from '@/types/game';
 import { ContactMessage } from '@/types/message';
@@ -99,6 +101,8 @@ export default function AdminDashboardPage() {
     featured: false,
     newRelease: true,
     popular: true,
+    pinned: false,
+    order: 1,
     seoTitle: '',
     seoDescription: '',
   });
@@ -314,6 +318,8 @@ export default function AdminDashboardPage() {
       featured: false,
       newRelease: true,
       popular: true,
+      pinned: false,
+      order: 1,
       seoTitle: '',
       seoDescription: '',
     });
@@ -404,7 +410,39 @@ export default function AdminDashboardPage() {
   };
 
   // Quick Toggle Featured / New
-  const handleQuickToggle = async (game: Game, field: 'featured' | 'newRelease') => {
+  
+    // Move game directly to #1 Top position
+    const handleMoveToTop = async (game: Game) => {
+      try {
+        const res = await fetch('/api/admin/games', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: game.id,
+            action: 'moveToTop',
+          }),
+        });
+
+        const text = await res.text();
+        let result: any = {};
+        try { result = JSON.parse(text); } catch {}
+
+        if (res.ok && result.success) {
+          setGames(prev => {
+            const target = { ...game, pinned: true, order: 1 };
+            const remaining = prev.filter(g => g.id !== game.id);
+            return [target, ...remaining];
+          });
+          showToast('success', `?? ${game.name} is now at #1 TOP position!`);
+        } else {
+          showToast('error', result.error || 'Failed to move game to top.');
+        }
+      } catch (err) {
+        showToast('error', 'Failed to move game to top.');
+      }
+    };
+
+  const handleQuickToggle = async (game: Game, field: 'featured' | 'newRelease' | 'pinned') => {
     try {
       const updatedValue = !game[field];
       const res = await fetch('/api/admin/games', {
@@ -424,7 +462,8 @@ export default function AdminDashboardPage() {
 
       if (res.ok && result.success) {
         setGames(prev => prev.map(g => g.id === game.id ? { ...g, [field]: updatedValue } : g));
-        showToast('success', `${game.name}: ${field === 'featured' ? 'Featured' : 'New Release'} updated!`);
+        const label = field === 'pinned' ? (updatedValue ? 'Pinned to Top ??' : 'Unpinned from Top') : field === 'featured' ? 'Featured' : 'New Release';
+          showToast('success', `${game.name}: ${label} updated!`);
       } else {
         showToast('error', result.error || 'Failed to update toggle.');
       }
@@ -839,7 +878,14 @@ export default function AdminDashboardPage() {
                                 />
                               </div>
                               <div className="min-w-0">
-                                <h3 className="font-bold text-sm text-[#172331] truncate">{game.name}</h3>
+                                <div className="flex items-center gap-2">
+                                  <h3 className="font-bold text-sm text-[#172331] truncate">{game.name}</h3>
+                                  {game.pinned && (
+                                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-800 text-[10px] font-black uppercase tracking-wider shrink-0">
+                                      ?? TOP
+                                    </span>
+                                  )}
+                                </div>
                                 <p className="text-xs text-[#5D6B78] truncate max-w-xs">{game.tagline}</p>
                                 <span className="text-[11px] text-[#087F5B] font-mono">/games/{game.slug}</span>
                               </div>

@@ -33,6 +33,29 @@ function getRedisClient(): Redis | null {
 }
 
 /**
+ * Sorts games so that pinned / top games always appear at the top.
+ */
+export function sortGamesWithTopPriority(games: Game[]): Game[] {
+  return [...games].sort((a, b) => {
+    // 1. Pinned to top takes absolute highest priority
+    const aPinned = Boolean(a.pinned);
+    const bPinned = Boolean(b.pinned);
+    if (aPinned !== bPinned) {
+      return aPinned ? -1 : 1;
+    }
+
+    // 2. Custom manual order if specified (e.g. 1, 2, 3...)
+    if (a.order !== undefined && b.order !== undefined && a.order !== b.order) {
+      return a.order - b.order;
+    }
+    if (a.order !== undefined && b.order === undefined) return -1;
+    if (a.order === undefined && b.order !== undefined) return 1;
+
+    return 0; // preserve current order
+  });
+}
+
+/**
  * Read games directly from Redis / local JSON without cache layer.
  */
 async function readGamesFromDiskInternal(): Promise<Game[]> {
@@ -44,12 +67,12 @@ async function readGamesFromDiskInternal(): Promise<Game[]> {
       const cloudGames = await redis.get<Game[]>(REDIS_KEY);
 
       if (Array.isArray(cloudGames)) {
-        return cloudGames;
+        return sortGamesWithTopPriority(cloudGames as Game[]);
       }
 
       // Seed Redis only when key doesn't exist at all (null).
       await redis.set(REDIS_KEY, GAMES_DATA);
-      return [...GAMES_DATA];
+      return sortGamesWithTopPriority([...GAMES_DATA]);
     } catch (error) {
       console.error(
         'Redis read error, falling back to local storage:',
@@ -69,7 +92,7 @@ async function readGamesFromDiskInternal(): Promise<Game[]> {
       const parsed: unknown = JSON.parse(fileData);
 
       if (Array.isArray(parsed)) {
-        return parsed as Game[];
+        return sortGamesWithTopPriority(parsed as Game[]);
       }
     }
   } catch (error) {
@@ -80,7 +103,7 @@ async function readGamesFromDiskInternal(): Promise<Game[]> {
   }
 
   // 3. Static fallback (only when no file/data exists)
-  return [...GAMES_DATA];
+  return sortGamesWithTopPriority([...GAMES_DATA]);
 }
 
 /**
@@ -385,4 +408,25 @@ export async function deleteGame(
   await writeGamesToDisk(filteredGames);
 
   return true;
+}
+/**
+ * Move a game to the very #1 position in the game list and mark pinned.
+ */
+export async function moveGameToTop(id: string): Promise<Game | null> {
+  const games = await readGamesFromDiskInternal();
+  const index = games.findIndex((g) => g.id === id);
+  if (index === -1) return null;
+
+  const targetGame: Game = {
+    ...games[index],
+    pinned: true,
+    order: 1,
+  };
+
+  // Remove game from current position and place it at index 0
+  const remaining = games.filter((g) => g.id !== id);
+  const reordered = [targetGame, ...remaining];
+
+  await writeGamesToDisk(reordered);
+  return targetGame;
 }

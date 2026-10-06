@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { getGames, createGame, updateGame, deleteGame } from '@/services/gameService';
+import { getGames, createGame, updateGame, deleteGame, moveGameToTop } from '@/services/gameService';
 import { Game } from '@/types/game';
 
 function revalidateAllGamePaths(slug?: string) {
@@ -102,6 +102,8 @@ export async function POST(request: NextRequest) {
       featured: Boolean(body.featured),
       newRelease: Boolean(body.newRelease),
       popular: Boolean(body.popular !== false),
+      pinned: Boolean(body.pinned),
+      order: body.order !== undefined && body.order !== '' ? Number(body.order) : undefined,
       seoTitle: body.seoTitle || `${body.name} APK Download (Official 2026) | Yono Games`,
       seoDescription: body.seoDescription || `Download ${body.name} official APK. Enjoy instant withdrawals, free welcome bonus, and certified fair play.`,
     };
@@ -127,6 +129,20 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     if (!body.id) {
       return NextResponse.json({ error: 'Game ID is required to update.' }, { status: 400 });
+    }
+
+    // Quick action: Move game to #1 Top position
+    if (body.action === 'moveToTop') {
+      const moved = await moveGameToTop(body.id);
+      if (!moved) {
+        return NextResponse.json({ error: 'Game not found.' }, { status: 404 });
+      }
+      revalidateAllGamePaths(moved.slug);
+      return NextResponse.json({
+        success: true,
+        message: `${moved.name} moved to #1 Top position!`,
+        game: moved,
+      });
     }
 
     const updates = { ...body };

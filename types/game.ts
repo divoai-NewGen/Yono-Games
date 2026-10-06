@@ -32,6 +32,8 @@ export interface Game {
   featured?: boolean;
   newRelease?: boolean;
   popular?: boolean;
+  pinned?: boolean;
+  order?: number;
 
   seoTitle: string;
   seoDescription: string;

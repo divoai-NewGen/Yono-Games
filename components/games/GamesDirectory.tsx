@@ -69,6 +69,17 @@ export default function GamesDirectory({ initialGames, initialCategory = 'All' }
         return matchesCategory && matchesSearch;
       })
       .sort((a, b) => {
+        // Pinned to Top games always float to the top
+        const aPinned = Boolean(a.pinned);
+        const bPinned = Boolean(b.pinned);
+        if (aPinned !== bPinned) {
+          return aPinned ? -1 : 1;
+        }
+
+        if (a.order !== undefined && b.order !== undefined && a.order !== b.order) {
+          return a.order - b.order;
+        }
+
         if (sortBy === 'rating') return b.rating - a.rating;
         if (sortBy === 'newest') return (b.newRelease ? 1 : 0) - (a.newRelease ? 1 : 0);
         return (b.popular ? 1 : 0) - (a.popular ? 1 : 0);

@@ -60,7 +60,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Navigation Links - Exact requested items */}
+          {/* Navigation Links */}
           <div className="md:col-span-3 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-[#07553F]">
               Site Navigation
@@ -94,7 +94,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Quick Support & Legal Notice */}
+          {/* Quick Support */}
           <div className="md:col-span-3 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-[#07553F]">
               Player Assistance
@@ -107,13 +107,13 @@ export default function Footer() {
                 href="/contact-us" 
                 className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-white border border-[#087F5B]/30 hover:bg-[#EEF8F2] text-xs font-semibold text-[#087F5B] transition-all"
               >
-                Reach Support 24/7 →
+                Reach Support 24/7 &rarr;
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Responsible Gaming Notice Card - data-nosnippet prevents search bots from using this disclaimer text in search snippets/AI overviews */}
+        {/* Responsible Gaming Notice Card */}
         <div data-nosnippet className="my-8 p-4 sm:p-5 rounded-2xl bg-white border border-[#E4ECE7] shadow-xs flex items-start gap-3.5">
           <AlertCircle className="w-5 h-5 text-[#D6A83E] flex-shrink-0 mt-0.5" />
           <div className="space-y-3 flex-1">
@@ -132,10 +132,25 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom copyright */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#5D6B78] pt-4">
-          <p>© {currentYear} Real Yono Games. All rights reserved.</p>
-          <div className="flex items-center gap-6">
+        {/* Bottom copyright with Developed by DivoAi in center */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#5D6B78] pt-4">
+          <p className="order-2 md:order-1 text-center md:text-left">
+            &copy; {currentYear} Real Yono Games. All rights reserved.
+          </p>
+
+          <p className="order-1 md:order-2 text-center font-medium">
+            Developed by{' '}
+            <a
+              href="https://divoai.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#087F5B] hover:text-[#07553F] font-bold hover:underline transition-colors"
+            >
+              DivoAi
+            </a>
+          </p>
+
+          <div className="flex items-center gap-6 order-3">
             <Link href="/privacy-policy" className="hover:text-[#087F5B] transition-colors">
               Privacy Policy
             </Link>

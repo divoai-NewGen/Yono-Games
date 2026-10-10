@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getGames, createGame, updateGame, deleteGame, moveGameToTop } from '@/services/gameService';
 import { Game } from '@/types/game';
+import { validateExternalDownloadUrl, generateAutoSeo } from '@/utils/seoGenerator';
 
 function revalidateAllGamePaths(slug?: string) {
   try {
@@ -42,26 +43,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let downloadUrl: string | null = null;
-    if (typeof body.downloadUrl === 'string' && body.downloadUrl.trim()) {
-      const trimmed = body.downloadUrl.trim();
-      try {
-        const parsed = new URL(trimmed);
-        if (['http:', 'https:'].includes(parsed.protocol)) {
-          downloadUrl = trimmed;
-        } else {
-          return NextResponse.json(
-            { error: 'Invalid download URL protocol. Only HTTP and HTTPS are allowed.' },
-            { status: 400 }
-          );
-        }
-      } catch {
-        return NextResponse.json(
-          { error: 'Invalid download URL format. Must be a valid absolute URL.' },
-          { status: 400 }
-        );
-      }
+    const urlValidation = validateExternalDownloadUrl(body.downloadUrl);
+    if (!urlValidation.isValid) {
+      return NextResponse.json(
+        { error: urlValidation.error || 'Invalid external download URL. Only secure HTTPS URLs are permitted.' },
+        { status: 400 }
+      );
     }
+    const downloadUrl = urlValidation.normalizedUrl;
 
     const slug = body.slug || body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     const id = body.id || slug;
@@ -104,8 +93,8 @@ export async function POST(request: NextRequest) {
       popular: Boolean(body.popular !== false),
       pinned: Boolean(body.pinned),
       order: body.order !== undefined && body.order !== '' ? Number(body.order) : undefined,
-      seoTitle: body.seoTitle || `${body.name} APK Download (Official 2026) | Yono Games`,
-      seoDescription: body.seoDescription || `Download ${body.name} official APK. Enjoy instant withdrawals, free welcome bonus, and certified fair play.`,
+      seoTitle: body.seoTitle || `${body.name} APK Download & Review (${new Date().getFullYear()}) | Yono Games`,
+      seoDescription: body.seoDescription || `Explore ${body.name} gameplay rules, mobile APK details, and player guide on Real Yono Games.`,
     };
 
     const savedGame = await createGame(newGame);
@@ -147,27 +136,14 @@ export async function PUT(request: NextRequest) {
 
     const updates = { ...body };
     if (updates.downloadUrl !== undefined) {
-      if (typeof updates.downloadUrl === 'string' && updates.downloadUrl.trim()) {
-        const trimmed = updates.downloadUrl.trim();
-        try {
-          const parsed = new URL(trimmed);
-          if (['http:', 'https:'].includes(parsed.protocol)) {
-            updates.downloadUrl = trimmed;
-          } else {
-            return NextResponse.json(
-              { error: 'Invalid download URL protocol. Only HTTP and HTTPS are allowed.' },
-              { status: 400 }
-            );
-          }
-        } catch {
-          return NextResponse.json(
-            { error: 'Invalid download URL format. Must be a valid absolute URL.' },
-            { status: 400 }
-          );
-        }
-      } else {
-        updates.downloadUrl = null;
+      const urlValidation = validateExternalDownloadUrl(updates.downloadUrl);
+      if (!urlValidation.isValid) {
+        return NextResponse.json(
+          { error: urlValidation.error || 'Invalid external download URL. Only secure HTTPS URLs are permitted.' },
+          { status: 400 }
+        );
       }
+      updates.downloadUrl = urlValidation.normalizedUrl;
     }
 
     const updated = await updateGame(body.id, updates);

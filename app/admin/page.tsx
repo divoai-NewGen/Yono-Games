@@ -35,7 +35,7 @@ import {
 } from 'lucide-react';
 import { Game, GameCategory } from '@/types/game';
 import { ContactMessage } from '@/types/message';
-import { generateAutoSeo, generateSlug } from '@/utils/seoGenerator';
+import { generateAutoSeo, generateSlug, validateExternalDownloadUrl } from '@/utils/seoGenerator';
 
 const CATEGORIES: GameCategory[] = [
   'Yono Games',
@@ -479,26 +479,27 @@ export default function AdminDashboardPage() {
       showToast('error', 'Game Name is required.');
       return;
     }
-    let downloadUrl: string | null = null;
-    if (formData.downloadUrl && formData.downloadUrl.trim()) {
-      const trimmed = formData.downloadUrl.trim();
-      try {
-        const parsed = new URL(trimmed);
-        if (!['http:', 'https:'].includes(parsed.protocol)) {
-          showToast('error', 'Please enter a valid HTTP or HTTPS download URL.');
-          return;
-        }
-        downloadUrl = trimmed;
-      } catch {
-        showToast('error', 'Please enter a valid absolute download URL (e.g. https://...).');
-        return;
-      }
+    const urlValidation = validateExternalDownloadUrl(formData.downloadUrl);
+    if (!urlValidation.isValid) {
+      showToast('error', urlValidation.error || 'Please enter a valid HTTPS download URL.');
+      return;
     }
+    const downloadUrl = urlValidation.normalizedUrl;
 
     // Auto-fill SEO if empty
+    const currentYear = new Date().getFullYear();
     const slug = formData.slug?.trim() || generateSlug(formData.name);
-    const seoTitle = formData.seoTitle?.trim() || `${formData.name} APK Download (Official 2026) | Yono Games`;
-    const seoDescription = formData.seoDescription?.trim() || `Download ${formData.name} official APK. Enjoy instant withdrawals and fair play.`;
+    const autoSeoFallback = generateAutoSeo({
+      name: formData.name,
+      category: formData.category || 'Yono Games',
+      bonus: formData.bonus,
+      version: formData.version,
+      size: formData.size,
+      downloadUrl,
+      existingDescription: formData.description,
+    });
+    const seoTitle = formData.seoTitle?.trim() || autoSeoFallback.seoTitle;
+    const seoDescription = formData.seoDescription?.trim() || autoSeoFallback.seoDescription;
 
     const payload = {
       ...formData,
@@ -1533,16 +1534,30 @@ export default function AdminDashboardPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-[#5D6B78] mb-1">
-                      External Download URL <span className="text-xs font-normal text-[#8A97A3]">(Optional)</span>
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-semibold text-[#5D6B78]">
+                        External Download URL <span className="text-xs font-normal text-[#8A97A3]">(Client-provided HTTPS link)</span>
+                      </label>
+                      {formData.downloadUrl && !formData.downloadUrl.startsWith('https://') && (
+                        <span className="text-[11px] text-amber-600 font-medium">⚠️ Only secure HTTPS links allowed</span>
+                      )}
+                    </div>
                     <input
                       type="url"
-                      placeholder="Enter the real external APK/download URL"
+                      placeholder="https://example.com/download/app.apk"
                       value={formData.downloadUrl || ''}
                       onChange={e => setFormData({ ...formData, downloadUrl: e.target.value })}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-[#D5E2D9] text-sm focus:outline-none focus:ring-2 focus:ring-[#087F5B]"
                     />
+                    {!formData.downloadUrl ? (
+                      <p className="text-[11px] text-[#5D6B78] mt-1">
+                        ℹ️ If left empty, this game will be published as an informational guide without an external download button.
+                      </p>
+                    ) : (
+                      <p className="text-[11px] text-[#087F5B] mt-1">
+                        ✓ Download button will redirect visitors directly to this client-supplied destination.
+                      </p>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

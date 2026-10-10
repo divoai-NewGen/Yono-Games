@@ -1,5 +1,5 @@
-﻿import { redirect, RedirectType } from 'next/navigation';
+import { permanentRedirect } from 'next/navigation';
 
 export default function HomeRedirect() {
-  redirect('/', RedirectType.replace);
+  permanentRedirect('/');
 }

@@ -199,8 +199,8 @@ export default async function GameDetailPage({
                     </span>
                   </a>
                 ) : (
-                  <div className="w-full py-3.5 px-4 rounded-2xl bg-[#EEF8F2] border border-[#087F5B]/20 text-center text-xs sm:text-sm font-bold text-[#087F5B]">
-                    <span>Official Verified Web Edition</span>
+                  <div className="w-full py-3.5 px-4 rounded-2xl bg-[#F7FBF8] border border-[#D5E2D9] text-center text-xs sm:text-sm font-semibold text-[#5D6B78]">
+                    <span>Direct APK Link Pending Client Supply</span>
                   </div>
                 )}
 
@@ -233,7 +233,7 @@ export default async function GameDetailPage({
                     />
 
                     <span>
-                      Verified Download
+                      {game.downloadUrl ? 'Direct APK Link' : 'Player Information Guide'}
                     </span>
                   </div>
 
@@ -450,7 +450,7 @@ export default async function GameDetailPage({
                       className="w-3.5 h-3.5"
                     />
 
-                    {game.downloadUrl ? 'Verified APK' : 'Instant Play'}
+                    {game.downloadUrl ? 'APK Download' : 'Informational Guide'}
                   </strong>
                 </li>
 
@@ -545,7 +545,7 @@ export default async function GameDetailPage({
               </div>
 
               <Link
-                href="/games/"
+                href="/games"
                 className="text-xs font-bold text-[#087F5B] hover:underline whitespace-nowrap"
               >
                 Browse All Games →

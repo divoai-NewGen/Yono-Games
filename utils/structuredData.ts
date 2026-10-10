@@ -1,4 +1,4 @@
-﻿import { SITE_URL, SITE_NAME, canonicalUrl } from './seo';
+import { SITE_URL, SITE_NAME, canonicalUrl } from './seo';
 import { Game } from '@/types/game';
 
 /**
@@ -38,7 +38,7 @@ export function getWebSiteSchema() {
     url: `${SITE_URL}/`,
     name: SITE_NAME,
     description:
-      'Official gaming directory and platform for verified Yono games, APK downloads, and mobile gaming resources.',
+      'Gaming directory and resource platform for mobile games, game information, APK details, and player guides.',
     publisher: {
       '@id': `${SITE_URL}/#organization`,
     },
@@ -105,7 +105,11 @@ export function getWebPageSchema(options: {
 
 /**
  * SoftwareApplication Schema (JSON-LD) for Game Details.
- * Strictly adheres to Google Guidelines: ONLY includes aggregateRating when authentic rating data is available.
+ * Strictly adheres to Google Guidelines:
+ * - Does not claim this directory is the author/developer of third-party apps.
+ * - Only includes aggregateRating when authentic positive numeric values are present.
+ * - Does not invent review counts.
+ * - Connects the page truthfully to visible on-page content.
  */
 export function getSoftwareApplicationSchema(game: Game, pageUrl: string) {
   const resolvedUrl = canonicalUrl(pageUrl);
@@ -128,18 +132,13 @@ export function getSoftwareApplicationSchema(game: Game, pageUrl: string) {
     description:
       game.seoDescription ||
       game.shortDescription ||
-      `Official verified APK download and gameplay information for ${game.name}.`,
+      `Gameplay information, APK details, and player guide for ${game.name}.`,
     softwareVersion: game.version || '1.0.0',
-    fileSize: game.size || '35 MB',
-    author: {
-      '@id': `${SITE_URL}/#organization`,
-    },
-    publisher: {
-      '@id': `${SITE_URL}/#organization`,
-    },
+    fileSize: game.size || '38 MB',
   };
 
-  if (game.downloadUrl && game.downloadUrl.startsWith('http')) {
+  // Only include offer/downloadUrl when an authentic external HTTPS download link is configured
+  if (game.downloadUrl && typeof game.downloadUrl === 'string' && game.downloadUrl.startsWith('https://')) {
     schema.downloadUrl = game.downloadUrl;
     schema.offers = {
       '@type': 'Offer',
@@ -150,17 +149,17 @@ export function getSoftwareApplicationSchema(game: Game, pageUrl: string) {
     };
   }
 
-  // Parse rating genuinely: Only add if numeric rating is valid (between 1 and 5)
+  // Parse rating genuinely: Only add if numeric rating is valid (between 1 and 5) and ratingCount is genuine
   const numericRating = typeof game.rating === 'number' ? game.rating : parseFloat(String(game.rating));
   const numericCount = game.ratingCount ? parseInt(String(game.ratingCount).replace(/[^0-9]/g, ''), 10) : 0;
 
-  if (!isNaN(numericRating) && numericRating >= 1 && numericRating <= 5) {
+  if (!isNaN(numericRating) && numericRating >= 1 && numericRating <= 5 && numericCount > 0) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: numericRating.toFixed(1),
       bestRating: '5',
       worstRating: '1',
-      ratingCount: numericCount > 0 ? numericCount : 100,
+      ratingCount: numericCount,
     };
   }
 

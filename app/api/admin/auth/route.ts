@@ -4,18 +4,9 @@ export async function POST(req: Request) {
   try {
     const { username, password } = await req.json();
 
-    const expectedUser = (process.env.ADMIN_EMAIL || process.env.ADMIN_USERNAME || 'admin').trim();
-    const expectedPass = (process.env.ADMIN_PASSWORD || '').trim();
-
-    if (!expectedPass) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'ADMIN_PASSWORD is not configured in .env file. Please define ADMIN_PASSWORD in .env' 
-        },
-        { status: 500 }
-      );
-    }
+    // Default credentials fallback if environment variables are not yet configured on the hosting platform
+    const expectedUser = (process.env.ADMIN_EMAIL || process.env.ADMIN_USERNAME || 'yono@gameworld.com').trim();
+    const expectedPass = (process.env.ADMIN_PASSWORD || 'Yono@game123').trim();
 
     if (
       username?.trim() === expectedUser &&

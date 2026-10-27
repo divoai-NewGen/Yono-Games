@@ -55,11 +55,21 @@ export async function POST(request: NextRequest) {
     const slug = body.slug || body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     const id = body.id || slug;
 
+    const autoSeo = generateAutoSeo({
+      name: body.name,
+      category: body.category,
+      bonus: body.bonus,
+      version: body.version,
+      size: body.size,
+      downloadUrl,
+      existingDescription: body.description,
+    });
+
     const newGame: Game = {
       id,
       slug,
       name: body.name,
-      tagline: body.tagline || 'Experience Premium Online Gaming with Instant Rewards',
+      tagline: body.tagline || 'Explore Popular Mobile Games & Player Resources',
       logo: body.logo || '/images/hero-vibrant-3d.png',
       thumbnail: body.thumbnail || body.logo || '/images/hero-vibrant-3d.png',
       heroImage: body.heroImage || body.logo || '/images/hero-vibrant-3d.png',
@@ -68,33 +78,33 @@ export async function POST(request: NextRequest) {
         : [body.logo || '/images/hero-vibrant-3d.png'],
       category: body.category,
       categories: body.categories || [body.category],
-      rating: body.rating || 4.8,
-      ratingCount: body.ratingCount || '24.5K reviews',
-      players: body.players || '25,000+ Online',
-      downloads: body.downloads || '1.2M+ Downloads',
-      bonus: body.bonus || '₹1,000 Welcome Bonus',
-      shortDescription: body.shortDescription || `${body.name} official APK download on Yono Games.`,
-      description: body.description || `${body.name} is a high-octane casual gaming experience with instant cash withdrawals.`,
+      rating: body.rating || 4.5,
+      ratingCount: body.ratingCount || '',
+      players: body.players || '',
+      downloads: body.downloads || '',
+      bonus: body.bonus || '',
+      shortDescription: body.shortDescription || `${body.name} mobile game overview and guide on Real Yono Games.`,
+      description: body.description || `${body.name} is a mobile game available in the ${body.category} category. Read game specifications and instructions before downloading.`,
       features: body.features && body.features.length > 0 ? body.features : [
-        'Certified Random Number Generator (RNG) fair play standard',
-        'Instant withdrawal processing with round-the-clock support',
-        'Daily login rewards and exclusive VIP loyalty perks'
+        'Mobile-optimized interactive gameplay',
+        'Intuitive lobby and multiplayer game modes',
+        'Regular gameplay challenges and rewards'
       ],
       howToPlay: body.howToPlay && body.howToPlay.length > 0 ? body.howToPlay : [
-        `Download and launch the ${body.name} application on your mobile device`,
-        'Choose your preferred table room based on stakes',
-        'Withdraw your earnings directly to your UPI ID'
+        `Download and install ${body.name} on your compatible device`,
+        'Complete registration or continue via guest access',
+        'Select your preferred game table to begin'
       ],
       downloadUrl,
-      version: body.version || 'v5.0.1',
-      size: body.size || '42.0 MB',
+      version: body.version || '',
+      size: body.size || '',
       featured: Boolean(body.featured),
       newRelease: Boolean(body.newRelease),
       popular: Boolean(body.popular !== false),
       pinned: Boolean(body.pinned),
       order: body.order !== undefined && body.order !== '' ? Number(body.order) : undefined,
-      seoTitle: body.seoTitle || `${body.name} APK Download & Review (${new Date().getFullYear()}) | Yono Games`,
-      seoDescription: body.seoDescription || `Explore ${body.name} gameplay rules, mobile APK details, and player guide on Real Yono Games.`,
+      seoTitle: body.seoTitle || autoSeo.seoTitle,
+      seoDescription: body.seoDescription || autoSeo.seoDescription,
     };
 
     const savedGame = await createGame(newGame);

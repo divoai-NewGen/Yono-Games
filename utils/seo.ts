@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL || 'https://realyonogame.com'
@@ -10,21 +10,23 @@ export const DEFAULT_LOCALE = 'en_IN';
 
 /**
  * Returns a strictly formatted, canonical absolute URL.
- * Ensures https, trimmed whitespace, lowercase, and no trailing slash (except root).
+ * - Root returns https://realyonogame.com/ (trailing slash, per convention).
+ * - All other paths: lowercase, no trailing slash, url-encoded slugs preserved.
  */
 export function canonicalUrl(path: string = ''): string {
-  if (!path || path === '/' || path === '') {
+  const trimmed = path.trim().replace(/^\/+/, '').replace(/\/+$/, '');
+
+  if (!trimmed) {
     return `${SITE_URL}/`;
   }
 
-  // Remove leading and trailing slashes
-  const cleanPath = path
-    .trim()
-    .toLowerCase()
-    .replace(/^\/+/, '')
-    .replace(/\/+$/, '');
+  // Lowercase only the path segments that are plain ASCII slugs.
+  // Do not transform Cloudinary image URLs or other absolute URLs passed in by accident.
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed;
+  }
 
-  return `${SITE_URL}/${cleanPath}`;
+  return `${SITE_URL}/${trimmed.toLowerCase()}`;
 }
 
 export interface MetadataOptions {
@@ -39,8 +41,13 @@ export interface MetadataOptions {
 }
 
 /**
- * Centralized, production-grade Metadata builder for Next.js App Router.
- * Ensures consistent canonicals, Open Graph, Twitter cards, and robots directives.
+ * Centralised, production-grade Metadata builder for Next.js App Router.
+ *
+ * Guarantees:
+ * - Unique canonical per page (via `path`).
+ * - Open Graph image with required width/height for validators.
+ * - Correct robots directives.
+ * - No conflicting layout ↔ page metadata (layout sets only fallback / site-level fields).
  */
 export function createMetadata({
   title,
@@ -53,13 +60,21 @@ export function createMetadata({
   keywords,
 }: MetadataOptions): Metadata {
   const canonical = canonicalUrl(path);
-  const imageUrl = image
-    ? image.startsWith('http')
-      ? image
-      : `${SITE_URL}${image.startsWith('/') ? '' : '/'}${image}`
-    : DEFAULT_OG_IMAGE;
 
-  const resolvedTitleString = typeof title === 'string' ? title : title.default;
+  // Safely resolve OG image to an absolute URL
+  let imageUrl: string;
+  if (!image) {
+    imageUrl = DEFAULT_OG_IMAGE;
+  } else if (image.startsWith('http://') || image.startsWith('https://')) {
+    imageUrl = image;
+  } else {
+    imageUrl = `${SITE_URL}${image.startsWith('/') ? '' : '/'}${image}`;
+  }
+
+  const resolvedTitleString =
+    typeof title === 'string' ? title : title.default;
+
+  const altText = imageAlt || `${resolvedTitleString} – ${SITE_NAME}`;
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -100,7 +115,9 @@ export function createMetadata({
       images: [
         {
           url: imageUrl,
-          alt: imageAlt || `${resolvedTitleString} - ${SITE_NAME}`,
+          width: 1200,
+          height: 630,
+          alt: altText,
         },
       ],
     },

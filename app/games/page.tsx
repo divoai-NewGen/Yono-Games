@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import type { Metadata } from 'next';
 import { Sparkles } from 'lucide-react';
 import { getGames } from '@/services/gameService';
@@ -8,23 +8,35 @@ import JsonLd from '@/components/seo/JsonLd';
 import { createMetadata } from '@/utils/seo';
 import { STATIC_PAGE_SEO } from '@/utils/seoData';
 import { getGamesBreadcrumb } from '@/utils/breadcrumbs';
-import { getWebPageSchema } from '@/utils/structuredData';
+import { getWebPageSchema, getGameListSchema } from '@/utils/structuredData';
 
 export const metadata: Metadata = createMetadata(STATIC_PAGE_SEO.games);
 
 export default async function GamesPage() {
   const games = await getGames();
   const breadcrumbItems = getGamesBreadcrumb();
+
   const webPageSchema = getWebPageSchema({
-    name: 'Games Catalog - Verified Yono Games',
-    description: 'Explore the complete directory of verified Yono mobile games and APK downloads.',
+    name: 'All Yono Games – Games Directory & Guides',
+    description:
+      'Browse the verified directory of Yono mobile games, APK specifications, and player guides.',
     path: 'games',
     breadcrumbItems,
   });
 
+  const gameListSchema = getGameListSchema(
+    games.map((game) => ({
+      name: game.name,
+      slug: game.slug,
+      description: game.shortDescription,
+    })),
+    'All Yono Games'
+  );
+
   return (
     <div className="py-8 sm:py-14 bg-white min-h-screen">
       <JsonLd id="games-page-schema" data={webPageSchema} />
+      <JsonLd id="games-list-schema" data={gameListSchema} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb Navigation */}
@@ -34,13 +46,13 @@ export default async function GamesPage() {
         <header className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#EEF8F2] border border-[#087F5B]/20 text-[#087F5B] text-xs font-bold uppercase tracking-wider mb-3">
             <Sparkles className="w-3.5 h-3.5 text-[#D6A83E]" aria-hidden="true" />
-            Official Games Library
+            Games Directory
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-[#172331] tracking-tight">
             Explore All Games
           </h1>
           <p className="text-base text-[#5D6B78] mt-3">
-            Discover verified releases, classic card games, and progressive jackpot titles across the Yono ecosystem.
+            Discover community releases, card games, and progressive titles across the Yono ecosystem with verified APK guides.
           </p>
         </header>
 

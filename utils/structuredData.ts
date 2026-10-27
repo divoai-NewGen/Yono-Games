@@ -1,9 +1,24 @@
 import { SITE_URL, SITE_NAME, canonicalUrl } from './seo';
 import { Game } from '@/types/game';
 
+// ---------------------------------------------------------------------------
+// Safety helpers
+// ---------------------------------------------------------------------------
+
 /**
- * Organization Schema (JSON-LD)
+ * Escapes a string for safe embedding in JSON-LD.
+ * JSON.stringify already handles most escaping; this additionally prevents
+ * </script> injection within the ld+json block.
  */
+function safeStr(value: unknown): string {
+  if (typeof value !== 'string') return '';
+  return value.replace(/<\/script>/gi, '<\\/script>');
+}
+
+// ---------------------------------------------------------------------------
+// Organization Schema
+// ---------------------------------------------------------------------------
+
 export function getOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
@@ -27,9 +42,10 @@ export function getOrganizationSchema() {
   };
 }
 
-/**
- * WebSite Schema (JSON-LD)
- */
+// ---------------------------------------------------------------------------
+// WebSite Schema
+// ---------------------------------------------------------------------------
+
 export function getWebSiteSchema() {
   return {
     '@context': 'https://schema.org',
@@ -38,7 +54,7 @@ export function getWebSiteSchema() {
     url: `${SITE_URL}/`,
     name: SITE_NAME,
     description:
-      'Gaming directory and resource platform for mobile games, game information, APK details, and player guides.',
+      'Gaming directory and guide platform for mobile games, APK information, and player resources.',
     publisher: {
       '@id': `${SITE_URL}/#organization`,
     },
@@ -53,14 +69,15 @@ export function getWebSiteSchema() {
   };
 }
 
+// ---------------------------------------------------------------------------
+// BreadcrumbList Schema
+// ---------------------------------------------------------------------------
+
 export interface BreadcrumbItem {
   name: string;
   url: string;
 }
 
-/**
- * BreadcrumbList Schema (JSON-LD)
- */
 export function getBreadcrumbListSchema(items: BreadcrumbItem[]) {
   return {
     '@context': 'https://schema.org',
@@ -68,15 +85,16 @@ export function getBreadcrumbListSchema(items: BreadcrumbItem[]) {
     itemListElement: items.map((item, index) => ({
       '@type': 'ListItem',
       position: index + 1,
-      name: item.name,
+      name: safeStr(item.name),
       item: canonicalUrl(item.url),
     })),
   };
 }
 
-/**
- * WebPage Schema (JSON-LD)
- */
+// ---------------------------------------------------------------------------
+// WebPage Schema
+// ---------------------------------------------------------------------------
+
 export function getWebPageSchema(options: {
   name: string;
   description: string;
@@ -89,8 +107,8 @@ export function getWebPageSchema(options: {
     '@type': 'WebPage',
     '@id': `${url}#webpage`,
     url,
-    name: options.name,
-    description: options.description,
+    name: safeStr(options.name),
+    description: safeStr(options.description),
     isPartOf: {
       '@id': `${SITE_URL}/#website`,
     },
@@ -103,17 +121,24 @@ export function getWebPageSchema(options: {
   return schema;
 }
 
+// ---------------------------------------------------------------------------
+// SoftwareApplication Schema
+// ---------------------------------------------------------------------------
+
 /**
- * SoftwareApplication Schema (JSON-LD) for Game Details.
- * Strictly adheres to Google Guidelines:
- * - Does not claim this directory is the author/developer of third-party apps.
- * - Only includes aggregateRating when authentic positive numeric values are present.
- * - Does not invent review counts.
- * - Connects the page truthfully to visible on-page content.
+ * SoftwareApplication JSON-LD for game detail pages.
+ *
+ * Compliance rules:
+ * - Does NOT claim this directory is the author/developer of third-party apps.
+ * - Only includes aggregateRating with authentic numeric values.
+ * - Only adds Offer/downloadUrl for verified HTTPS links.
+ * - Does not fabricate certifications, prices, or publisher identities.
+ * - Matches schema properties to visible page content.
  */
 export function getSoftwareApplicationSchema(game: Game, pageUrl: string) {
   const resolvedUrl = canonicalUrl(pageUrl);
-  const image =
+
+  const imageUrl =
     game.heroImage ||
     game.thumbnail ||
     game.logo ||
@@ -123,22 +148,29 @@ export function getSoftwareApplicationSchema(game: Game, pageUrl: string) {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     '@id': `${resolvedUrl}#software`,
-    name: game.name,
+    name: safeStr(game.name),
     url: resolvedUrl,
-    image,
+    image: imageUrl,
     operatingSystem: 'Android',
     applicationCategory: 'GameApplication',
-    applicationSubCategory: game.category || 'Casual Game',
-    description:
+    applicationSubCategory: safeStr(game.category || 'Casual Game'),
+    description: safeStr(
       game.seoDescription ||
-      game.shortDescription ||
-      `Gameplay information, APK details, and player guide for ${game.name}.`,
-    softwareVersion: game.version || '1.0.0',
-    fileSize: game.size || '38 MB',
+        game.shortDescription ||
+        `Gameplay information and guide for ${game.name}.`
+    ),
   };
 
-  // Only include offer/downloadUrl when an authentic external HTTPS download link is configured
-  if (game.downloadUrl && typeof game.downloadUrl === 'string' && game.downloadUrl.startsWith('https://')) {
+  // Only include version/size when a real value is present
+  if (game.version) schema.softwareVersion = safeStr(game.version);
+  if (game.size) schema.fileSize = safeStr(game.size);
+
+  // Download offer — only when a verified HTTPS link exists
+  if (
+    game.downloadUrl &&
+    typeof game.downloadUrl === 'string' &&
+    game.downloadUrl.startsWith('https://')
+  ) {
     schema.downloadUrl = game.downloadUrl;
     schema.offers = {
       '@type': 'Offer',
@@ -149,11 +181,20 @@ export function getSoftwareApplicationSchema(game: Game, pageUrl: string) {
     };
   }
 
-  // Parse rating genuinely: Only add if numeric rating is valid (between 1 and 5) and ratingCount is genuine
-  const numericRating = typeof game.rating === 'number' ? game.rating : parseFloat(String(game.rating));
-  const numericCount = game.ratingCount ? parseInt(String(game.ratingCount).replace(/[^0-9]/g, ''), 10) : 0;
+  // AggregateRating — only when rating is a valid 1–5 number AND ratingCount parses to >0
+  const numericRating =
+    typeof game.rating === 'number'
+      ? game.rating
+      : parseFloat(String(game.rating));
+  const countStr = typeof game.ratingCount === 'string' ? game.ratingCount : '';
+  const numericCount = parseInt(countStr.replace(/[^0-9]/g, ''), 10);
 
-  if (!isNaN(numericRating) && numericRating >= 1 && numericRating <= 5 && numericCount > 0) {
+  if (
+    !isNaN(numericRating) &&
+    numericRating >= 1 &&
+    numericRating <= 5 &&
+    numericCount > 0
+  ) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: numericRating.toFixed(1),
@@ -164,4 +205,95 @@ export function getSoftwareApplicationSchema(game: Game, pageUrl: string) {
   }
 
   return schema;
+}
+
+// ---------------------------------------------------------------------------
+// FAQPage Schema
+// ---------------------------------------------------------------------------
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+/**
+ * FAQPage JSON-LD.
+ * Only use when the FAQ questions and answers are genuinely visible on the page.
+ * Do not promise Google that this will generate a rich result.
+ */
+export function getFaqPageSchema(faqs: FaqItem[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: safeStr(faq.question),
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: safeStr(faq.answer),
+      },
+    })),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// HowTo Schema
+// ---------------------------------------------------------------------------
+
+export interface HowToStep {
+  name: string;
+  text: string;
+}
+
+/**
+ * HowTo JSON-LD for installation guides or structured gameplay instructions.
+ * Only use when step-by-step instructions are genuinely visible on the page.
+ */
+export function getHowToSchema(options: {
+  name: string;
+  description: string;
+  steps: HowToStep[];
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: safeStr(options.name),
+    description: safeStr(options.description),
+    step: options.steps.map((step, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      name: safeStr(step.name),
+      text: safeStr(step.text),
+    })),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// ItemList Schema (for category/directory pages)
+// ---------------------------------------------------------------------------
+
+export interface GameListItem {
+  name: string;
+  slug: string;
+  description?: string;
+}
+
+/**
+ * ItemList JSON-LD for game directory or category listing pages.
+ */
+export function getGameListSchema(
+  games: GameListItem[],
+  listName: string
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: safeStr(listName),
+    itemListElement: games.slice(0, 50).map((game, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: canonicalUrl(`games/${game.slug}`),
+      name: safeStr(game.name),
+    })),
+  };
 }

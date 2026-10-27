@@ -25,7 +25,7 @@ import JsonLd from '@/components/seo/JsonLd';
 import { createMetadata } from '@/utils/seo';
 import { STATIC_PAGE_SEO, getGameSeoData } from '@/utils/seoData';
 import { getGameDetailBreadcrumb } from '@/utils/breadcrumbs';
-import { getSoftwareApplicationSchema } from '@/utils/structuredData';
+import { getSoftwareApplicationSchema, getHowToSchema } from '@/utils/structuredData';
 
 interface GamePageProps {
   params: Promise<{
@@ -72,10 +72,22 @@ export default async function GameDetailPage({
   const relatedGames = await getRelatedGames(game.slug, 3);
   const breadcrumbItems = getGameDetailBreadcrumb(game);
   const softwareSchema = getSoftwareApplicationSchema(game, `games/${game.slug}`);
+  const howToSchema =
+    game.howToPlay && game.howToPlay.length > 0
+      ? getHowToSchema({
+          name: `How to Play & Install ${game.name}`,
+          description: `Guide and step-by-step instructions for ${game.name}.`,
+          steps: game.howToPlay.map((step, idx) => ({
+            name: `Step ${idx + 1}`,
+            text: step,
+          })),
+        })
+      : null;
 
   return (
     <main className="py-8 sm:py-12 bg-white min-h-screen">
       <JsonLd id="game-software-schema" data={softwareSchema} />
+      {howToSchema && <JsonLd id="game-howto-schema" data={howToSchema} />}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
         {/* Breadcrumb Navigation & Back Link */}

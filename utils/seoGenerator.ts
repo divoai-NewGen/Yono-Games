@@ -1,3 +1,9 @@
+import { Game } from '@/types/game';
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
 export interface GeneratedSeoData {
   slug: string;
   seoTitle: string;
@@ -8,16 +14,24 @@ export interface GeneratedSeoData {
   description: string;
   features: string[];
   howToPlay: string[];
-  rating?: number;
-  ratingCount?: string;
-  players?: string;
-  downloads?: string;
 }
 
+export interface ContentQualityDiagnostic {
+  slug: string;
+  name: string;
+  issues: string[];
+  /** true = page should be indexable; false = missing too much core content */
+  isIndexable: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// URL Validation
+// ---------------------------------------------------------------------------
+
 /**
- * Validates external download URLs strictly:
- * - Only HTTPS protocols permitted
- * - Prevents javascript:, data:, file:, relative or malformed URLs
+ * Validates external download URLs strictly.
+ * Only HTTPS URLs are permitted.
+ * Blocks javascript:, data:, file:, vbscript:, and relative paths.
  */
 export function validateExternalDownloadUrl(url?: string | null): {
   isValid: boolean;
@@ -29,9 +43,8 @@ export function validateExternalDownloadUrl(url?: string | null): {
   }
 
   const trimmed = url.trim();
-
-  // Explicit safety checks
   const lower = trimmed.toLowerCase();
+
   if (
     lower.startsWith('javascript:') ||
     lower.startsWith('data:') ||
@@ -51,7 +64,8 @@ export function validateExternalDownloadUrl(url?: string | null): {
       return {
         isValid: false,
         normalizedUrl: null,
-        error: 'Only secure HTTPS download URLs are permitted (e.g., https://example.com/app.apk).',
+        error:
+          'Only secure HTTPS download URLs are permitted (e.g., https://example.com/app.apk).',
       };
     }
     return { isValid: true, normalizedUrl: parsed.toString() };
@@ -59,13 +73,18 @@ export function validateExternalDownloadUrl(url?: string | null): {
     return {
       isValid: false,
       normalizedUrl: null,
-      error: 'Invalid URL format. Please provide a valid absolute HTTPS destination.',
+      error:
+        'Invalid URL format. Please provide a valid absolute HTTPS destination.',
     };
   }
 }
 
+// ---------------------------------------------------------------------------
+// Slug generation
+// ---------------------------------------------------------------------------
+
 /**
- * Generates clean, search-friendly slugs.
+ * Generates clean, search-friendly URL slugs.
  */
 export function generateSlug(name: string): string {
   return name
@@ -76,12 +95,21 @@ export function generateSlug(name: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
+// ---------------------------------------------------------------------------
+// Auto-SEO generation
+// ---------------------------------------------------------------------------
+
 /**
- * High-Quality Auto-SEO Generation Engine
- * - Avoids repetitive "official developer" claims for third-party games.
- * - Produces unique, intent-matched meta titles and descriptions.
- * - Tailors game features and instructions to the actual category.
- * - Does not invent fabricated certificates or fake player statistics.
+ * Generates SEO content for a new game record.
+ *
+ * Design principles enforced here:
+ * - Does NOT invent statistics (ratings, download counts, player counts).
+ * - Does NOT fabricate "official", "certified", or "verified" claims.
+ * - Does NOT use a hardcoded year in every title; the year is only appended
+ *   when the caller explicitly passes `includeYear: true` (e.g. for pages
+ *   with genuinely current/maintained information).
+ * - Uses version and size only when the caller supplies real values.
+ * - Generates category-appropriate copy rather than one generic template.
  */
 export function generateAutoSeo(params: {
   name: string;
@@ -91,114 +119,161 @@ export function generateAutoSeo(params: {
   size?: string;
   downloadUrl?: string | null;
   existingDescription?: string;
+  includeYear?: boolean;
 }): GeneratedSeoData {
   const {
     name,
     category,
     bonus,
-    version = 'v5.1.0',
-    size = '38.5 MB',
+    version,
+    size,
     downloadUrl = null,
     existingDescription,
+    includeYear = false,
   } = params;
 
-  const currentYear = new Date().getFullYear();
   const slug = generateSlug(name);
-  const cleanCategory = category || 'Yono Games';
-  const hasDownload = Boolean(downloadUrl && typeof downloadUrl === 'string' && downloadUrl.startsWith('https://'));
+  const cleanCategory = (category || 'Mobile Game').trim();
+  const hasDownload =
+    typeof downloadUrl === 'string' && downloadUrl.startsWith('https://');
 
-  // 1. High-CTR, Intent-Matched SEO Meta Title (Under 60 chars optimal)
-  // Varies naturally based on whether direct download or game guide is primary
+  const yearSuffix = includeYear ? ` (${new Date().getFullYear()})` : '';
+
+  // ---- SEO Title ----
+  // Pattern varies by whether a download link exists (action intent vs. info intent)
   const seoTitle = hasDownload
-    ? `${name} APK Download & Review (${currentYear}) | Yono Games`
-    : `${name} Game Guide & APK Info (${currentYear}) | Yono Games`;
+    ? `${name} – Download & Game Guide${yearSuffix}`
+    : `${name} – Features & Game Guide${yearSuffix}`;
 
-  // 2. High-Intent Meta Description (150-160 chars optimal, truthful without spam)
-  const bonusSnippet = bonus && bonus.trim() ? ` ${bonus.trim()} details.` : '';
+  // ---- SEO Description ----
+  // Only include version/size when the caller provides real values.
+  const versionPart = version ? ` Version: ${version}.` : '';
+  const sizePart = size ? ` Size: ${size}.` : '';
+  const bonusPart =
+    bonus && bonus.trim() ? ` ${bonus.trim()}.` : '';
+
   const seoDescription = hasDownload
-    ? `Download ${name} APK (${version}, ${size}). Read rules, gameplay features,${bonusSnippet} and mobile instructions on Real Yono Games.`
-    : `Explore ${name} gameplay features, mobile overview (${version}, ${size}),${bonusSnippet} and guides on Real Yono Games.`;
+    ? `Download ${name} and read the full game guide.${versionPart}${sizePart}${bonusPart} Gameplay details and instructions on Real Yono Games.`
+    : `Explore ${name} – ${cleanCategory} game for Android.${versionPart}${sizePart}${bonusPart} Game features and guides on Real Yono Games.`;
 
-  // 3. Relevant Search Keywords
+  // ---- Keywords ----
+  const nameLower = name.toLowerCase();
   const keywords = [
-    `${name.toLowerCase()} apk download`,
-    `${name.toLowerCase()} game`,
-    `${name.toLowerCase()} latest version`,
-    `${name.toLowerCase()} android app`,
-    `${name.toLowerCase()} review`,
-    `yono games ${cleanCategory.toLowerCase()}`,
+    nameLower,
+    `${nameLower} game`,
+    `${nameLower} apk`,
+    `${nameLower} guide`,
+    `${nameLower} features`,
+    `yono ${cleanCategory.toLowerCase()}`,
   ];
 
-  // 4. Category-Tailored Tagline & Descriptions
-  let tagline = `${name} Mobile Gaming Experience`;
-  let shortDescription = `Explore ${name} — popular ${cleanCategory} title for Android mobile users with real-time gameplay and interactive rooms.`;
-  let features = [
-    'Smooth mobile-optimized interface with responsive touch controls',
-    'Real-time multiplayer lobbies and casual practice rooms',
-    'Round-the-clock technical platform support and active player community',
-    'Compatible with Android smartphones and tablets',
-  ];
-  let howToPlay = [
-    `Download and launch ${name} on your compatible mobile device`,
-    'Complete the quick registration process to access the game lobby',
-    'Choose your preferred table or room to begin participating',
-    'Follow responsible play guidelines and enjoy tournament matches',
-  ];
+  // ---- Category-tailored content ----
+  let tagline: string;
+  let shortDescription: string;
+  let features: string[];
+  let howToPlay: string[];
 
-  if (cleanCategory.includes('Slot') || cleanCategory.includes('777')) {
-    tagline = 'Dynamic Reel Action & Interactive Paylines';
-    shortDescription = `Experience reel spinning in ${name} with vibrant audio-visual effects, varied paylines, and interactive bonus rounds.`;
+  const catLower = cleanCategory.toLowerCase();
+
+  if (catLower.includes('slot') || catLower.includes('777') || catLower.includes('spin')) {
+    tagline = `${name} – Slot Game on Mobile`;
+    shortDescription = `${name} is a slot-style mobile game with reel mechanics and various payline configurations, designed for Android.`;
     features = [
-      'Multiple payline combinations and interactive bonus mini-games',
-      'High-definition thematic artwork and immersive sound effects',
-      'Quick-spin and auto-play options for customizable pacing',
-      'Lightweight installation footprint with minimal battery consumption',
+      'Multiple payline configurations',
+      'Bonus round mechanics',
+      'Mobile-optimised interface',
+      'Compatible with Android smartphones',
     ];
     howToPlay = [
-      `Launch ${name} and navigate to the slot game room`,
-      'Set your preferred stake and select active paylines',
-      'Spin the reels to match symbol combinations across paylines',
-      'Trigger scatter and bonus symbols for free spin rounds',
+      `Open ${name} and navigate to the game lobby`,
+      'Set your preferred stake per round',
+      'Spin the reels and match symbol combinations',
+      'Bonus symbols may trigger additional rounds — see in-game rules for details',
     ];
-  } else if (cleanCategory.includes('Rummy') || cleanCategory.includes('Card')) {
-    tagline = 'Classic 13-Card Indian Skill Rummy on Mobile';
-    shortDescription = `Engage in 13-card Indian Rummy in ${name} with structured Points, Pool, and Deals format tables.`;
+  } else if (catLower.includes('rummy') || catLower.includes('card')) {
+    tagline = `${name} – Card Game on Mobile`;
+    shortDescription = `${name} is a card game for Android offering structured table formats. Read gameplay rules and instructions before playing.`;
     features = [
-      'Supports Points, Pool (101/201), and Deals game formats',
-      'Automated card grouping and smart sequence sorting assistance',
-      'Clear discard and draw deck tracking for strategic gameplay',
-      'Smooth multiplayer tables designed for casual and competitive players',
+      'Multiple game format options',
+      'Organised table rooms',
+      'Multiplayer support',
+      'Android compatible',
     ];
     howToPlay = [
-      `Enter ${name} and join your selected table room`,
-      'Sort your dealt 13 cards into valid sets and sequences',
-      'Draw one card per turn from the open or closed deck and discard one',
-      'Make a valid declaration with minimal deadwood points',
+      `Open ${name} and select your preferred table`,
+      'Arrange your cards into valid sets and sequences',
+      'Draw and discard one card per turn',
+      'Declare when you have a valid hand — consult in-game rules for scoring details',
     ];
-  } else if (cleanCategory.includes('Crash') || cleanCategory.includes('Aviator')) {
-    tagline = 'Multiplier Flight Action & Tactical Cashouts';
-    shortDescription = `Watch the multiplier curve climb in ${name} and make strategic cashout decisions before the round ends.`;
+  } else if (catLower.includes('crash') || catLower.includes('aviator')) {
+    tagline = `${name} – Multiplier Game on Mobile`;
+    shortDescription = `${name} is a multiplier-style mobile game. Follow the in-game instructions and guidelines before participating.`;
     features = [
-      'Rapid round cycles with live multiplier tracking',
-      'Flexible betting interfaces supporting dual-action management',
-      'Real-time in-game statistics and historical round review',
-      'Clean mobile layout optimized for quick response times',
+      'Live multiplier tracking',
+      'Multiple round cycles',
+      'Mobile-friendly layout',
+      'Android compatible',
     ];
     howToPlay = [
-      `Place your round entry before the countdown finishes in ${name}`,
-      'Observe the rising multiplier value in real-time',
-      'Trigger cashout at your chosen target multiplier level',
-      'Review previous flight history to refine your play pacing',
+      `Open ${name} and review the in-game instructions`,
+      'Place your entry before the countdown ends',
+      'Watch the multiplier rise in real time',
+      'Act before the round concludes — see in-game rules for exact mechanics',
+    ];
+  } else if (catLower.includes('teen patti') || catLower.includes('patti')) {
+    tagline = `${name} – Teen Patti on Mobile`;
+    shortDescription = `${name} is a three-card mobile game based on Teen Patti. Read the in-game rules before participating.`;
+    features = [
+      'Classic three-card gameplay',
+      'Multiple table variations',
+      'Multiplayer rooms',
+      'Android compatible',
+    ];
+    howToPlay = [
+      `Launch ${name} and choose your table`,
+      'Place your initial entry per the table minimums',
+      'Choose to see or blind-play your round',
+      'Best three-card hand wins — full rules available in-app',
+    ];
+  } else if (catLower.includes('ludo') || catLower.includes('board')) {
+    tagline = `${name} – Board Game on Mobile`;
+    shortDescription = `${name} is a mobile board game. Review the in-game rules and guidelines before playing.`;
+    features = [
+      'Classic board game mechanics',
+      'Multiplayer support',
+      'Simple controls',
+      'Android compatible',
+    ];
+    howToPlay = [
+      `Open ${name} and join a game room`,
+      'Roll dice to advance your pieces',
+      'Strategically block opponents and protect your own pieces',
+      'First player to complete the course wins — see in-game rules for full details',
+    ];
+  } else {
+    // Generic fallback for "Other Best Games" and uncategorised
+    tagline = `${name} – Mobile Game`;
+    shortDescription = `${name} is a mobile game for Android. See the features and in-game instructions for details before playing.`;
+    features = [
+      'Mobile-optimised interface',
+      'Multiplayer or single-player support',
+      'Android compatible',
+      'In-game instructions available',
+    ];
+    howToPlay = [
+      `Install ${name} on your Android device`,
+      'Open the app and review the tutorial or instructions',
+      'Choose your game mode or room',
+      'Follow the in-game guidance to participate',
     ];
   }
 
-  // 5. Rich Long Description (Preserve admin's custom text if provided, otherwise create informative text)
+  // ---- Full description ----
+  // Re-use admin's custom text if it is substantive (>80 chars).
   const description =
-    existingDescription && existingDescription.trim().length > 60
+    existingDescription && existingDescription.trim().length > 80
       ? existingDescription.trim()
-      : `${name} is an interactive mobile game designed for players who appreciate fast-paced ${cleanCategory} entertainment. Optimized for Android devices, the application provides a smooth interface, clear visual feedback, and reliable multiplayer connectivity.
-
-Whether playing a quick round or participating in extended table sessions, ${name} emphasizes player clarity and straightforward controls. Detailed gameplay rules and operational specifications are listed above to help you get started safely and responsibly.`;
+      : `${name} is a ${cleanCategory} mobile game designed for Android devices. The application offers ${features[0].toLowerCase()} and ${features[1].toLowerCase()}.\n\nReview the full feature list and instructions above before downloading or playing. Always follow responsible gaming guidelines.`;
 
   return {
     slug,
@@ -210,5 +285,78 @@ Whether playing a quick round or participating in extended table sessions, ${nam
     description,
     features,
     howToPlay,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Content Quality Diagnostic
+// ---------------------------------------------------------------------------
+
+/**
+ * Analyses a Game record and returns a list of content quality issues.
+ *
+ * A game is considered indexable when it has:
+ * - A name and slug
+ * - A meaningful description (>60 chars)
+ * - At least one image (logo, thumbnail, or heroImage)
+ * - A valid category
+ *
+ * Pages that fail the indexability check should be served with
+ * `robots: { index: false }` until the missing fields are filled.
+ */
+export function diagnoseGameContent(game: Game): ContentQualityDiagnostic {
+  const issues: string[] = [];
+
+  if (!game.name?.trim()) issues.push('Missing: game name');
+  if (!game.slug?.trim()) issues.push('Missing: URL slug');
+  if (!game.category?.trim()) issues.push('Missing: category');
+
+  const descLength = (game.description || game.shortDescription || '').trim().length;
+  if (descLength < 60) {
+    issues.push(
+      `Thin content: description is only ${descLength} characters (minimum 60 recommended)`
+    );
+  }
+
+  if (!game.logo && !game.thumbnail && !game.heroImage) {
+    issues.push('Missing: at least one game image (logo, thumbnail, or heroImage)');
+  }
+
+  if (!game.seoTitle?.trim()) {
+    issues.push('Missing: seoTitle (auto-generated fallback will be used)');
+  } else if (game.seoTitle.length > 70) {
+    issues.push(
+      `seoTitle is ${game.seoTitle.length} characters — consider keeping it under 60`
+    );
+  }
+
+  if (!game.seoDescription?.trim()) {
+    issues.push('Missing: seoDescription (auto-generated fallback will be used)');
+  } else if (game.seoDescription.length > 165) {
+    issues.push(
+      `seoDescription is ${game.seoDescription.length} characters — consider keeping it under 160`
+    );
+  }
+
+  if (game.downloadUrl) {
+    const validation = validateExternalDownloadUrl(game.downloadUrl);
+    if (!validation.isValid) {
+      issues.push(`Invalid downloadUrl: ${validation.error}`);
+    }
+  }
+
+  // A page is indexable if it has the four core fields with meaningful content
+  const isIndexable =
+    !!game.name?.trim() &&
+    !!game.slug?.trim() &&
+    !!game.category?.trim() &&
+    descLength >= 60 &&
+    !!(game.logo || game.thumbnail || game.heroImage);
+
+  return {
+    slug: game.slug || '',
+    name: game.name || '',
+    issues,
+    isIndexable,
   };
 }

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Search, Filter } from 'lucide-react';
 import { Game, GameCategory } from '@/types/game';
-import GameCard from '@/components/games/GameCard';
+import CompactGameCard from '@/components/games/CompactGameCard';
 
 interface ExploreGamesSectionProps {
   initialGames: Game[];
@@ -11,7 +11,7 @@ interface ExploreGamesSectionProps {
 
 const CATEGORIES: { label: string; value: GameCategory }[] = [
   { label: 'All Games', value: 'All' },
-  { label: 'Yono Games', value: 'Yono Games' },
+  { label: 'All Yono Games', value: 'All Yono Games' },
   { label: 'Other Best Games', value: 'Other Best Games' },
 ];
 
@@ -27,8 +27,11 @@ export default function ExploreGamesSection({
   const filteredGames = initialGames.filter((game) => {
     const matchesCategory =
       activeCategory === 'All' ||
+      activeCategory === 'All Games' ||
       game.category === activeCategory ||
-      game.categories?.includes(activeCategory);
+      game.categories?.includes(activeCategory) ||
+      (activeCategory === 'All Yono Games' && (game.category === 'Yono Games' || game.categories?.includes('Yono Games'))) ||
+      (activeCategory === 'Yono Games' && (game.category === 'All Yono Games' || game.categories?.includes('All Yono Games')));
 
     const matchesSearch =
       !normalizedSearch ||
@@ -58,11 +61,11 @@ export default function ExploreGamesSection({
             id="explore-games-heading"
             className="text-3xl sm:text-4xl font-extrabold text-[#172331] tracking-tight"
           >
-            Explore Yono Games & Popular Mobile Games
+            Explore All Yono Games & Popular Mobile Games
           </h2>
 
           <p className="text-base text-[#5D6B78] mt-3">
-            Browse Yono games, arcade games, card games, and other popular
+            Browse All Yono games, arcade games, card games, and other popular
             mobile gaming titles. Search the collection to find game
             information and explore individual titles.
           </p>
@@ -122,12 +125,12 @@ export default function ExploreGamesSection({
               {filteredGames.length} games found
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="max-w-4xl mx-auto space-y-3.5 sm:space-y-4">
               {filteredGames.map((game, index) => (
-                <GameCard
-                  key={game.id}
+                <CompactGameCard
+                  key={game.id || game.slug}
                   game={game}
-                  priority={index < 3}
+                  rank={index + 1}
                 />
               ))}
             </div>

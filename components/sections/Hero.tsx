@@ -76,7 +76,7 @@ export default function Hero() {
             >
               <Gamepad2 className="w-4 h-4 text-[#087F5B]" />
 
-              <span>Yono Games &amp; Mobile Gaming</span>
+              <span>All Yono Games &amp; Mobile Gaming</span>
             </div>
 
             {/* Main Heading */}
@@ -86,7 +86,7 @@ export default function Hero() {
             >
               Discover Your Next{' '}
               <span className="text-[#087F5B] block sm:inline">
-                Favourite Game.
+                All Yono Game.
               </span>
             </h1>
 
@@ -95,7 +95,7 @@ export default function Hero() {
               ref={descRef}
               className="text-base sm:text-lg text-[#5D6B78] max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal"
             >
-              Explore Yono games, arcade games, card games, and popular mobile
+              Explore All Yono games, arcade games, card games, and popular mobile
               gaming titles — all in one place with useful game information
               and updates.
             </p>

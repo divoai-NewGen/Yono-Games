@@ -13,7 +13,7 @@ interface MobileGamesListProps {
 
 const CATEGORIES: { label: string; value: GameCategory }[] = [
   { label: 'All', value: 'All' },
-  { label: 'Yono Games', value: 'Yono Games' },
+  { label: 'All Yono Games', value: 'All Yono Games' },
   { label: 'Other Best Games', value: 'Other Best Games' },
 ];
 
@@ -26,7 +26,9 @@ export default function MobileGamesList({ games }: MobileGamesListProps) {
       activeCategory === 'All' ||
       activeCategory === 'All Games' ||
       game.category === activeCategory ||
-      game.categories?.includes(activeCategory)
+      game.categories?.includes(activeCategory) ||
+      (activeCategory === 'All Yono Games' && (game.category === 'Yono Games' || game.categories?.includes('Yono Games'))) ||
+      (activeCategory === 'Yono Games' && (game.category === 'All Yono Games' || game.categories?.includes('All Yono Games')))
     );
   });
 
@@ -81,10 +83,11 @@ export default function MobileGamesList({ games }: MobileGamesListProps) {
 
         {/* Games List Container (Max 10) */}
         <div className="space-y-3 pt-1">
-          {displayedGames.map((game) => (
+          {displayedGames.map((game, index) => (
             <CompactGameCard
               key={game.id || game.slug}
               game={game}
+              rank={index + 1}
               onDownloadClick={handleDownloadClick}
             />
           ))}

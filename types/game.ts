@@ -42,6 +42,7 @@ export interface Game {
 export type GameCategory =
   | 'All'
   | 'All Games'
+  | 'All Yono Games'
   | 'Yono Games'
   | 'Other Best Games';
 

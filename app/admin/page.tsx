@@ -31,20 +31,22 @@ import {
   Reply,
   Filter,
   Pin,
-  ArrowUpToLine
+  ArrowUpToLine,
+  TrendingUp,
 } from 'lucide-react';
 import { Game, GameCategory } from '@/types/game';
 import { ContactMessage } from '@/types/message';
 import { generateAutoSeo, generateSlug, validateExternalDownloadUrl } from '@/utils/seoGenerator';
+import RankTracker from '@/components/admin/RankTracker';
 
 const CATEGORIES: GameCategory[] = [
-  'Yono Games',
+  'All Yono Games',
   'Other Best Games',
 ];
 
 export default function AdminDashboardPage() {
   // Navigation / Tab state
-  const [activeSection, setActiveSection] = useState<'games' | 'messages'>('games');
+  const [activeSection, setActiveSection] = useState<'games' | 'messages' | 'rank-tracker'>('games');
 
   // Auth state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -80,7 +82,7 @@ export default function AdminDashboardPage() {
   const [formData, setFormData] = useState<Partial<Game>>({
     name: '',
     slug: '',
-    category: 'Yono Games',
+    category: 'All Yono Games',
     tagline: '',
     logo: '/images/hero-full-ribbon-3d.png',
     thumbnail: '/images/hero-full-ribbon-3d.png',
@@ -264,7 +266,12 @@ export default function AdminDashboardPage() {
         game.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         game.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
         game.slug.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = selectedCategory === 'All' || game.category === selectedCategory;
+      const matchesCategory =
+        selectedCategory === 'All' ||
+        game.category === selectedCategory ||
+        game.categories?.includes(selectedCategory) ||
+        (selectedCategory === 'All Yono Games' && (game.category === 'Yono Games' || game.categories?.includes('Yono Games'))) ||
+        (selectedCategory === 'Yono Games' && (game.category === 'All Yono Games' || game.categories?.includes('All Yono Games')));
       return matchesSearch && matchesCategory;
     });
   }, [games, searchQuery, selectedCategory]);
@@ -289,7 +296,7 @@ export default function AdminDashboardPage() {
     setFormData({
       name: '',
       slug: '',
-      category: 'Yono Games',
+      category: 'All Yono Games',
       tagline: '',
       logo: '/images/hero-full-ribbon-3d.png',
       thumbnail: '/images/hero-full-ribbon-3d.png',
@@ -344,7 +351,7 @@ export default function AdminDashboardPage() {
 
     const autoData = generateAutoSeo({
       name: formData.name,
-      category: formData.category || 'Yono Games',
+      category: formData.category || 'All Yono Games',
       bonus: formData.bonus,
       version: formData.version,
       size: formData.size,
@@ -410,37 +417,37 @@ export default function AdminDashboardPage() {
   };
 
   // Quick Toggle Featured / New
-  
-    // Move game directly to #1 Top position
-    const handleMoveToTop = async (game: Game) => {
-      try {
-        const res = await fetch('/api/admin/games', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            id: game.id,
-            action: 'moveToTop',
-          }),
+
+  // Move game directly to #1 Top position
+  const handleMoveToTop = async (game: Game) => {
+    try {
+      const res = await fetch('/api/admin/games', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: game.id,
+          action: 'moveToTop',
+        }),
+      });
+
+      const text = await res.text();
+      let result: any = {};
+      try { result = JSON.parse(text); } catch { }
+
+      if (res.ok && result.success) {
+        setGames(prev => {
+          const target = { ...game, pinned: true, order: 1 };
+          const remaining = prev.filter(g => g.id !== game.id);
+          return [target, ...remaining];
         });
-
-        const text = await res.text();
-        let result: any = {};
-        try { result = JSON.parse(text); } catch {}
-
-        if (res.ok && result.success) {
-          setGames(prev => {
-            const target = { ...game, pinned: true, order: 1 };
-            const remaining = prev.filter(g => g.id !== game.id);
-            return [target, ...remaining];
-          });
-          showToast('success', `?? ${game.name} is now at #1 TOP position!`);
-        } else {
-          showToast('error', result.error || 'Failed to move game to top.');
-        }
-      } catch (err) {
-        showToast('error', 'Failed to move game to top.');
+        showToast('success', `?? ${game.name} is now at #1 TOP position!`);
+      } else {
+        showToast('error', result.error || 'Failed to move game to top.');
       }
-    };
+    } catch (err) {
+      showToast('error', 'Failed to move game to top.');
+    }
+  };
 
   const handleQuickToggle = async (game: Game, field: 'featured' | 'newRelease' | 'pinned') => {
     try {
@@ -458,18 +465,39 @@ export default function AdminDashboardPage() {
       let result: any = {};
       try {
         result = JSON.parse(text);
-      } catch {}
+      } catch { }
 
       if (res.ok && result.success) {
         setGames(prev => prev.map(g => g.id === game.id ? { ...g, [field]: updatedValue } : g));
         const label = field === 'pinned' ? (updatedValue ? 'Pinned to Top 📌' : 'Unpinned from Top') : field === 'featured' ? 'Featured' : 'New Release';
-          showToast('success', `${game.name}: ${label} updated!`);
+        showToast('success', `${game.name}: ${label} updated!`);
       } else {
         showToast('error', result.error || 'Failed to update toggle.');
       }
     } catch (err) {
       showToast('error', 'Failed to update toggle.');
     }
+  };
+
+  // Apply Competitor Keyword SEO to Game
+  const handleApplyKeywordToGame = async (
+    gameId: string,
+    keywordData: { suggestedTitle: string; suggestedMetaDesc: string; keyword: string }
+  ) => {
+    const res = await fetch('/api/admin/games', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: gameId,
+        seoTitle: keywordData.suggestedTitle,
+        seoDescription: keywordData.suggestedMetaDesc,
+      }),
+    });
+    const result = await res.json().catch(() => null);
+    if (!res.ok || !result?.success) {
+      throw new Error(result?.error || 'Failed to update game SEO');
+    }
+    await fetchGames();
   };
 
   // Submit Save / Publish
@@ -491,7 +519,7 @@ export default function AdminDashboardPage() {
     const slug = formData.slug?.trim() || generateSlug(formData.name);
     const autoSeoFallback = generateAutoSeo({
       name: formData.name,
-      category: formData.category || 'Yono Games',
+      category: formData.category || 'All Yono Games',
       bonus: formData.bonus,
       version: formData.version,
       size: formData.size,
@@ -692,18 +720,16 @@ export default function AdminDashboardPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveSection('games')}
-              className={`flex items-center gap-2.5 px-5 py-2.5 rounded-2xl font-bold text-sm transition-all ${
-                activeSection === 'games'
+              className={`flex items-center gap-2.5 px-5 py-2.5 rounded-2xl font-bold text-sm transition-all ${activeSection === 'games'
                   ? 'bg-[#087F5B] text-white shadow-md'
                   : 'text-[#5D6B78] hover:text-[#172331] bg-white border border-[#E4ECE7]'
-              }`}
+                }`}
             >
               <Gamepad2 className="w-4 h-4" />
               <span>Games Catalog</span>
               <span
-                className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-                  activeSection === 'games' ? 'bg-white/20 text-white' : 'bg-[#E4ECE7] text-[#5D6B78]'
-                }`}
+                className={`px-2 py-0.5 rounded-full text-xs font-semibold ${activeSection === 'games' ? 'bg-white/20 text-white' : 'bg-[#E4ECE7] text-[#5D6B78]'
+                  }`}
               >
                 {games.length}
               </span>
@@ -711,11 +737,10 @@ export default function AdminDashboardPage() {
 
             <button
               onClick={() => setActiveSection('messages')}
-              className={`flex items-center gap-2.5 px-5 py-2.5 rounded-2xl font-bold text-sm transition-all ${
-                activeSection === 'messages'
+              className={`flex items-center gap-2.5 px-5 py-2.5 rounded-2xl font-bold text-sm transition-all ${activeSection === 'messages'
                   ? 'bg-[#087F5B] text-white shadow-md'
                   : 'text-[#5D6B78] hover:text-[#172331] bg-white border border-[#E4ECE7]'
-              }`}
+                }`}
             >
               <Mail className="w-4 h-4" />
               <span>Contact Inquiries</span>
@@ -725,15 +750,39 @@ export default function AdminDashboardPage() {
                 </span>
               ) : (
                 <span
-                  className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-                    activeSection === 'messages' ? 'bg-white/20 text-white' : 'bg-[#E4ECE7] text-[#5D6B78]'
-                  }`}
+                  className={`px-2 py-0.5 rounded-full text-xs font-semibold ${activeSection === 'messages' ? 'bg-white/20 text-white' : 'bg-[#E4ECE7] text-[#5D6B78]'
+                    }`}
                 >
                   {messages.length}
                 </span>
               )}
             </button>
+
+            <button
+              onClick={() => setActiveSection('rank-tracker')}
+              className={`flex items-center gap-2.5 px-5 py-2.5 rounded-2xl font-bold text-sm transition-all ${activeSection === 'rank-tracker'
+                  ? 'bg-[#087F5B] text-white shadow-md'
+                  : 'text-[#5D6B78] hover:text-[#172331] bg-white border border-[#E4ECE7]'
+                }`}
+            >
+              <TrendingUp className="w-4 h-4" />
+              <span>SEO Rank Tracker</span>
+              <span
+                className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${activeSection === 'rank-tracker' ? 'bg-white/20 text-white' : 'bg-[#EEF8F2] text-[#087F5B]'
+                  }`}
+              >
+                Live
+              </span>
+            </button>
           </div>
+
+          {activeSection === 'rank-tracker' && (
+            <div className="flex items-center gap-2 text-xs font-medium text-[#5D6B78] bg-white px-3.5 py-2 rounded-xl border border-[#E4ECE7]">
+              <TrendingUp className="w-3.5 h-3.5 text-[#087F5B]" />
+              <span>Engine:</span>
+              <strong className="text-[#172331]">Google India (gl=in)</strong>
+            </div>
+          )}
 
           {activeSection === 'messages' && (
             <div className="flex items-center gap-2 text-xs font-medium text-[#5D6B78] bg-white px-3.5 py-2 rounded-xl border border-[#E4ECE7]">
@@ -905,33 +954,30 @@ export default function AdminDashboardPage() {
                             <div>{game.size || '38 MB'}</div>
                           </td>
 
-                                                    <td className="py-4 px-4 text-center">
+                          <td className="py-4 px-4 text-center">
                             <button
                               type="button"
                               onClick={() => handleQuickToggle(game, 'pinned')}
                               title={game.pinned ? 'Click to unpin from top' : 'Click to pin game to top of all lists'}
-                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm ${
-                                game.pinned
+                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm ${game.pinned
                                   ? 'bg-amber-500 text-white shadow-amber-500/25 hover:bg-amber-600 ring-2 ring-amber-300'
                                   : 'bg-[#F1F6F3] text-[#5D6B78] hover:bg-amber-50 hover:text-amber-700 border border-[#E4ECE7]'
-                              }`}
+                                }`}
                             >
                               <Pin className={`w-3.5 h-3.5 ${game.pinned ? 'fill-current' : ''}`} />
                               <span>{game.pinned ? 'Pinned 📌' : 'Pin Top'}</span>
                             </button>
                           </td>
 
-<td className="py-4 px-4 text-center">
+                          <td className="py-4 px-4 text-center">
                             <button
                               onClick={() => handleQuickToggle(game, 'featured')}
-                              className={`w-9 h-5 rounded-full transition-colors relative inline-block ${
-                                game.featured ? 'bg-[#087F5B]' : 'bg-[#D5E2D9]'
-                              }`}
+                              className={`w-9 h-5 rounded-full transition-colors relative inline-block ${game.featured ? 'bg-[#087F5B]' : 'bg-[#D5E2D9]'
+                                }`}
                             >
                               <span
-                                className={`block w-4 h-4 rounded-full bg-white transition-transform transform shadow-sm ${
-                                  game.featured ? 'translate-x-4' : 'translate-x-0.5'
-                                }`}
+                                className={`block w-4 h-4 rounded-full bg-white transition-transform transform shadow-sm ${game.featured ? 'translate-x-4' : 'translate-x-0.5'
+                                  }`}
                               />
                             </button>
                           </td>
@@ -939,21 +985,19 @@ export default function AdminDashboardPage() {
                           <td className="py-4 px-4 text-center">
                             <button
                               onClick={() => handleQuickToggle(game, 'newRelease')}
-                              className={`w-9 h-5 rounded-full transition-colors relative inline-block ${
-                                game.newRelease ? 'bg-[#087F5B]' : 'bg-[#D5E2D9]'
-                              }`}
+                              className={`w-9 h-5 rounded-full transition-colors relative inline-block ${game.newRelease ? 'bg-[#087F5B]' : 'bg-[#D5E2D9]'
+                                }`}
                             >
                               <span
-                                className={`block w-4 h-4 rounded-full bg-white transition-transform transform shadow-sm ${
-                                  game.newRelease ? 'translate-x-4' : 'translate-x-0.5'
-                                }`}
+                                className={`block w-4 h-4 rounded-full bg-white transition-transform transform shadow-sm ${game.newRelease ? 'translate-x-4' : 'translate-x-0.5'
+                                  }`}
                               />
                             </button>
                           </td>
 
                           <td className="py-4 px-6 text-right">
                             <div className="inline-flex items-center gap-2">
-                                                            <button
+                              <button
                                 type="button"
                                 onClick={() => handleMoveToTop(game)}
                                 className="p-2 text-amber-600 hover:text-amber-700 rounded-lg hover:bg-amber-50 transition-colors"
@@ -961,7 +1005,7 @@ export default function AdminDashboardPage() {
                               >
                                 <ArrowUpToLine className="w-4 h-4" />
                               </button>
-<Link
+                              <Link
                                 href={`/games/${game.slug}`}
                                 target="_blank"
                                 className="p-2 text-[#5D6B78] hover:text-[#087F5B] rounded-lg hover:bg-[#F1F6F3] transition-colors"
@@ -1127,19 +1171,17 @@ export default function AdminDashboardPage() {
                       {filteredMessages.map(msg => (
                         <tr
                           key={msg.id}
-                          className={`hover:bg-[#FAFDFB] transition-colors ${
-                            msg.status === 'unread' ? 'bg-[#F4FAF7]/40' : ''
-                          }`}
+                          className={`hover:bg-[#FAFDFB] transition-colors ${msg.status === 'unread' ? 'bg-[#F4FAF7]/40' : ''
+                            }`}
                         >
                           {/* Sender Details */}
                           <td className="py-4 px-6">
                             <div className="flex items-center gap-3">
                               <div
-                                className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 ${
-                                  msg.status === 'unread'
+                                className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 ${msg.status === 'unread'
                                     ? 'bg-[#087F5B] text-white'
                                     : 'bg-[#EEF3F0] text-[#5D6B78]'
-                                }`}
+                                  }`}
                               >
                                 {msg.name ? msg.name.charAt(0).toUpperCase() : 'U'}
                               </div>
@@ -1259,6 +1301,17 @@ export default function AdminDashboardPage() {
               )}
             </div>
           </>
+        )}
+
+        {/* ========================================================= */}
+        {/* SECTION 3: SEO RANK TRACKER                               */}
+        {/* ========================================================= */}
+        {activeSection === 'rank-tracker' && (
+          <RankTracker
+            games={games}
+            onApplyKeywordToGame={handleApplyKeywordToGame}
+            showToast={showToast}
+          />
         )}
       </main>
 
@@ -1467,8 +1520,8 @@ export default function AdminDashboardPage() {
                 type="button"
                 onClick={() => setActiveModalTab('basic')}
                 className={`py-3 px-4 font-semibold text-xs border-b-2 transition-all ${activeModalTab === 'basic'
-                    ? 'border-[#087F5B] text-[#087F5B]'
-                    : 'border-transparent text-[#5D6B78] hover:text-[#172331]'
+                  ? 'border-[#087F5B] text-[#087F5B]'
+                  : 'border-transparent text-[#5D6B78] hover:text-[#172331]'
                   }`}
               >
                 1. Basic Info & Media
@@ -1477,8 +1530,8 @@ export default function AdminDashboardPage() {
                 type="button"
                 onClick={() => setActiveModalTab('content')}
                 className={`py-3 px-4 font-semibold text-xs border-b-2 transition-all ${activeModalTab === 'content'
-                    ? 'border-[#087F5B] text-[#087F5B]'
-                    : 'border-transparent text-[#5D6B78] hover:text-[#172331]'
+                  ? 'border-[#087F5B] text-[#087F5B]'
+                  : 'border-transparent text-[#5D6B78] hover:text-[#172331]'
                   }`}
               >
                 2. Overview & Rules
@@ -1487,8 +1540,8 @@ export default function AdminDashboardPage() {
                 type="button"
                 onClick={() => setActiveModalTab('seo')}
                 className={`py-3 px-4 font-semibold text-xs border-b-2 transition-all flex items-center gap-1.5 ${activeModalTab === 'seo'
-                    ? 'border-[#087F5B] text-[#087F5B]'
-                    : 'border-transparent text-[#5D6B78] hover:text-[#172331]'
+                  ? 'border-[#087F5B] text-[#087F5B]'
+                  : 'border-transparent text-[#5D6B78] hover:text-[#172331]'
                   }`}
               >
                 <Sparkles className="w-3.5 h-3.5 text-amber-500" />
@@ -1522,7 +1575,7 @@ export default function AdminDashboardPage() {
                         Category <span className="text-red-500">*</span>
                       </label>
                       <select
-                        value={formData.category || 'Yono Games'}
+                        value={formData.category || 'All Yono Games'}
                         onChange={e => setFormData({ ...formData, category: e.target.value, categories: [e.target.value] })}
                         className="w-full px-3.5 py-2.5 rounded-xl border border-[#D5E2D9] text-sm focus:outline-none focus:ring-2 focus:ring-[#087F5B] bg-white"
                       >

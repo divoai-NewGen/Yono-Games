@@ -231,14 +231,16 @@ export async function getGamesByCategory(
 ): Promise<Game[]> {
   const games = await getGames();
 
-  if (!category || category === 'All') {
+  if (!category || category === 'All' || category === 'All Games') {
     return games;
   }
 
   return games.filter(
     (game) =>
       game.category === category ||
-      game.categories?.includes(category)
+      game.categories?.includes(category) ||
+      (category === 'All Yono Games' && (game.category === 'Yono Games' || game.categories?.includes('Yono Games'))) ||
+      (category === 'Yono Games' && (game.category === 'All Yono Games' || game.categories?.includes('All Yono Games')))
   );
 }
 

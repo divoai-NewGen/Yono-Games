@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, SlidersHorizontal, Sparkles, Filter, ChevronDown, Check } from 'lucide-react';
+import { Search, SlidersHorizontal, Filter, ChevronDown, Check } from 'lucide-react';
 import { Game, GameCategory } from '@/types/game';
 import GameCard from '@/components/games/GameCard';
 import CompactGameCard from '@/components/games/CompactGameCard';
@@ -14,7 +14,7 @@ interface GamesDirectoryProps {
 
 const CATEGORIES: { label: string; value: GameCategory }[] = [
   { label: 'All Games', value: 'All' },
-  { label: 'Yono Games', value: 'Yono Games' },
+  { label: 'All Yono Games', value: 'All Yono Games' },
   { label: 'Other Best Games', value: 'Other Best Games' },
 ];
 
@@ -57,7 +57,9 @@ export default function GamesDirectory({ initialGames, initialCategory = 'All' }
           selectedCategory === 'All' ||
           selectedCategory === 'All Games' ||
           game.category === selectedCategory ||
-          game.categories?.includes(selectedCategory);
+          game.categories?.includes(selectedCategory) ||
+          (selectedCategory === 'All Yono Games' && (game.category === 'Yono Games' || game.categories?.includes('Yono Games'))) ||
+          (selectedCategory === 'Yono Games' && (game.category === 'All Yono Games' || game.categories?.includes('All Yono Games')));
 
         const matchesSearch =
           !searchQuery.trim() ||
@@ -191,10 +193,11 @@ export default function GamesDirectory({ initialGames, initialCategory = 'All' }
         <>
           {/* Mobile View: Exact 100% compact list matching home page */}
           <div className="block md:hidden space-y-3">
-            {filteredGames.map((game) => (
+            {filteredGames.map((game, index) => (
               <CompactGameCard
                 key={game.id || game.slug}
                 game={game}
+                rank={index + 1}
                 onDownloadClick={handleDownloadClick}
               />
             ))}
